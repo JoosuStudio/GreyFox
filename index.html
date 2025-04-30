@@ -207,14 +207,12 @@
       // Tuju värv
       if (elementId === 'mood') {
         if (percentage < 30) {
-          progressBarFill.style.backgroundColor = '#78909C'; // Hallikassinine (halb)
-          valueText.style.color = 'white'; valueText.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.8)'; // Tume tekstivalik tagasi
+          if (percentage < 30) {
+          progressBarFill.style.backgroundColor = '#f44336'; // Punane (madal)
         } else if (percentage < 70) {
-          progressBarFill.style.backgroundColor = '#FFEB3B'; // Kollane (okei)
-          valueText.style.color = '#333'; valueText.style.textShadow = 'none'; // Hele taust -> tume tekst
+          progressBarFill.style.backgroundColor = '#FF9800'; // Oranž (keskmine)
         } else {
-          progressBarFill.style.backgroundColor = '#CDDC39'; // Laimiroheline (hea)
-          valueText.style.color = '#333'; valueText.style.textShadow = 'none'; // Hele taust -> tume tekst
+          progressBarFill.style.backgroundColor = '#8BC34A'; // Heleroheline (kõrge)
         }
       }
 
