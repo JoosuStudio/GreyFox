@@ -5,22 +5,22 @@
   <meta charset="UTF-8">
   <style>
     body {
-      background-color: transparent; /* Transparent for Streamlabs overlay */
+      background-color: transparent; /* Läbipaistev Streamlabs overlay jaoks */
       font-family: 'Trebuchet MS', 'Arial', sans-serif;
-      color: #eee; /* Light text color for visibility */
+      color: #eee; /* Hele tekst paremaks nähtavuseks */
       margin: 0;
-      padding: 15px; /* Matches your existing overlay padding */
-      overflow: hidden; /* Prevents scrollbars */
+      padding: 15px; /* Sama polsterdus, mis teistel overlay elementidel */
+      overflow: hidden; /* Väldib kerimisribasid */
     }
 
     .ticker-container {
-      width: 280px; /* Matches your .overlay-container width */
-      background-color: rgba(30, 30, 30, 0.7); /* Semi-transparent dark background */
+      width: 280px; /* Sama laius, mis .overlay-container */
+      background-color: rgba(30, 30, 30, 0.7); /* Poolläbipaistev tume taust */
       border-radius: 6px;
       border: 1px solid rgba(100, 100, 100, 0.5);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-      overflow: hidden; /* Hides overflowing text */
-      padding: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Kerge vari */
+      overflow: hidden; /* Peidab ülevoolava teksti */
+      padding: 8px; /* Sisemine polsterdus konteinerile */
     }
 
     .ticker-label {
@@ -28,40 +28,45 @@
       font-weight: bold;
       text-align: center;
       margin-bottom: 6px;
-      text-shadow: 1px 1px 2px black; /* Text shadow for readability */
-      color: #03A9F4; /* Blue to match your budget bar */
+      text-shadow: 1px 1px 2px black; /* Teksti vari loetavuse parandamiseks */
+      color: #03A9F4; /* Sinine, et sobituda eelarveribaga */
     }
 
+    /* Konteiner kerivale tekstile */
     .ticker {
       width: 100%;
-      height: 30px; /* Height of the ticker */
-      overflow: hidden; /* Hides text outside the container */
-      position: relative;
+      height: 25px; /* Teksti ala kõrgus, kohanda vastavalt fondi suurusele */
+      line-height: 25px; /* Vertikaalselt keskele joondamiseks */
+      overflow: hidden; /* Peidab teksti, mis on väljaspool */
+      position: relative; /* Vajalik, kui hiljem elemente positsioneerida */
     }
 
+    /* Keriv tekst ise */
     .ticker-text {
-      display: inline-block;
-      white-space: nowrap; /* Prevents text wrapping */
+      display: inline-block; /* Oluline, et laius kohanduks sisuga */
+      white-space: nowrap; /* Hoiab teksti ühel real */
+      padding-left: 100%; /* KRIIITILINE: Tekitab konteineri laiuse jagu tühja ruumi ENNE teksti */
       font-size: 0.9em;
       font-weight: bold;
       color: #eee;
       text-shadow: 1px 1px 2px black;
-      position: absolute;
-      left: 100%; /* Starts off-screen to the right */
-      animation: scroll 20s linear infinite; /* Adjust duration for speed */
+
+      /* Animatsioon */
+      animation: scroll 20s linear infinite; /* Muuda kestust (20s) kiiruse reguleerimiseks */
     }
 
-    /* Keyframes for scrolling animation */
+    /* Keyframes kerimise animatsiooni jaoks */
     @keyframes scroll {
       0% {
-        transform: translateX(0); /* Starts at right edge */
+        transform: translateX(0%); /* Algusasend (tühi ruum täidab konteineri) */
       }
       100% {
-        transform: translateX(-100%); /* Moves to left edge */
+        /* Liigub vasakule täpselt TEKSTI enda laiuse võrra */
+        transform: translateX(-100%);
       }
     }
 
-    /* Optional: Pause animation on hover (for testing) */
+    /* Valikuline: Peatab animatsiooni hiirega peale minnes (testimiseks) */
     .ticker:hover .ticker-text {
       animation-play-state: paused;
     }
@@ -76,29 +81,29 @@
   </div>
 
   <script>
-    // Function to update ticker text
+    const tickerTextElement = document.getElementById('tickerText');
+    const defaultTickerText = tickerTextElement ? tickerTextElement.textContent : "Default text if element not found."; // Salvestame algse teksti
+
+    // Funktsioon ticker teksti uuendamiseks
     function updateTicker(newText) {
-      const tickerText = document.getElementById('tickerText');
-      tickerText.textContent = newText;
-      // Reset animation to start from the right
-      tickerText.style.animation = 'none';
-      tickerText.offsetHeight; // Trigger reflow
-      tickerText.style.animation = 'scroll 20s linear infinite';
+      if (tickerTextElement) {
+         tickerTextElement.textContent = newText; // Lihtsalt muudame teksti sisu
+         console.log("Ticker updated:", newText);
+      } else {
+         console.error("Ticker text element not found!");
+      }
     }
 
-    // Example: Update text dynamically (e.g., via Streamlabs events)
-    // For testing, this updates after 10 seconds
+    // Näide: Uuendame teksti dünaamiliselt 10 sekundi pärast
     setTimeout(() => {
       updateTicker('New Donation: $5 from TrailBlazer! Powering up for the next hill! 🚴');
-    }, 10000);
+    }, 10000); // 10 sekundit
 
-    // Optional: Example for manual input (uncomment to test)
-    /*
-    document.addEventListener('DOMContentLoaded', () => {
-      const input = prompt('Enter new ticker text:');
-      if (input) updateTicker(input);
-    });
-    */
+    // Näide: Taastame algse teksti veel 15 sekundi pärast (kokku 25s)
+    setTimeout(() => {
+      updateTicker(defaultTickerText);
+    }, 25000); // 25 sekundit
+
   </script>
 </body>
 </html>
