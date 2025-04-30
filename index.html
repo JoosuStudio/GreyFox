@@ -204,12 +204,12 @@
       // Kõhu täisolu värv (jääb roosaks, aga võiks ka muuta kui vaja)
       if (elementId === 'fullness') {
          if (percentage < 30) {
-            // Nälgima hakkab - muudame värvi?
-            // progressBarFill.style.backgroundColor = '#ffc107'; // Kollane nt?
-         } else {
-            // Jääb roosaks
-             progressBarFill.style.backgroundColor = '#E91E63';
-         }
+            progressBarFill.style.backgroundColor = '#f44336'; // Punane (madal)
+        } else if (percentage < 70) {
+          progressBarFill.style.backgroundColor = '#FF9800'; // Oranž (keskmine)
+        } else {
+          progressBarFill.style.backgroundColor = '#8BC34A'; // Heleroheline (kõrge)
+        }
       }
     }
 
