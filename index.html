@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Stream Overlay</title>
+<meta charset="UTF-8">
+<style>
+  /* CSS stiilid */
+  body {
+    background-color: transparent; /* Oluline overlay jaoks */
+    font-family: 'Trebuchet MS', 'Arial', sans-serif; /* Või mõni muu sobiv font */
+    color: white; /* Teksti vaikevärv */
+    margin: 0;
+    padding: 15px; /* Äärtest veidi ruumi */
+    overflow: hidden; /* Väldib kerimisribasid, kui sisu napilt üle mahub */
+  }
+
+  .overlay-container {
+    display: flex;
+    flex-direction: column; /* Elemendid üksteise all */
+    gap: 12px; /* Vahe elementide vahel */
+    width: 280px; /* Overlay laius - muuda vastavalt vajadusele */
+  }
+
+  .data-item {
+    background-color: rgba(30, 30, 30, 0.7); /* Poolläbipaistev tume taust */
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(100, 100, 100, 0.5);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Kerge vari */
+  }
+
+  .label {
+    font-size: 0.95em;
+    font-weight: bold;
+    margin-bottom: 6px;
+    text-shadow: 1px 1px 2px black; /* Teksti vari loetavuse parandamiseks */
+    color: #eee; /* Sildi värv */
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 28px; /* Riba kõrgus */
+    background-color: #555; /* Tühja riba taust */
+    border-radius: 4px;
+    overflow: hidden; /* Hoiab täidise piirides */
+    position: relative; /* Vajalik teksti positsioneerimiseks */
+    border: 1px solid #777;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background-color: #4CAF50; /* Täidise vaikevärv (roheline) */
+    border-radius: 4px 0 0 4px; /* Ümardab vasakpoolsed nurgad */
+    transition: width 0.4s ease-out, background-color 0.4s ease; /* Sujuv üleminek laiusele ja värvile */
+    width: 0%; /* Algne laius */
+    box-shadow: inset 0 -2px 4px rgba(0,0,0,0.3); /* Sissepoole vari efektiks */
+  }
+
+  /* Ribade erivärvid */
+  #budget .progress-fill { background-color: #03A9F4; } /* Sinine eelarvele */
+  #mood .progress-fill { background-color: #FFEB3B; color: #333; } /* Kollane tujule (tume tekst) */
+  #energy .progress-fill { background-color: #FF9800; } /* Oranž energiale */
+  #fullness .progress-fill { background-color: #E91E63; } /* Roosa täiskõhule */
+
+  .value-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.85em;
+    font-weight: bold;
+    color: white; /* Teksti värv riba peal */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Tugevam vari loetavuse tagamiseks */
+    white-space: nowrap; /* Väldib teksti murdumist */
+  }
+
+  /* Teksti värvi muutmine heledal taustal (nt kollane tuju riba) */
+  #mood .value-text { color: #333; text-shadow: none; }
+
+</style>
+</head>
+<body>
+
+<div class="overlay-container">
+  <div class="data-item" id="budget">
+    <div class="label">Päevane Eelarve</div>
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+      <div class="value-text"></div>
+    </div>
+  </div>
+
+  <div class="data-item" id="mood">
+    <div class="label">Tuju</div>
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+      <div class="value-text"></div>
+    </div>
+  </div>
+
+  <div class="data-item" id="energy">
+    <div class="label">Energia</div>
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+      <div class="value-text"></div>
+    </div>
+  </div>
+
+  <div class="data-item" id="fullness">
+    <div class="label">Kõht Täis</div>
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+      <div class="value-text"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Käivitub siis, kui HTML on laetud
+  document.addEventListener('DOMContentLoaded', function() {
+
+    // --- MUUDETAVAD VÄÄRTUSED ---
+    // Muuda neid väärtusi vastavalt hetkeolukorrale
+    let currentBudget = 75;    // Praegune eelarve (€)
+    let targetBudget = 150;   // Eesmärk eelarve (€) - see on 100%
+    let currentMood = 80;     // Praegune tuju (0-100 %)
+    let currentEnergy = 65;   // Praegune energia (0-100 %)
+    let currentFullness = 90; // Praegune kõhu täisolu (0-100 %)
+    // --- MUUDETAVAD VÄÄRTUSED LÕPEVAD ---
+
+    // Abifunktsioon riba ja teksti uuendamiseks
+    // elementId: HTML elemendi ID (nt 'budget')
+    // currentValue: Hetkeväärtus (nt 75)
+    // maxValue: Väärtus, mis vastab 100%-le (nt 150 eelarve puhul, 100 teistel)
+    // unit: Ühik, mida kuvada (nt '€' või '%')
+    function updateProgressBar(elementId, currentValue, maxValue, unit = '%') {
+      const element = document.getElementById(elementId);
+      if (!element) {
+        console.error("Element not found:", elementId);
+        return; // Välju, kui elementi ei leita
+      }
+
+      const progressBarFill = element.querySelector('.progress-fill');
+      const valueText = element.querySelector('.value-text');
+      const label = element.querySelector('.label'); // Leiame ka sildi elemendi
+
+      let percentage = 0;
+      let displayText = '';
+
+      // Veendu, et väärtused on numbrid
+      currentValue = parseFloat(currentValue) || 0;
+      maxValue = parseFloat(maxValue) || 100; // Vaikimisi 100, kui pole määratud või on 0
+
+      if (maxValue > 0) {
+          if (unit === '€') {
+              percentage = Math.max(0, Math.min(100, (currentValue / maxValue) * 100));
+              // Kasutame toFixed(2) täpsema euro summa jaoks, aga näitame ilma komakohtadeta tekstis
+              displayText = `${currentValue.toFixed(0)}€ / ${maxValue.toFixed(0)}€`;
+          } else { // Vaikimisi protsent
+              percentage = Math.max(0, Math.min(100, currentValue)); // Tagab, et väärtus jääb 0-100 vahele
+              displayText = `${percentage.toFixed(0)}${unit}`;
+          }
+      } else {
+          // Juhuks kui maxValue on 0 või vigane
+          percentage = 0;
+          displayText = unit === '€' ? `${currentValue.toFixed(0)}€ / ${maxValue.toFixed(0)}€ (Viga)` : `${currentValue.toFixed(0)}${unit}`;
+      }
+
+      // Uuenda riba laiust
+      progressBarFill.style.width = `${percentage}%`;
+
+      // Uuenda teksti riba sees
+      valueText.textContent = displayText;
+
+      // VALIKULINE: Muuda riba värvi vastavalt protsendile
+      // Eelarve värv on fikseeritud sinine CSS-is
+
+      // Tuju värv
+      if (elementId === 'mood') {
+        if (percentage < 30) {
+          progressBarFill.style.backgroundColor = '#78909C'; // Hallikassinine (halb)
+          valueText.style.color = 'white'; valueText.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.8)'; // Tume tekstivalik tagasi
+        } else if (percentage < 70) {
+          progressBarFill.style.backgroundColor = '#FFEB3B'; // Kollane (okei)
+          valueText.style.color = '#333'; valueText.style.textShadow = 'none'; // Hele taust -> tume tekst
+        } else {
+          progressBarFill.style.backgroundColor = '#CDDC39'; // Laimiroheline (hea)
+          valueText.style.color = '#333'; valueText.style.textShadow = 'none'; // Hele taust -> tume tekst
+        }
+      }
+
+      // Energia värv
+      if (elementId === 'energy') {
+        if (percentage < 30) {
+          progressBarFill.style.backgroundColor = '#f44336'; // Punane (madal)
+        } else if (percentage < 70) {
+          progressBarFill.style.backgroundColor = '#FF9800'; // Oranž (keskmine)
+        } else {
+          progressBarFill.style.backgroundColor = '#8BC34A'; // Heleroheline (kõrge)
+        }
+      }
+
+      // Kõhu täisolu värv (jääb roosaks, aga võiks ka muuta kui vaja)
+      if (elementId === 'fullness') {
+         if (percentage < 30) {
+            // Nälgima hakkab - muudame värvi?
+            // progressBarFill.style.backgroundColor = '#ffc107'; // Kollane nt?
+         } else {
+            // Jääb roosaks
+             progressBarFill.style.backgroundColor = '#E91E63';
+         }
+      }
+    }
+
+    // Uuenda kõiki ribasid lehe laadimisel esialgsete väärtustega
+    updateProgressBar('budget', currentBudget, targetBudget, '€');
+    updateProgressBar('mood', currentMood, 100, '%');
+    updateProgressBar('energy', currentEnergy, 100, '%');
+    updateProgressBar('fullness', currentFullness, 100, '%');
+
+    // --- VALIKULINE: Automaatsed muutused ---
+    // Siia saab lisada koodi, mis muudab väärtusi aja jooksul
+    // Näide: Vähenda energiat iga 5 minuti järel
+    /*
+    setInterval(() => {
+      currentEnergy = Math.max(0, currentEnergy - 1); // Vähenda energiat 1 võrra, aga mitte alla 0
+      updateProgressBar('energy', currentEnergy, 100, '%');
+      console.log("Energia vähenes:", currentEnergy); // Logib konsooli (nähtav brauseri arendaja tööriistades)
+    }, 300000); // 300000 millisekundit = 5 minutit
+    */
+
+    // --- VALIKULINE: Muudatuste kuulamine ---
+    // Kui soovid väärtusi muuta ilma faili redigeerimata (nt Stream Decki või chatikäsuga),
+    // on vaja keerukamat lahendust (nt WebSocket ühendus või faili jälgimine),
+    // mis väljub lihtsa HTML/CSS/JS raamest.
+
+  });
+</script>
+
+</body>
+</html>
