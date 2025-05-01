@@ -4,7 +4,6 @@
   <title>Stream Overlay</title>
   <meta charset="UTF-8">
   <style>
-    /* Existing CSS remains unchanged */
     body {
       background-color: transparent;
       font-family: 'Trebuchet MS', 'Arial', sans-serif;
@@ -16,9 +15,10 @@
 
     .overlay-container {
       display: flex;
-      flex-direction: column;
-      gap: 12px;
-      width: 280px;
+      flex-direction: row; /* Changed from column to row */
+      flex-wrap: wrap; /* Allow items to wrap to next row */
+      gap: 12px; /* Space between items */
+      width: 580px; /* Increased width to fit two items side by side (280px * 2 + gap) */
     }
 
     .data-item {
@@ -27,6 +27,8 @@
       border-radius: 6px;
       border: 1px solid rgba(100, 100, 100, 0.5);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      width: calc(50% - 18px); /* Two items per row, accounting for gap and padding */
+      box-sizing: border-box; /* Ensure padding/borders don't affect width */
     }
 
     .label {
@@ -35,7 +37,7 @@
       margin-bottom: 6px;
       text-shadow: 1px 1px 2px black;
       color: #eee;
-      text-align: center; /* Center all labels */
+      text-align: center;
     }
 
     .progress-bar {
@@ -80,7 +82,7 @@
 <body>
   <div class="overlay-container">
     <div class="data-item" id="budget">
-      <div class="label">🦊💸🪙 DAILY BUDGET 🪙💸🦊</div>
+      <div class="label">🦊💶🪙 DAILY BUDGET 🪙💶🦊</div>
       <div class="progress-bar">
         <div class="progress-fill"></div>
         <div class="value-text"></div>
@@ -94,14 +96,14 @@
       </div>
     </div>
     <div class="data-item" id="energy">
-      <div class="label">🦊🚴🔋⚡ ENERGY ⚡🔋🚴🦊</div>
+      <div class="label">⚡🦊 ENERGY ⚡🦊</div>
       <div class="progress-bar">
         <div class="progress-fill"></div>
         <div class="value-text"></div>
       </div>
     </div>
     <div class="data-item" id="fullness">
-      <div class="label">🦊🍔🍕 FULL STOMACH 🍕🍔🦊</div>
+      <div class="label">🦊🍔🌮🍕 HUNGER 🍕🌮🍔🦊</div>
       <div class="progress-bar">
         <div class="progress-fill"></div>
         <div class="value-text"></div>
@@ -109,13 +111,12 @@
     </div>
   </div>
 
-  <!-- JavaScript remains unchanged -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       let currentBudget = 3;
       let targetBudget = 80;
       let currentMood = 70;
-      let currentEnergy = 70;
+      let currentEnergy = 60;
       let currentFullness = 70;
 
       function updateProgressBar(elementId, currentValue, maxValue, unit = '%') {
@@ -152,11 +153,14 @@
 
         if (elementId === 'mood') {
           if (percentage < 30) {
-            progressBarFill.style.backgroundColor = '#f44336';
+            progressBarFill.style.backgroundColor = '#78909C';
+            valueText.style.color = 'white'; valueText.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.8)';
           } else if (percentage < 70) {
-            progressBarFill.style.backgroundColor = '#FF9800';
+            progressBarFill.style.backgroundColor = '#FFEB3B';
+            valueText.style.color = '#333'; valueText.style.textShadow = 'none';
           } else {
-            progressBarFill.style.backgroundColor = '#8BC34A';
+            progressBarFill.style.backgroundColor = '#CDDC39';
+            valueText.style.color = '#333'; valueText.style.textShadow = 'none';
           }
         }
 
