@@ -3,38 +3,44 @@
 <head>
   <title>Stream Overlay</title>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Added for mobile responsiveness -->
   <style>
     body {
       background-color: transparent;
       font-family: 'Trebuchet MS', 'Arial', sans-serif;
       color: white;
       margin: 0;
-      padding: 15px;
+      padding: 10px; /* Reduced padding for smaller screens */
       overflow: hidden;
+      box-sizing: border-box; /* Ensure padding doesn't cause overflow */
     }
 
     .overlay-container {
       display: flex;
-      flex-direction: row; /* Changed from column to row */
-      flex-wrap: wrap; /* Allow items to wrap to next row */
-      gap: 12px; /* Space between items */
-      width: 580px; /* Increased width to fit two items side by side (280px * 2 + gap) */
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px; /* Reduced gap for smaller screens */
+      width: 100%; /* Fit parent container or viewport */
+      max-width: 600px; /* Optional: prevent overly wide layout on large screens */
+      margin: 0 auto; /* Center horizontally if narrower than viewport */
+      box-sizing: border-box;
     }
 
     .data-item {
       background-color: rgba(30, 30, 30, 0.7);
-      padding: 12px;
+      padding: 10px; /* Reduced padding for smaller screens */
       border-radius: 6px;
       border: 1px solid rgba(100, 100, 100, 0.5);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-      width: calc(50% - 18px); /* Two items per row, accounting for gap and padding */
-      box-sizing: border-box; /* Ensure padding/borders don't affect width */
+      width: calc(50% - 5px); /* Two items per row, accounting for gap */
+      box-sizing: border-box;
+      min-width: 140px; /* Prevent items from becoming too narrow */
     }
 
     .label {
-      font-size: 0.95em;
+      font-size: 0.9em; /* Slightly smaller for mobile */
       font-weight: bold;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       text-shadow: 1px 1px 2px black;
       color: #eee;
       text-align: center;
@@ -42,7 +48,7 @@
 
     .progress-bar {
       width: 100%;
-      height: 28px;
+      height: 24px; /* Slightly smaller for mobile */
       background-color: #555;
       border-radius: 4px;
       overflow: hidden;
@@ -69,7 +75,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 0.85em;
+      font-size: 0.8em; /* Smaller for mobile */
       font-weight: bold;
       color: white;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
@@ -77,12 +83,32 @@
     }
 
     #mood .value-text { color: #333; text-shadow: none; }
+
+    /* Media query for small screens (e.g., phones) */
+    @media (max-width: 600px) {
+      .data-item {
+        width: 100%; /* Stack items vertically */
+        min-width: 0; /* Allow full flexibility */
+      }
+      .overlay-container {
+        gap: 8px; /* Smaller gap */
+      }
+      .label {
+        font-size: 0.85em;
+      }
+      .progress-bar {
+        height: 22px;
+      }
+      .value-text {
+        font-size: 0.75em;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="overlay-container">
     <div class="data-item" id="budget">
-      <div class="label">🦊💶🪙 DAILY BUDGET 🪙💶🦊</div>
+      <div class="label">🦊💸💶🪙 DAILY BUDGET 🪙💶💸🦊</div>
       <div class="progress-bar">
         <div class="progress-fill"></div>
         <div class="value-text"></div>
@@ -96,14 +122,14 @@
       </div>
     </div>
     <div class="data-item" id="energy">
-      <div class="label">⚡🦊 ENERGY ⚡🦊</div>
+      <div class="label">🦊🚴🔋⚡ ENERGY ⚡🔋🚴🦊</div>
       <div class="progress-bar">
         <div class="progress-fill"></div>
         <div class="value-text"></div>
       </div>
     </div>
     <div class="data-item" id="fullness">
-      <div class="label">🦊🍔🌮🍕 HUNGER 🍕🌮🍔🦊</div>
+      <div class="label">🦊🍔🌮🍕 STOMACH 🍕🌮🍔🦊</div>
       <div class="progress-bar">
         <div class="progress-fill"></div>
         <div class="value-text"></div>
