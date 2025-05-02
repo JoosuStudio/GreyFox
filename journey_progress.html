@@ -13,10 +13,10 @@
         }
         .overlay {
             position: absolute;
-            bottom: 20px; /* Or top: 20px */
+            bottom: 20px; /* Or top: 20px; for top placement */
             width: 1080px;
             height: 200px;
-            background: rgba(255, 165, 0, 0.7);
+            background: rgba(255, 165, 0, 0.7); /* Foxy orange, semi-transparent */
             border-radius: 20px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
             display: flex;
@@ -24,11 +24,11 @@
             justify-content: space-between;
             padding: 20px;
             color: #fff;
-            font-size: 24px;
+            font-size: 24px; /* 20-30 pt for readability */
             animation: slideIn 1s ease-in-out;
         }
         .fox-graphic {
-            font-size: 40px;
+            font-size: 40px; /* Big foxy emoji */
             margin-right: 20px;
         }
         .progress-info {
@@ -53,8 +53,8 @@
         }
         .progress-bar {
             height: 100%;
-            background: #ffeb3b;
-            width: 0;
+            background: #ffeb3b; /* Foxy yellow */
+            width: 0; /* Updated by JS */
             transition: width 1s ease-in-out;
             animation: pulse 2s infinite;
         }
@@ -81,13 +81,29 @@
         </div>
     </div>
     <script>
-        const totalKm = 3500;
-        let currentKm = 80; // Edit for each livestream
-        let location = "Rakvere, Estonia"; // Edit as needed
+        // Editable variables for journey progress
+        const totalKm = 3500; // Total journey km
+        let currentKm = 80; // Current km (update for each livestream)
+        let location = "Rakvere, Estonia"; // Current location (update as needed)
+
+        // Calculate progress percentage
         const progressPercent = (currentKm / totalKm) * 100;
+
+        // Update overlay elements
         document.getElementById("km-progress").textContent = `${currentKm}/${totalKm} km (${progressPercent.toFixed(1)}% done!)`;
         document.getElementById("location").textContent = location;
         document.getElementById("progress-bar").style.width = `${progressPercent}%`;
+
+        // Optional: Auto-update km for demo (uncomment to test)
+        /*
+        setInterval(() => {
+            currentKm += 10; // Simulate km increase
+            if (currentKm > totalKm) currentKm = totalKm;
+            const newPercent = (currentKm / totalKm) * 100;
+            document.getElementById("km-progress").textContent = `${currentKm}/${totalKm} km (${newPercent.toFixed(1)}% done!)`;
+            document.getElementById("progress-bar").style.width = `${newPercent}%`;
+        }, 5000); // Update every 5s
+        */
     </script>
 </body>
 </html>
