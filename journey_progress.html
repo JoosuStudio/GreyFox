@@ -3,102 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foxy Responsive Journey Overlay</title>
+    <title>Foxy Journey Progress Overlay</title>
     <style>
         body {
             margin: 0;
             font-family: 'Montserrat', sans-serif;
             background: transparent;
             overflow: hidden;
-            font-size: 16px; /* Base for rem units */
         }
         .overlay {
             position: absolute;
-            bottom: 2vh; /* Responsive bottom margin */
-            width: 90vw; /* 90% viewport width */
-            max-width: 1080px; /* Cap for large screens */
-            min-width: 300px; /* Minimum for small screens */
-            height: 15vh; /* 15% viewport height */
-            max-height: 200px;
-            background: rgba(255, 165, 0, 0.7); /* Foxy orange, semi-transparent */
-            border-radius: 2vw; /* Responsive border radius */
-            box-shadow: 0 0 1vw rgba(0, 0, 0, 0.5);
+            bottom: 20px; /* Or top: 20px */
+            width: 1080px;
+            height: 200px;
+            background: rgba(255, 165, 0, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 2vw;
+            padding: 20px;
             color: #fff;
+            font-size: 24px;
             animation: slideIn 1s ease-in-out;
-            flex-wrap: wrap; /* Stack elements on narrow screens */
-            box-sizing: border-box;
         }
         .fox-graphic {
-            font-size: 2.5rem; /* Responsive emoji size */
-            margin-right: 2vw;
-            flex: 0 0 auto;
+            font-size: 40px;
+            margin-right: 20px;
         }
         .progress-info {
-            flex: 1 1 auto;
-            min-width: 200px; /* Prevent collapse */
+            flex-grow: 1;
         }
         .km-text {
             font-weight: bold;
-            font-size: 1.5rem; /* ~24pt, responsive */
-            text-shadow: 0.1rem 0.1rem 0.2rem rgba(0, 0, 0, 0.5);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
         .location-text {
             font-style: italic;
-            font-size: 1.25rem; /* ~20pt */
-            margin-top: 0.5vh;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            margin-top: 10px;
+            font-size: 20px;
         }
         .progress-bar-container {
             width: 100%;
-            height: 1.5vh;
+            height: 20px;
             background: #333;
-            border-radius: 1vw;
-            margin-top: 0.5vh;
+            border-radius: 10px;
+            margin-top: 10px;
             overflow: hidden;
         }
         .progress-bar {
             height: 100%;
-            background: #ffeb3b; /* Foxy yellow */
-            width: 0; /* Updated by JS */
+            background: #ffeb3b;
+            width: 0;
             transition: width 1s ease-in-out;
             animation: pulse 2s infinite;
-        }
-        /* Media queries for responsiveness */
-        @media screen and (max-width: 480px) {
-            .overlay {
-                height: 20vh; /* Taller for small screens */
-                padding: 1vw;
-            }
-            .fox-graphic {
-                font-size: 2rem;
-                margin-right: 1vw;
-            }
-            .km-text {
-                font-size: 1.2rem;
-            }
-            .location-text {
-                font-size: 1rem;
-            }
-            .progress-bar-container {
-                height: 1vh;
-            }
-        }
-        @media screen and (min-width: 1200px) {
-            .km-text {
-                font-size: 1.8rem;
-            }
-            .location-text {
-                font-size: 1.5rem;
-            }
         }
         @keyframes slideIn {
             from { transform: translateY(100%); }
@@ -123,15 +81,10 @@
         </div>
     </div>
     <script>
-        // Editable journey progress variables
         const totalKm = 3500;
-        let currentKm = 80; // Update for each livestream
-        let location = "Rakvere, Estonia"; // Update as needed
-
-        // Calculate progress percentage
+        let currentKm = 80; // Edit for each livestream
+        let location = "Rakvere, Estonia"; // Edit as needed
         const progressPercent = (currentKm / totalKm) * 100;
-
-        // Update overlay elements
         document.getElementById("km-progress").textContent = `${currentKm}/${totalKm} km (${progressPercent.toFixed(1)}% done!)`;
         document.getElementById("location").textContent = location;
         document.getElementById("progress-bar").style.width = `${progressPercent}%`;
