@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foxy Journey Overlay: Võsu to Málaga</title>
+    <title>Foxy Responsive Journey Overlay</title>
     <style>
         body {
             margin: 0;
@@ -18,10 +18,10 @@
             width: 90vw; /* 90% viewport width */
             max-width: 1080px; /* Cap for large screens */
             min-width: 300px; /* Minimum for small screens */
-            height: 18vh; /* Adjusted for start date */
-            max-height: 220px;
+            height: 15vh; /* 15% viewport height */
+            max-height: 200px;
             background: rgba(255, 165, 0, 0.7); /* Foxy orange, semi-transparent */
-            border-radius: 2vw;
+            border-radius: 2vw; /* Responsive border radius */
             box-shadow: 0 0 1vw rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
@@ -57,13 +57,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .start-date {
-            font-size: 1rem; /* ~16pt */
-            margin-top: 0.5vh;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
         .progress-bar-container {
             width: 100%;
             height: 1.5vh;
@@ -82,7 +75,7 @@
         /* Media queries for responsiveness */
         @media screen and (max-width: 480px) {
             .overlay {
-                height: 22vh; /* Taller for small screens */
+                height: 20vh; /* Taller for small screens */
                 padding: 1vw;
             }
             .fox-graphic {
@@ -95,9 +88,6 @@
             .location-text {
                 font-size: 1rem;
             }
-            .start-date {
-                font-size: 0.9rem;
-            }
             .progress-bar-container {
                 height: 1vh;
             }
@@ -108,9 +98,6 @@
             }
             .location-text {
                 font-size: 1.5rem;
-            }
-            .start-date {
-                font-size: 1.2rem;
             }
         }
         @keyframes slideIn {
@@ -128,9 +115,8 @@
     <div class="overlay">
         <div class="fox-graphic">🦊🚴</div>
         <div class="progress-info">
-            <div class="km-text" id="km-progress">80/5,000 km</div>
-            <div class="location-text" id="location">Võsu, Estonia</div>
-            <div class="start-date" id="start-date">Started: May 1, 2026</div>
+            <div class="km-text" id="km-progress">80/3,500 km</div>
+            <div class="location-text" id="location">Rakvere, Estonia</div>
             <div class="progress-bar-container">
                 <div class="progress-bar" id="progress-bar"></div>
             </div>
@@ -138,10 +124,9 @@
     </div>
     <script>
         // Editable journey progress variables
-        const totalKm = 5000; // Updated for Võsu to Málaga
+        const totalKm = 3500;
         let currentKm = 80; // Update for each livestream
-        let location = "Võsu, Estonia"; // Update as needed
-        const startDate = "May 1, 2026"; // Fixed start date
+        let location = "Rakvere, Estonia"; // Update as needed
 
         // Calculate progress percentage
         const progressPercent = (currentKm / totalKm) * 100;
@@ -149,7 +134,6 @@
         // Update overlay elements
         document.getElementById("km-progress").textContent = `${currentKm}/${totalKm} km (${progressPercent.toFixed(1)}% done!)`;
         document.getElementById("location").textContent = location;
-        document.getElementById("start-date").textContent = `Started: ${startDate}`;
         document.getElementById("progress-bar").style.width = `${progressPercent}%`;
     </script>
 </body>
