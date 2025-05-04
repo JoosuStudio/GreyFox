@@ -48,6 +48,7 @@
                 const temp = Math.round(data.main.temp);
                 const weather = data.weather[0].main;
                 const city = data.name;
+                const windSpeed = Math.round(data.wind.speed); // Wind speed in m/s
 
                 const weatherIcons = {
                     "Clear": "☀️",
@@ -61,7 +62,7 @@
                 const icon = weatherIcons[weather] || "🌍";
 
                 document.getElementById("icon").textContent = icon;
-                document.getElementById("weather-text").textContent = `${city}: ${temp}°C, ${weather}`;
+                document.getElementById("weather-text").textContent = `${city}: ${temp}°C, ${weather}, Wind: ${windSpeed} m/s`;
             } catch (error) {
                 document.getElementById("weather-text").textContent = "Weather unavailable";
             }
