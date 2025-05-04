@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donation Bar</title>
+    <title>Donation Bar with Pop-Up</title>
     <style>
         body {
             margin: 0;
@@ -21,13 +21,18 @@
             border-radius: 15px;
             font-size: 14px;
             font-weight: 700;
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.5s ease-in-out; /* Smooth fade effect */
+        }
+        .donation-container.visible {
+            opacity: 1; /* Visible state */
         }
         .donation-icon {
             font-size: 18px;
         }
         .qr-code {
-            width: 140px;
-            height: 140px;
+            width: 40px;
+            height: 40px;
         }
         a {
             color: #fff;
@@ -39,11 +44,28 @@
     </style>
 </head>
 <body>
-    <div class="donation-container">
+    <div class="donation-container" id="donationBar">
         <span class="donation-icon">🦊</span>
         <span>Support My Bike Quest! 🚴‍♂️</span>
         <img src="https://joosustudio.github.io/GreyFox/chrome_qrcode_1746395805558.png" alt="QR Code" class="qr-code">
         <a href="YOUR_FUNDRAISER_LINK" target="_blank">Donate Here!</a>
     </div>
+
+    <script>
+        const donationBar = document.getElementById('donationBar');
+        
+        function toggleDonationBar() {
+            donationBar.classList.add('visible'); // Show the bar
+            setTimeout(() => {
+                donationBar.classList.remove('visible'); // Hide the bar after 1 minute
+            }, 60000); // 1 minute = 60,000 milliseconds
+        }
+
+        // Show the bar immediately when the page loads
+        toggleDonationBar();
+
+        // Repeat the cycle every 5 minutes
+        setInterval(toggleDonationBar, 300000); // 5 minutes = 300,000 milliseconds
+    </script>
 </body>
 </html>
