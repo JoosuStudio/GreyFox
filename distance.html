@@ -77,8 +77,10 @@
     .flag-container {
       display: flex;
       justify-content: space-between;
-      font-size: 1.2em;
-      margin-top: 5px;
+      font-size: 0.9em;
+      margin-bottom: 5px;
+      color: #eee;
+      text-shadow: 1px 1px 2px black;
     }
 
     @media (max-width: 600px) {
@@ -95,7 +97,7 @@
         font-size: 0.75em;
       }
       .flag-container {
-        font-size: 1em;
+        font-size: 0.8em;
       }
     }
   </style>
@@ -104,13 +106,13 @@
   <div class="overlay-container">
     <div class="data-item" id="distance">
       <div class="label">DISTANCE TRAVELED</div>
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
-        <div class="value-text"></div>
-      </div>
       <div class="flag-container">
         <span>🇪🇪 0 km</span>
         <span>5000 km 🇪🇸</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+        <div class="value-text"></div>
       </div>
     </div>
   </div>
