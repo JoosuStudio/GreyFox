@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Distance Overlay</title>
+    <title>Journey Progress</title>
     <style>
         body {
             margin: 0;
@@ -12,119 +12,41 @@
             color: #fff;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
-
-        .overlay-container {
+        .progress-container {
             display: flex;
             align-items: center;
             gap: 10px;
             padding: 5px 10px;
-            background: linear-gradient(90deg, rgba(30, 144, 255, 0.8), rgba(0, 191, 255, 0.8)); /* Blue gradient */
+            background: linear-gradient(90deg, rgba(46, 139, 87, 0.8), rgba(112, 128, 144, 0.8));
             border-radius: 15px;
             font-size: 14px;
             font-weight: 700;
-            max-width: 300px;
         }
-
-        .label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .flag-icon {
+        .progress-icon {
             font-size: 18px;
         }
-
         .progress-bar {
-            width: 100px; /* Compact width to fit inline */
-            height: 12px;
-            background-color: #333;
-            border-radius: 10px;
+            flex: 1;
+            height: 10px;
+            background: #444;
+            border-radius: 5px;
             overflow: hidden;
-            position: relative;
-            border: 1px solid #555;
         }
-
         .progress-fill {
+            width: 50%; /* Example: 650 km / 1300 km = 50% */
             height: 100%;
-            background: linear-gradient(90deg, #1e90ff, #00b7eb); /* Blue progress fill */
-            border-radius: 10px 0 0 10px;
-            transition: width 0.4s ease-out;
-            width: 0%;
-        }
-
-        .value-text {
-            margin-left: 10px;
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        @media (max-width: 600px) {
-            .overlay-container {
-                font-size: 12px;
-                padding: 4px 8px;
-            }
-            .progress-bar {
-                width: 80px;
-                height: 10px;
-            }
-            .value-text {
-                font-size: 12px;
-            }
-            .flag-icon {
-                font-size: 16px;
-            }
+            background: linear-gradient(90deg, #ff8c00, #ff4500);
+            transition: width 1s ease-in-out;
         }
     </style>
 </head>
 <body>
-    <div class="overlay-container" id="distance">
-        <div class="label">
-            <span class="flag-icon">🇪🇪</span>
-            DISTANCE TRAVELED
-        </div>
+    <div class="progress-container">
+        <span class="progress-icon">🚴‍♂️</span>
+        <span>Journey Progress: 650 km / 1300 km</span>
         <div class="progress-bar">
             <div class="progress-fill"></div>
         </div>
-        <div class="value-text"></div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Adjustable values
-            let currentDistance = 0.1; // Current distance in km
-            let targetDistance = 1; // Target distance in km
-
-            function updateProgressBar(elementId, currentValue, maxValue, unit = 'km') {
-                const element = document.getElementById(elementId);
-                if (!element) {
-                    console.error("Element not found:", elementId);
-                    return;
-                }
-
-                const progressBarFill = element.querySelector('.progress-fill');
-                const valueText = element.querySelector('.value-text');
-
-                let percentage = 0;
-                let displayText = '';
-
-                currentValue = parseFloat(currentValue) || 0;
-                maxValue = parseFloat(maxValue) || 5000;
-
-                if (maxValue > 0) {
-                    percentage = Math.max(0, Math.min(100, (currentValue / maxValue) * 100));
-                    displayText = `${currentValue.toFixed(0)}/${maxValue.toFixed(0)} ${unit}`;
-                } else {
-                    percentage = 0;
-                    displayText = `${currentValue.toFixed(0)}/${maxValue.toFixed(0)} ${unit} (Error)`;
-                }
-
-                progressBarFill.style.width = `${percentage}%`;
-                valueText.textContent = displayText;
-            }
-
-            updateProgressBar('distance', currentDistance, targetDistance, 'km');
-        });
-    </script>
 </body>
 </html>
