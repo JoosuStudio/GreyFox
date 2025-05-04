@@ -37,10 +37,6 @@
       min-width: 140px;
     }
 
-    .data-item#distance {
-      width: 100%; /* Full width to span both columns */
-    }
-
     .label {
       font-size: 0.9em;
       font-weight: bold;
@@ -73,7 +69,7 @@
     #mood .progress-fill { background-color: #FFEB3B; color: #333; }
     #energy .progress-fill { background-color: #FF9800; color: #333; }
     #fullness .progress-fill { background-color: #E91E63; color: #333; }
-    #distance .progress-fill { background-color: #2196F3; } /* Blue for distance */
+    #distance .progress-fill { background-color: #673AB7; } /* New color for DISTANCE */
 
     .value-text {
       position: absolute;
@@ -87,15 +83,12 @@
       white-space: nowrap;
     }
 
-    #mood .value-text, #distance .value-text { color: #333; text-shadow: none; }
+    #mood .value-text { color: #333; text-shadow: none; }
 
     @media (max-width: 600px) {
       .data-item {
         width: 100%;
         min-width: 0;
-      }
-      .data-item#distance {
-        width: 100%; /* Ensure full width on mobile */
       }
       .overlay-container {
         gap: 8px;
@@ -127,7 +120,8 @@
         <div class="progress-fill"></div>
         <div class="value-text"></div>
       </div>
-      <div class="data-item" id="energy">
+    </div>
+    <div class="data-item" id="energy">
       <div class="label">🦊🚴🔋⚡ ENERGY ⚡🔋🚴🦊</div>
       <div class="progress-bar">
         <div class="progress-fill"></div>
@@ -142,7 +136,7 @@
       </div>
     </div>
     <div class="data-item" id="distance">
-      <div class="label">🇪🇪 DISTANCE (Currently in Estonia) 🇪🇸</div>
+      <div class="label">🇪🇪 DISTANCE 🇪🇸</div>
       <div class="progress-bar">
         <div class="progress-fill"></div>
         <div class="value-text"></div>
@@ -157,8 +151,8 @@
       let currentMood = 70;
       let currentEnergy = 90;
       let currentFullness = 60;
-      let currentDistance = 3; // Adjustable: Current distance in km
-      let maxDistance = 5000; // Adjustable: Destination distance in km
+      let currentDistance = 0; // Adjustable starting point
+      let targetDistance = 5000; // Adjustable destination point in km
 
       function updateProgressBar(elementId, currentValue, maxValue, unit = '%') {
         const element = document.getElementById(elementId);
@@ -207,7 +201,7 @@
       updateProgressBar('mood', currentMood, 100, '%');
       updateProgressBar('energy', currentEnergy, 100, '%');
       updateProgressBar('fullness', currentFullness, 100, '%');
-      updateProgressBar('distance', currentDistance, maxDistance, 'km');
+      updateProgressBar('distance', currentDistance, targetDistance, 'km');
     });
   </script>
 </body>
