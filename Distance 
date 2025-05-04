@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Distance Overlay</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: transparent;
+      font-family: 'Trebuchet MS', 'Arial', sans-serif;
+      color: white;
+      margin: 0;
+      padding: 10px;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .overlay-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    .data-item {
+      background-color: rgba(30, 30, 30, 0.7);
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(100, 100, 100, 0.5);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .label {
+      font-size: 0.9em;
+      font-weight: bold;
+      margin-bottom: 5px;
+      text-shadow: 1px 1px 2px black;
+      color: #eee;
+      text-align: center;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 24px;
+      background-color: #555;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid #777;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: #2196F3;
+      border-radius: 4px 0 0 4px;
+      transition: width 0.4s ease-out;
+      width: 0%;
+      box-shadow: inset 0 -2px 4px rgba(0,0,0,0.3);
+    }
+
+    .value-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.8em;
+      font-weight: bold;
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+      white-space: nowrap;
+    }
+
+    .flag-container {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.2em;
+      margin-top: 5px;
+    }
+
+    @media (max-width: 600px) {
+      .data-item {
+        width: 100%;
+      }
+      .label {
+        font-size: 0.85em;
+      }
+      .progress-bar {
+        height: 22px;
+      }
+      .value-text {
+        font-size: 0.75em;
+      }
+      .flag-container {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay-container">
+    <div class="data-item" id="distance">
+      <div class="label">DISTANCE TRAVELED</div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+        <div class="value-text"></div>
+      </div>
+      <div class="flag-container">
+        <span>🇪🇪 0 km</span>
+        <span>5000 km 🇪🇸</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Adjustable values
+      let currentDistance = 0; // Current distance in km
+      let targetDistance = 5000; // Target distance in km
+
+      function updateProgressBar(elementId, currentValue, maxValue, unit = 'km') {
+        const element = document.getElementById(elementId);
+        if (!element) {
+          console.error("Element not found:", elementId);
+          return;
+        }
+
+        const progressBarFill = element.querySelector('.progress-fill');
+        const valueText = element.querySelector('.value-text');
+
+        let percentage = 0;
+        let displayText = '';
+
+        currentValue = parseFloat(currentValue) || 0;
+        maxValue = parseFloat(maxValue) || 5000;
+
+        if (maxValue > 0) {
+          percentage = Math.max(0, Math.min(100, (currentValue / maxValue) * 100));
+          displayText = `${currentValue.toFixed(0)} ${unit} / ${maxValue.toFixed(0)} ${unit}`;
+        } else {
+          percentage = 0;
+          displayText = `${currentValue.toFixed(0)} ${unit} / ${maxValue.toFixed(0)} ${unit} (Error)`;
+        }
+
+        progressBarFill.style.width = `${percentage}%`;
+        valueText.textContent = displayText;
+      }
+
+      updateProgressBar('distance', currentDistance, targetDistance, 'km');
+    });
+  </script>
+</body>
+</html>
