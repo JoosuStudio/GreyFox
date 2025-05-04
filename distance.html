@@ -103,14 +103,14 @@
 <body>
   <div class="overlay-container">
     <div class="data-item" id="distance">
-      <div class="label">DISTANCE TRAVELED</div>
+      <div class="label">🇪🇪DISTANCE TRAVELED🇪🇪</div>
       <div class="progress-bar">
         <div class="progress-fill"></div>
         <div class="value-text"></div>
       </div>
       <div class="flag-container">
         <span>🇪🇪 0 km</span>
-        <span>10 km 🇪🇪</span>
+        <span>15 km 🇪🇪</span>
       </div>
     </div>
   </div>
@@ -118,8 +118,8 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Adjustable values
-      let currentDistance = 0; // Current distance in km
-      let targetDistance = 10; // Target distance in km
+      let currentDistance = 5; // Current distance in km
+      let targetDistance = 15; // Target distance in km
 
       function updateProgressBar(elementId, currentValue, maxValue, unit = 'km') {
         const element = document.getElementById(elementId);
