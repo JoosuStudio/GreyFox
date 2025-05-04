@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stream Title</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: transparent; /* For OBS compatibility */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .title-container {
+            background: linear-gradient(90deg, rgba(34, 139, 34, 0.8), rgba(169, 169, 169, 0.8)); /* Green to silver gradient for biking & engraving */
+            padding: 15px 30px;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .title-text {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .icon {
+            font-size: 30px;
+            animation: bounce 1.5s infinite;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Bounce animation for icons */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .title-text {
+                font-size: 18px;
+            }
+            .icon {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="title-container">
+        <span class="icon">🚴‍♂️</span>
+        <span class="title-text">15 km Test Ride: Bikepacking & Glass Engraving Journey</span>
+        <span class="icon">✨</span>
+    </div>
+</body>
+</html>
