@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Overlay</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: transparent;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        .weather-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 10px;
+            background: linear-gradient(90deg, rgba(46, 139, 87, 0.8), rgba(112, 128, 144, 0.8));
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .weather-icon {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-container" id="weather">
+        <span class="weather-icon" id="icon"></span>
+        <span id="weather-text">Fetching weather...</span>
+    </div>
+
+    <script>
+        // Replace with your OpenWeatherMap API key
+        const apiKey = "YOUR_API_KEY";
+        // Coordinates for Viru-Jaagupi, Estonia
+        const lat = 59.2425;
+        const lon = 26.47583;
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+
+        async function fetchWeather() {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                const temp = Math.round(data.main.temp);
+                const weather = data.weather[0].main;
+                const city = data.name;
+
+                const weatherIcons = {
+                    "Clear": "☀️",
+                    "Clouds": "☁️",
+                    "Rain": "🌧️",
+                    "Snow": "❄️",
+                    "Thunderstorm": "⛈️",
+                    "Drizzle": "🌦️",
+                    "Mist": "🌫️"
+                };
+                const icon = weatherIcons[weather] || "🌍";
+
+                document.getElementById("icon").textContent = icon;
+                document.getElementById("weather-text").textContent = `${city}: ${temp}°C, ${weather}`;
+            } catch (error) {
+                document.getElementById("weather-text").textContent = "Weather unavailable";
+            }
+        }
+
+        fetchWeather();
+        setInterval(fetchWeather, 600000); // Update every 10 minutes
+    </script>
+</body>
+</html>
