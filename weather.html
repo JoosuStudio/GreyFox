@@ -26,7 +26,9 @@
             font-size: 18px;
         }
         .mood {
-            font-size: 16px;
+            font-size: 14px; /* Reduced from 16px to 14px */
+            display: flex;
+            gap: 5px;
         }
     </style>
 </head>
@@ -34,7 +36,10 @@
     <div class="weather-container" id="weather">
         <span class="weather-icon" id="icon"></span>
         <span id="weather-text">Fetching weather...</span>
-        <span class="mood" id="mood"></span>
+        <span class="mood" id="mood">
+            <span id="weather-mood"></span>
+            <span id="temp-mood"></span>
+        </span>
     </div>
 
     <script>
@@ -45,6 +50,9 @@
         const lon = 26.47583;
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
 
+        // Global variable to store timezone offset
+        let timezoneOffset = 0; // Default to 0 until fetched
+
         async function fetchWeather() {
             try {
                 const response = await fetch(url);
@@ -53,7 +61,7 @@
                 const weather = data.weather[0].main;
                 const city = data.name;
                 const windSpeed = Math.round(data.wind.speed); // Wind speed in m/s
-                const timezoneOffset = data.timezone; // Timezone offset in seconds from UTC
+                timezoneOffset = data.timezone; // Update global timezone offset
 
                 const weatherIcons = {
                     "Clear": "☀️",
@@ -66,34 +74,46 @@
                 };
                 const icon = weatherIcons[weather] || "🌍";
 
-                // Determine mood based on temperature and weather
-                let mood;
-                if (temp > 26) {
-                    mood = "Overheated 😓🦊"; // Hot for a ride
+                // Weather-based emoticon
+                let weatherMood;
+                switch (weather) {
+                    case "Clear":
+                        weatherMood = "Sun’s Out, Buns Out 🌞🦊";
+                        break;
+                    case "Clouds":
+                        weatherMood = "Clouds, No Crowds ⛅🦊";
+                        break;
+                    case "Rain":
+                    case "Drizzle":
+                        weatherMood = "Wet Fox, Sad Fox 🌧️🦊";
+                        break;
+                    case "Thunderstorm":
+                        weatherMood = "Thunder Fright, Hold Tight ⚡🦊";
+                        break;
+                    case "Snow":
+                        weatherMood = "Snow Fox, Slow Fox ❄️🦊";
+                        break;
+                    case "Mist":
+                        weatherMood = "Lost Fox, Fog Boss 🌫️🦊";
+                        break;
+                    default:
+                        weatherMood = "Fox Says, Meh 🤷🦊";
+                }
+
+                // Temperature-based emoticon
+                let tempMood;
+                if (temp > 32) {
+                    tempMood = "Fox on Fire, Send Help 🔥🦊"; // Too hot
+                } else if (temp > 26) {
+                    tempMood = "Sweaty Fox, Hot Rocks 🥵🦊"; // Hot for a ride
+                } else if (temp < 0) {
+                    tempMood = "Fox Icicle, Survival? 🚨🦊"; // Too cold
+                } else if (temp < 10) {
+                    tempMood = "Frozen Fox, No Socks 🥶🦊"; // Very cold
+                } else if (temp < 18) {
+                    tempMood = "Chilly Fox, Still Rocks 🧥🦊"; // Cool
                 } else {
-                    switch (weather) {
-                        case "Clear":
-                            mood = "Happy 😊🦊";
-                            break;
-                        case "Clouds":
-                            mood = "Chill 😎🦊";
-                            break;
-                        case "Rain":
-                        case "Drizzle":
-                            mood = "Soggy 😢🦊";
-                            break;
-                        case "Thunderstorm":
-                            mood = "Scared 😱🦊";
-                            break;
-                        case "Snow":
-                            mood = "Freezing 🥶🦊";
-                            break;
-                        case "Mist":
-                            mood = "Mystified 😶🦊";
-                            break;
-                        default:
-                            mood = "Neutral 😐🦊";
-                    }
+                    tempMood = "Perfect Ride, Fox Pride 😍🦊"; // Comfortable range (18°C to 26°C)
                 }
 
                 // Calculate local time based on timezone offset
@@ -106,10 +126,12 @@
 
                 document.getElementById("icon").textContent = icon;
                 document.getElementById("weather-text").textContent = `${city}: ${temp}°C, ${weather}, Wind: ${windSpeed} m/s | ${timeString}`;
-                document.getElementById("mood").textContent = mood;
+                document.getElementById("weather-mood").textContent = weatherMood;
+                document.getElementById("temp-mood").textContent = tempMood;
             } catch (error) {
                 document.getElementById("weather-text").textContent = "Weather unavailable";
-                document.getElementById("mood").textContent = "😟🦊";
+                document.getElementById("weather-mood").textContent = "Fox Confused, Weather Fused 🤯🦊";
+                document.getElementById("temp-mood").textContent = "Fox Confused, Weather Fused 🤯🦊";
             }
         }
 
@@ -121,7 +143,7 @@
         setInterval(() => {
             const now = new Date();
             const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
-            const localTime = new Date(utcTime + (fetchWeather.timezoneOffset * 1000));
+            const localTime = new Date(utcTime + (timezoneOffset * 1000));
             const hours = localTime.getHours().toString().padStart(2, '0');
             const minutes = localTime.getMinutes().toString().padStart(2, '0');
             const timeString = `${hours}:${minutes}`;
