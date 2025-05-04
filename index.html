@@ -1,218 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Stream Overlay</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Added for mobile responsiveness -->
-  <style>
-    body {
-      background-color: transparent;
-      font-family: 'Trebuchet MS', 'Arial', sans-serif;
-      color: white;
-      margin: 0;
-      padding: 10px; /* Reduced padding for smaller screens */
-      overflow: hidden;
-      box-sizing: border-box; /* Ensure padding doesn't cause overflow */
-    }
-
-    .overlay-container {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 2px; /* Reduced gap for smaller screens */
-      width: 100%; /* Fit parent container or viewport */
-      max-width: 600px; /* Optional: prevent overly wide layout on large screens */
-      margin: 0 auto; /* Center horizontally if narrower than viewport */
-      box-sizing: border-box;
-    }
-
-    .data-item {
-      background-color: rgba(30, 30, 30, 0.7);
-      padding: 10px; /* Reduced padding for smaller screens */
-      border-radius: 6px;
-      border: 1px solid rgba(100, 100, 100, 0.5);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-      width: calc(50% - 5px); /* Two items per row, accounting for gap */
-      box-sizing: border-box;
-      min-width: 140px; /* Prevent items from becoming too narrow */
-    }
-
-    .label {
-      font-size: 0.9em; /* Slightly smaller for mobile */
-      font-weight: bold;
-      margin-bottom: 5px;
-      text-shadow: 1px 1px 2px black;
-      color: #eee;
-      text-align: center;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 14px; /* Slightly smaller for mobile */
-      background-color: #555;
-      border-radius: 4px;
-      overflow: hidden;
-      position: relative;
-      border: 1px solid #777;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background-color: #4CAF50;
-      border-radius: 4px 0 0 4px;
-      transition: width 0.4s ease-out, background-color 0.4s ease;
-      width: 0%;
-      box-shadow: inset 0 -2px 4px rgba(0,0,0,0.3);
-    }
-
-    #budget .progress-fill { background-color: #03A9F4; }
-    #mood .progress-fill { background-color: #FFEB3B; color: #333; }
-    #energy .progress-fill { background-color: #FF9800; color: #333; }
-    #fullness .progress-fill { background-color: #E91E63; color: #333; }
-
-    .value-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 0.8em; /* Smaller for mobile */
-      font-weight: bold;
-      color: white;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-      white-space: nowrap;
-    }
-
-    #mood .value-text { color: #333; text-shadow: none; }
-
-    /* Media query for small screens (e.g., phones) */
-    @media (max-width: 600px) {
-      .data-item {
-        width: 100%; /* Stack items vertically */
-        min-width: 0; /* Allow full flexibility */
-      }
-      .overlay-container {
-        gap: 8px; /* Smaller gap */
-      }
-      .label {
-        font-size: 0.85em;
-      }
-      .progress-bar {
-        height: 22px;
-      }
-      .value-text {
-        font-size: 0.75em;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foxy Journey Overlay: Võsu to Málaga</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: transparent;
+            overflow: hidden;
+            font-size: 16px;
+            width: 100%;
+            height: 100%;
+        }
+        .overlay {
+            position: absolute;
+            bottom: 10px; /* Adjusted for TikTok UI */
+            left: 0;
+            right: 0;
+            width: 100%;
+            max-width: none;
+            height: auto;
+            min-height: 12vh; /* Reduced height */
+            background: rgba(255, 165, 0, 0.5); /* More transparent */
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px; /* Slightly reduced */
+            color: #fff;
+            animation: slideIn 1s ease-in-out;
+            box-sizing: border-box;
+            transform: scale(1);
+            zoom: 1;
+            overflow: hidden;
+        }
+        .fox-graphic {
+            font-size: 2rem; /* Slightly smaller */
+            margin-right: 15px;
+            flex: 0 0 auto;
+        }
+        .progress-info {
+            flex: 1 1 auto;
+            min-width: 180px; /* Adjusted for smaller overlay */
+            overflow: hidden;
+        }
+        .km-text {
+            font-weight: bold;
+            font-size: 1.3rem; /* Slightly smaller */
+            text-shadow: 0.1rem 0.1rem 0.2rem rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .location-text {
+            font-style: italic;
+            font-size: 1.1rem; /* Slightly smaller */
+            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .start-date {
+            font-size: 0.9rem; /* Slightly smaller */
+            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .progress-bar-container {
+            width: 100%;
+            height: 12px; /* Slightly thinner */
+            background: #333;
+            border-radius: 10px;
+            margin-top: 3px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: #ffeb3b;
+            width: 0;
+            transition: width 1s ease-in-out;
+            animation: pulse 2s infinite;
+        }
+        @media screen and (max-width: 480px) {
+            .overlay {
+                min-height: 15vh;
+                padding: 10px;
+            }
+            .fox-graphic {
+                font-size: 1.8rem;
+                margin-right: 10px;
+            }
+            .km-text {
+                font-size: 1.1rem;
+            }
+            .location-text {
+                font-size: 0.9rem;
+            }
+            .start-date {
+                font-size: 0.8rem;
+            }
+            .progress-bar-container {
+                height: 8px;
+            }
+        }
+        @media screen and (min-width: 1200px) {
+            .km-text {
+                font-size: 1.5rem;
+            }
+            .location-text {
+                font-size: 1.2rem;
+            }
+            .start-date {
+                font-size: 1rem;
+            }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+    </style>
 </head>
 <body>
-  <div class="overlay-container">
-    <div class="data-item" id="budget">
-      <div class="label">🦊💸💶🪙 DAILY BUDGET 🪙💶💸🦊</div>
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
-        <div class="value-text"></div>
-      </div>
+    <div class="overlay">
+        <div class="fox-graphic">🦊🚴</div>
+        <div class="progress-info">
+            <div class="km-text" id="km-progress">80/5,000 km</div>
+            <div class="location-text" id="location">Võsu, Estonia</div>
+            <div class="start-date" id="start-date">Started: May 1, 2026</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </div>
     </div>
-    <div class="data-item" id="mood">
-      <div class="label">🦊☺️☺️☺️ MOOD ☺️☺️☺️🦊</div>
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
-        <div class="value-text"></div>
-      </div>
-    </div>
-    <div class="data-item" id="energy">
-      <div class="label">🦊🚴🔋⚡ ENERGY ⚡🔋🚴🦊</div>
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
-        <div class="value-text"></div>
-      </div>
-    </div>
-    <div class="data-item" id="fullness">
-      <div class="label">🦊🍔🌮🍕 FOOD 🍕🌮🍔🦊</div>
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
-        <div class="value-text"></div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      let currentBudget = 0;
-      let targetBudget = 80;
-      let currentMood = 70;
-      let currentEnergy = 90;
-      let currentFullness = 60;
-
-      function updateProgressBar(elementId, currentValue, maxValue, unit = '%') {
-        const element = document.getElementById(elementId);
-        if (!element) {
-          console.error("Element not found:", elementId);
-          return;
-        }
-
-        const progressBarFill = element.querySelector('.progress-fill');
-        const valueText = element.querySelector('.value-text');
-
-        let percentage = 0;
-        let displayText = '';
-
-        currentValue = parseFloat(currentValue) || 0;
-        maxValue = parseFloat(maxValue) || 100;
-
-        if (maxValue > 0) {
-          if (unit === '€') {
-            percentage = Math.max(0, Math.min(100, (currentValue / maxValue) * 100));
-            displayText = `${currentValue.toFixed(0)}€ / ${maxValue.toFixed(0)}€`;
-          } else {
-            percentage = Math.max(0, Math.min(100, currentValue));
-            displayText = `${percentage.toFixed(0)}${unit}`;
-          }
-        } else {
-          percentage = 0;
-          displayText = unit === '€' ? `${currentValue.toFixed(0)}€ / ${maxValue.toFixed(0)}€ (Viga)` : `${currentValue.toFixed(0)}${unit}`;
-        }
-
-        progressBarFill.style.width = `${percentage}%`;
-        valueText.textContent = displayText;
-
-        if (elementId === 'mood') {
-          if (percentage < 30) {
-            progressBarFill.style.backgroundColor = '#f44336';
-          } else if (percentage < 70) {
-            progressBarFill.style.backgroundColor = '#FF9800';
-          } else {
-            progressBarFill.style.backgroundColor = '#8BC34A';
-          }
-        }
-
-        if (elementId === 'energy') {
-          if (percentage < 30) {
-            progressBarFill.style.backgroundColor = '#f44336';
-          } else if (percentage < 70) {
-            progressBarFill.style.backgroundColor = '#FF9800';
-          } else {
-            progressBarFill.style.backgroundColor = '#8BC34A';
-          }
-        }
-
-        if (elementId === 'fullness') {
-          if (percentage < 30) {
-            progressBarFill.style.backgroundColor = '#f44336';
-          } else if (percentage < 70) {
-            progressBarFill.style.backgroundColor = '#FF9800';
-          } else {
-            progressBarFill.style.backgroundColor = '#8BC34A';
-          }
-        }
-      }
-
-      updateProgressBar('budget', currentBudget, targetBudget, '€');
-      updateProgressBar('mood', currentMood, 100, '%');
-      updateProgressBar('energy', currentEnergy, 100, '%');
-      updateProgressBar('fullness', currentFullness, 100, '%');
-    });
-  </script>
+    <script>
+        const totalKm = 5000;
+        let currentKm = 80;
+        let location = "Võsu, Estonia";
+        const startDate = "May 1, 2026";
+        const progressPercent = (currentKm / totalKm) * 100;
+        document.getElementById("km-progress").textContent = `${currentKm}/${totalKm} km (${progressPercent.toFixed(1)}% done!)`;
+        document.getElementById("location").textContent = location;
+        document.getElementById("start-date").textContent = `Started: ${startDate}`;
+        document.getElementById("progress-bar").style.width = `${progressPercent}%`;
+    </script>
 </body>
 </html>
