@@ -25,12 +25,16 @@
         .weather-icon {
             font-size: 18px;
         }
+        .mood {
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
     <div class="weather-container" id="weather">
         <span class="weather-icon" id="icon"></span>
         <span id="weather-text">Fetching weather...</span>
+        <span class="mood" id="mood"></span>
     </div>
 
     <script>
@@ -62,6 +66,36 @@
                 };
                 const icon = weatherIcons[weather] || "🌍";
 
+                // Determine mood based on temperature and weather
+                let mood;
+                if (temp > 26) {
+                    mood = "Overheated 😓🦊"; // Hot for a ride
+                } else {
+                    switch (weather) {
+                        case "Clear":
+                            mood = "Happy 😊🦊";
+                            break;
+                        case "Clouds":
+                            mood = "Chill 😎🦊";
+                            break;
+                        case "Rain":
+                        case "Drizzle":
+                            mood = "Soggy 😢🦊";
+                            break;
+                        case "Thunderstorm":
+                            mood = "Scared 😱🦊";
+                            break;
+                        case "Snow":
+                            mood = "Freezing 🥶🦊";
+                            break;
+                        case "Mist":
+                            mood = "Mystified 😶🦊";
+                            break;
+                        default:
+                            mood = "Neutral 😐🦊";
+                    }
+                }
+
                 // Calculate local time based on timezone offset
                 const now = new Date();
                 const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000); // Convert to UTC
@@ -72,8 +106,10 @@
 
                 document.getElementById("icon").textContent = icon;
                 document.getElementById("weather-text").textContent = `${city}: ${temp}°C, ${weather}, Wind: ${windSpeed} m/s | ${timeString}`;
+                document.getElementById("mood").textContent = mood;
             } catch (error) {
                 document.getElementById("weather-text").textContent = "Weather unavailable";
+                document.getElementById("mood").textContent = "😟🦊";
             }
         }
 
