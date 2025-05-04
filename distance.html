@@ -74,13 +74,23 @@
       white-space: nowrap;
     }
 
-    .flag-container {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.9em;
-      margin-bottom: 5px;
-      color: #eee;
-      text-shadow: 1px 1px 2px black;
+    .flag-text {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.7em;
+      font-weight: bold;
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+      white-space: nowrap;
+    }
+
+    .flag-start {
+      left: 5px;
+    }
+
+    .flag-end {
+      right: 5px;
     }
 
     @media (max-width: 600px) {
@@ -96,8 +106,8 @@
       .value-text {
         font-size: 0.75em;
       }
-      .flag-container {
-        font-size: 0.8em;
+      .flag-text {
+        font-size: 0.65em;
       }
     }
   </style>
@@ -106,13 +116,11 @@
   <div class="overlay-container">
     <div class="data-item" id="distance">
       <div class="label">DISTANCE TRAVELED</div>
-      <div class="flag-container">
-        <span>🇪🇪 0 km</span>
-        <span>5000 km 🇪🇸</span>
-      </div>
       <div class="progress-bar">
         <div class="progress-fill"></div>
         <div class="value-text"></div>
+        <div class="flag-text flag-start">🇪🇪 0 km</div>
+        <div class="flag-text flag-end">5000 km 🇪🇸</div>
       </div>
     </div>
   </div>
@@ -148,6 +156,7 @@
         }
 
         progressBarFill.style.width = `${percentage}%`;
+        value```html
         valueText.textContent = displayText;
       }
 
