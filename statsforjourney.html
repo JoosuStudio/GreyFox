@@ -13,7 +13,6 @@
     .progress-bar { width: 100%; height: 24px; background-color: #555; border-radius: 4px; overflow: hidden; position: relative; border: 1px solid #777; }
     .progress-fill { height: 100%; background-color: #4CAF50; border-radius: 4px 0 0 4px; transition: width 0.4s ease-out, background-color 0.4s ease; width: 0%; }
     .value-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.8em; font-weight: bold; color: white; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); }
-    #budget .progress-fill { background-color: #03A9F4; }
     #mood .progress-fill { background-color: #FFEB3B; color: #333; }
     #energy .progress-fill { background-color: #FF9800; color: #333; }
     #fullness .progress-fill { background-color: #E91E63; color: #333; }
@@ -21,13 +20,6 @@
 </head>
 <body>
   <div class="overlay-container">
-    <div class="data-item" id="budget">
-      <div class="label">🦊💶🪙 DAILY BUDGET 🪙💶🦊</div>
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
-        <div class="value-text"></div>
-      </div>
-    </div>
     <div class="data-item" id="mood">
       <div class="label">🦊😔😑☺️ MOOD ☺️😑😔🦊</div>
       <div class="progress-bar">
@@ -52,8 +44,6 @@
   </div>
 
   <script>
-    const targetBudget = 80;
-
     function updateProgressBar(elementId, currentValue, maxValue, unit = '%') {
       const element = document.getElementById(elementId);
       const progressBarFill = element.querySelector('.progress-fill');
@@ -65,19 +55,14 @@
       maxValue = parseFloat(maxValue) || 100;
 
       if (maxValue > 0) {
-        if (unit === '€') {
-          percentage = Math.max(0, Math.min(100, (currentValue / maxValue) * 100));
-          displayText = `${currentValue.toFixed(0)}€ / ${maxValue.toFixed(0)}€`;
-        } else {
-          percentage = Math.max(0, Math.min(100, currentValue));
-          displayText = `${percentage.toFixed(0)}${unit}`;
-        }
+        percentage = Math.max(0, Math.min(100, currentValue));
+        displayText = `${percentage.toFixed(0)}${unit}`;
       }
 
       progressBarFill.style.width = `${percentage}%`;
       valueText.textContent = displayText;
 
-      // Reuse your color logic for mood, energy, fullness
+      // Reuse your color logic for mood
       if (elementId === 'mood') {
         if (percentage < 30) {
           progressBarFill.style.backgroundColor = '#78909C';
@@ -90,15 +75,14 @@
           valueText.style.color = '#333'; valueText.style.textShadow = 'none';
         }
       }
-      // Add similar logic for energy and fullness
+      // Add similar logic for energy and fullness if needed
     }
 
     // Fetch stats from backend (e.g., Firebase)
     async function fetchStats() {
       // Example: const response = await fetch('/api/stats');
       // const stats = await response.json();
-      const stats = { budget: 3, mood: 70, energy: 60, fullness: 70 }; // Placeholder
-      updateProgressBar('budget', stats.budget, targetBudget, '€');
+      const stats = { mood: 70, energy: 60, fullness: 70 }; // Placeholder
       updateProgressBar('mood', stats.mood, 100, '%');
       updateProgressBar('energy', stats.energy, 100, '%');
       updateProgressBar('fullness', stats.fullness, 100, '%');
