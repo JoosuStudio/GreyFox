@@ -1,185 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Stats Overlay</title>
-    <style>
-        /* Basic styles for body - important for Streamlabs overlay */
-        body {
-            background-color: transparent; /* Makes background invisible in overlay */
-            font-family: 'Arial', sans-serif; /* Choose a clean font */
-            color: #ffffff; /* White text color - good contrast on streams */
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Shadow for readability */
-            margin: 15px; /* Add some spacing around the edges */
-            overflow: hidden; /* Hide anything that might overflow */
-        }
-
-        /* Container for all stats */
-        .stats-container {
-            display: flex;
-            flex-direction: column; /* Stack rows vertically */
-            gap: 20px; /* Space between the rows */
-            width: 400px; /* Adjust width as needed for your overlay */
-        }
-
-        /* Container for a row of two stats */
-        .stats-row {
-            display: flex;
-            justify-content: space-between; /* Distribute space between the two blocks */
-            gap: 15px; /* Space between the two stat blocks in a row */
-        }
-
-        /* Container for a single stat (label + bar) */
-        .stat-block {
-            flex: 1; /* Allow blocks to share space equally */
-            /* Alternatively, set a specific width if flex:1 doesn't work well */
-            /* width: 48%; */
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Style for the stat label */
-        .stat-label {
-            font-size: 1.1em; /* Slightly larger font size */
-            font-weight: bold;
-            margin-bottom: 6px; /* Space between label and bar */
-            text-align: center; /* Center the label text */
-        }
-
-        /* The background container of the bar */
-        .stat-bar-container {
-            width: 100%;
-            background-color: rgba(85, 85, 85, 0.7); /* Semi-transparent dark grey background */
-            border-radius: 8px; /* Rounded corners */
-            height: 30px; /* Height of the bar */
-            border: 1px solid rgba(51, 51, 51, 0.8); /* Subtle border */
-            overflow: hidden; /* Keep the fill bar inside */
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); /* Inner shadow for depth */
-        }
-
-        /* The actual filled portion of the bar */
-        .stat-bar-fill {
-            height: 100%;
-            background-color: #4CAF50; /* Default fill color (Green) */
-            border-radius: 8px; /* Match container's rounded corners */
-            width: 0%; /* Initial width, will be set by JavaScript */
-            transition: width 0.5s ease-in-out; /* Smooth animation when value changes */
-            display: flex; /* For potentially centering text inside later */
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9em;
-            font-weight: bold;
-            color: #ffffff; /* Text color inside the bar */
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.6); /* Shadow for text inside bar */
-        }
-
-        /* --- Optional: Different colors for each bar --- */
-        #stomach-fill { background-color: #e48f31; } /* Orange-ish */
-        #mood-fill { background-color: #5c9ced; } /* Blue */
-        #exhaustion-fill { background-color: #f44336; } /* Red */
-        #budget-fill { background-color: #4CAF50; } /* Green */
-
-        /* --- Optional: Add percentage text inside the bar --- */
-        /* If you want text inside, uncomment the related lines in the JS updateBar function */
-        .stat-bar-fill::after {
-           /* content: attr(data-percentage) '%'; /* Display the percentage */
-        }
-
-    </style>
+  <title>Stream Overlay</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Reuse overlay styles from original code */
+    body { background-color: transparent; font-family: 'Trebuchet MS', Arial, sans-serif; color: white; margin: 0; padding: 10px; }
+    .overlay-container { display: flex; flex-direction: row; flex-wrap: wrap; gap: 10px; max-width: 600px; margin: 0 auto; }
+    .data-item { background-color: rgba(30, 30, 30, 0.7); padding: 10px; border-radius: 6px; border: 1px solid rgba(100, 100, 100, 0.5); width: calc(50% - 5px); min-width: 140px; }
+    .label { font-size: 0.9em; font-weight: bold; margin-bottom: 5px; text-shadow: 1px 1px 2px black; color: #eee; text-align: center; }
+    .progress-bar { width: 100%; height: 24px; background-color: #555; border-radius: 4px; overflow: hidden; position: relative; border: 1px solid #777; }
+    .progress-fill { height: 100%; background-color: #4CAF50; border-radius: 4px 0 0 4px; transition: width 0.4s ease-out, background-color 0.4s ease; width: 0%; }
+    .value-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.8em; font-weight: bold; color: white; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); }
+    #budget .progress-fill { background-color: #03A9F4; }
+    #mood .progress-fill { background-color: #FFEB3B; color: #333; }
+    #energy .progress-fill { background-color: #FF9800; color: #333; }
+    #fullness .progress-fill { background-color: #E91E63; color: #333; }
+  </style>
 </head>
 <body>
-
-    <div class="stats-container">
-        <div class="stats-row">
-            <div class="stat-block">
-                <div class="stat-label">Stomach</div>
-                <div class="stat-bar-container">
-                    <div class="stat-bar-fill" id="stomach-fill"></div>
-                </div>
-            </div>
-            <div class="stat-block">
-                <div class="stat-label">Mood</div>
-                <div class="stat-bar-container">
-                    <div class="stat-bar-fill" id="mood-fill"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="stats-row">
-            <div class="stat-block">
-                <div class="stat-label">Exhaustion</div>
-                <div class="stat-bar-container">
-                    <div class="stat-bar-fill" id="exhaustion-fill"></div>
-                </div>
-            </div>
-            <div class="stat-block">
-                <div class="stat-label">Daily Budget</div>
-                <div class="stat-bar-container">
-                    <div class="stat-bar-fill" id="budget-fill"></div>
-                </div>
-            </div>
-        </div>
+  <div class="overlay-container">
+    <div class="data-item" id="budget">
+      <div class="label">🦊💶🪙 DAILY BUDGET 🪙💶🦊</div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+        <div class="value-text"></div>
+      </div>
     </div>
+    <div class="data-item" id="mood">
+      <div class="label">🦊😔😑☺️ MOOD ☺️😑😔🦊</div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+        <div class="value-text"></div>
+      </div>
+    </div>
+    <div class="data-item" id="energy">
+      <div class="label">⚡🦊 ENERGY ⚡🦊</div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+        <div class="value-text"></div>
+      </div>
+    </div>
+    <div class="data-item" id="fullness">
+      <div class="label">🦊🍔🌮🍕 HUNGER 🍕🌮🍔🦊</div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+        <div class="value-text"></div>
+      </div>
+    </div>
+  </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+  <script>
+    const targetBudget = 80;
 
-            // ============================================
-            // == EDIT YOUR STAT VALUES HERE (0 - 100) ==
-            // ============================================
-            const initialStats = {
-                stomach: 85,
-                mood: 70,
-                exhaustion: 25,
-                budget: 60
-            };
-            // ============================================
-            // ============================================
+    function updateProgressBar(elementId, currentValue, maxValue, unit = '%') {
+      const element = document.getElementById(elementId);
+      const progressBarFill = element.querySelector('.progress-fill');
+      const valueText = element.querySelector('.value-text');
 
+      let percentage = 0;
+      let displayText = '';
+      currentValue = parseFloat(currentValue) || 0;
+      maxValue = parseFloat(maxValue) || 100;
 
-            // Function to update a specific bar's width and optional text
-            function updateBar(barId, percentage) {
-                const barFill = document.getElementById(barId);
-                if (barFill) {
-                    // Ensure percentage is between 0 and 100
-                    const clampedPercentage = Math.max(0, Math.min(100, percentage));
-                    barFill.style.width = clampedPercentage + '%';
+      if (maxValue > 0) {
+        if (unit === '€') {
+          percentage = Math.max(0, Math.min(100, (currentValue / maxValue) * 100));
+          displayText = `${currentValue.toFixed(0)}€ / ${maxValue.toFixed(0)}€`;
+        } else {
+          percentage = Math.max(0, Math.min(100, currentValue));
+          displayText = `${percentage.toFixed(0)}${unit}`;
+        }
+      }
 
-                    // --- Optional: Add percentage text inside the bar ---
-                    // Uncomment the next line to display the percentage value inside the bar
-                    // barFill.textContent = clampedPercentage + '%';
+      progressBarFill.style.width = `${percentage}%`;
+      valueText.textContent = displayText;
 
-                    // Alternative using data attribute (if using CSS ::after pseudo-element)
-                     barFill.setAttribute('data-percentage', clampedPercentage);
+      // Reuse your color logic for mood, energy, fullness
+      if (elementId === 'mood') {
+        if (percentage < 30) {
+          progressBarFill.style.backgroundColor = '#78909C';
+          valueText.style.color = 'white'; valueText.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.8)';
+        } else if (percentage < 70) {
+          progressBarFill.style.backgroundColor = '#FFEB3B';
+          valueText.style.color = '#333'; valueText.style.textShadow = 'none';
+        } else {
+          progressBarFill.style.backgroundColor = '#CDDC39';
+          valueText.style.color = '#333'; valueText.style.textShadow = 'none';
+        }
+      }
+      // Add similar logic for energy and fullness
+    }
 
-                } else {
-                    console.error(`Element with ID ${barId} not found.`);
-                }
-            }
+    // Fetch stats from backend (e.g., Firebase)
+    async function fetchStats() {
+      // Example: const response = await fetch('/api/stats');
+      // const stats = await response.json();
+      const stats = { budget: 3, mood: 70, energy: 60, fullness: 70 }; // Placeholder
+      updateProgressBar('budget', stats.budget, targetBudget, '€');
+      updateProgressBar('mood', stats.mood, 100, '%');
+      updateProgressBar('energy', stats.energy, 100, '%');
+      updateProgressBar('fullness', stats.fullness, 100, '%');
+    }
 
-            // Set initial values when the page loads
-            updateBar('stomach-fill', initialStats.stomach);
-            updateBar('mood-fill', initialStats.mood);
-            updateBar('exhaustion-fill', initialStats.exhaustion);
-            updateBar('budget-fill', initialStats.budget);
-
-
-            // --- Example: How to update values later (e.g., via browser console or other scripts) ---
-            // You would need more advanced setup for live updates from external sources.
-            // For manual updates during stream, editing the 'initialStats' and refreshing the
-            // browser source in Streamlabs is the simplest way with this code.
-            //
-            // Example function you could call from console:
-            // function setStat(statName, value) {
-            //     const barId = statName + '-fill';
-            //     updateBar(barId, value);
-            // }
-            // e.g., setStat('mood', 50);
-            // ------------------------------------------------------------------------------------
-
-        }); // End DOMContentLoaded
-    </script>
-
+    fetchStats();
+    setInterval(fetchStats, 5000); // Poll every 5 seconds
+  </script>
 </body>
 </html>
