@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Stream Overlay</title>
+  <title>Weather Stats Overlay</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
@@ -13,7 +13,7 @@
       padding: 15px;
       display: flex;
       justify-content: center;
-      align-items: flex-end;
+      align-items: flex-start; /* Position at top for weather */
       min-height: 100vh;
     }
     .overlay-container {
@@ -71,38 +71,39 @@
       font-size: 0.85em;
       font-weight: bold;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+      color: white;
     }
-    #mood .progress-fill { background-color: #FFEB3B; }
-    #energy .progress-fill { background-color: #FF9800; }
-    #fullness .progress-fill { background-color: #E91E63; }
-    #budget .progress-fill { background-color: #2196F3; }
+    #temperature .progress-fill { background-color: #FF5722; } /* Orange for temp */
+    #humidity .progress-fill { background-color: #03A9F4; } /* Blue for humidity */
+    #wind-speed .progress-fill { background-color: #4CAF50; } /* Green for wind */
+    #precipitation .progress-fill { background-color: #9C27B0; } /* Purple for precipitation */
   </style>
 </head>
 <body>
   <div class="overlay-container">
-    <div class="data-item" id="mood">
-      <div class="label">🦊😔😑☺️ MOOD ☺️😑😔🦊</div>
+    <div class="data-item" id="temperature">
+      <div class="label">🌡️ TEMPERATURE 🌡️</div>
       <div class="progress-bar">
         <div class="progress-fill"></div>
         <div class="value-text"></div>
       </div>
     </div>
-    <div class="data-item" id="energy">
-      <div class="label">⚡🦊 ENERGY ⚡🦊</div>
+    <div class="data-item" id="humidity">
+      <div class="label">💧 HUMIDITY 💧</div>
       <div class="progress-bar">
         <div class="progress-fill"></div>
         <div class="value-text"></div>
       </div>
     </div>
-    <div class="data-item" id="fullness">
-      <div class="label">🦊🍔🌮🍕 HUNGER 🍕🌮🍔🦊</div>
+    <div class="data-item" id="wind-speed">
+      <div class="label">💨 WIND SPEED 💨</div>
       <div class="progress-bar">
         <div class="progress-fill"></div>
         <div class="value-text"></div>
       </div>
     </div>
-    <div class="data-item" id="budget">
-      <div class="label">💶 DAILY BUDGET 💶</div>
+    <div class="data-item" id="precipitation">
+      <div class="label">☔ PRECIPITATION ☔</div>
       <div class="progress-bar">
         <div class="progress-fill"></div>
         <div class="value-text"></div>
@@ -111,7 +112,7 @@
   </div>
 
   <script>
-    function updateProgressBar(elementId, currentValue, maxValue, unit = '%') {
+    function updateProgressBar(elementId, currentValue, maxValue, unit) {
       const element = document.getElementById(elementId);
       const progressBarFill = element.querySelector('.progress-fill');
       const valueText = element.querySelector('.value-text');
@@ -123,53 +124,56 @@
 
       if (maxValue > 0) {
         percentage = Math.max(0, Math.min(100, (currentValue / maxValue) * 100));
-        displayText = elementId === 'budget' ? `${currentValue.toFixed(2)}€ / ${maxValue}€` : `${percentage.toFixed(0)}${unit}`;
+        displayText = unit === '°C' ? `${currentValue.toFixed(1)}${unit}` : `${currentValue.toFixed(0)}${unit}`;
       }
 
       progressBarFill.style.width = `${percentage}%`;
       valueText.textContent = displayText;
 
-      if (elementId === 'mood') {
-        if (percentage < 30) {
-          progressBarFill.style.backgroundColor = '#78909C';
-          valueText.style.color = 'white';
-          valueText.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.8)';
-        } else if (percentage < 70) {
-          progressBarFill.style.backgroundColor = '#FFEB3B';
-          valueText.style.color = '#333';
-          valueText.style.textShadow = 'none';
+      // Dynamic color adjustments based on value ranges
+      if (elementId === 'temperature') {
+        if (currentValue < 0) {
+          progressBarFill.style.backgroundColor = '#2196F3'; // Blue for cold
+        } else if (currentValue < 20) {
+          progressBarFill.style.backgroundColor = '#4CAF50'; // Green for mild
         } else {
-          progressBarFill.style.backgroundColor = '#CDDC39';
-          valueText.style.color = '#333';
-          valueText.style.textShadow = 'none';
+          progressBarFill.style.backgroundColor = '#FF5722'; // Orange for warm
         }
-      }
-      if (elementId === 'budget') {
-        if (percentage < 20) {
-          progressBarFill.style.backgroundColor = '#F44336';
-          valueText.style.color = 'white';
-        } else if (percentage < 50) {
-          progressBarFill.style.backgroundColor = '#FF9800';
-          valueText.style.color = 'white';
-        } else {
-          progressBarFill.style.backgroundColor = '#2196F3';
-          valueText.style.color = 'white';
-        }
+      } else if (elementId === 'humidity') {
+        progressBarFill.style.backgroundColor = currentValue > 70 ? '#0288D1' : '#03A9F4';
+      } else if (elementId === 'wind-speed') {
+        progressBarFill.style.backgroundColor = currentValue > 30 ? '#388E3C' : '#4CAF50';
+      } else if (elementId === 'precipitation') {
+        progressBarFill.style.backgroundColor = currentValue > 50 ? '#7B1FA2' : '#9C27B0';
       }
     }
 
-    async function fetchStats() {
-      // Example: const response = await fetch('/api/stats');
-      // const stats = await response.json();
-      const stats = { mood: 70, energy: 60, fullness: 70, budget: 35 }; // Placeholder
-      updateProgressBar('mood', stats.mood, 100, '%');
-      updateProgressBar('energy', stats.energy, 100, '%');
-      updateProgressBar('fullness', stats.fullness, 100, '%');
-      updateProgressBar('budget', stats.budget, 50, '€');
+    async function fetchWeatherStats() {
+      // Placeholder data (replace with real API, e.g., OpenWeatherMap)
+      const weatherStats = {
+        temperature: 22.5, // °C
+        humidity: 65, // %
+        windSpeed: 15, // km/h
+        precipitation: 10 // %
+      };
+      // Example API call: 
+      // const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q=London&appid=YOUR_API_KEY&units=metric');
+      // const data = await response.json();
+      // const weatherStats = {
+      //   temperature: data.main.temp,
+      //   humidity: data.main.humidity,
+      //   windSpeed: data.wind.speed * 3.6, // Convert m/s to km/h
+      //   precipitation: data.rain ? data.rain['1h'] || 0 : 0
+      // };
+
+      updateProgressBar('temperature', weatherStats.temperature, 40, '°C'); // Max 40°C for scale
+      updateProgressBar('humidity', weatherStats.humidity, 100, '%');
+      updateProgressBar('wind-speed', weatherStats.windSpeed, 50, 'km/h'); // Max 50 km/h for scale
+      updateProgressBar('precipitation', weatherStats.precipitation, 100, '%');
     }
 
-    fetchStats();
-    setInterval(fetchStats, 5000);
+    fetchWeatherStats();
+    setInterval(fetchWeatherStats, 60000); // Update every 60 seconds (weather changes slowly)
   </script>
 </body>
 </html>
