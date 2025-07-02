@@ -5,17 +5,77 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* Reuse overlay styles from original code */
-    body { background-color: transparent; font-family: 'Trebuchet MS', Arial, sans-serif; color: white; margin: 0; padding: 10px; }
-    .overlay-container { display: flex; flex-direction: row; flex-wrap: wrap; gap: 10px; max-width: 600px; margin: 0 auto; }
-    .data-item { background-color: rgba(30, 30, 30, 0.7); padding: 10px; border-radius: 6px; border: 1px solid rgba(100, 100, 100, 0.5); width: calc(50% - 5px); min-width: 140px; }
-    .label { font-size: 0.9em; font-weight: bold; margin-bottom: 5px; text-shadow: 1px 1px 2px black; color: #eee; text-align: center; }
-    .progress-bar { width: 100%; height: 24px; background-color: #555; border-radius: 4px; overflow: hidden; position: relative; border: 1px solid #777; }
-    .progress-fill { height: 100%; background-color: #4CAF50; border-radius: 4px 0 0 4px; transition: width 0.4s ease-out, background-color 0.4s ease; width: 0%; }
-    .value-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.8em; font-weight: bold; color: white; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); }
-    #mood .progress-fill { background-color: #FFEB3B; color: #333; }
-    #energy .progress-fill { background-color: #FF9800; color: #333; }
-    #fullness .progress-fill { background-color: #E91E63; color: #333; }
+    body {
+      background-color: transparent;
+      font-family: 'Trebuchet MS', Arial, sans-serif;
+      color: white;
+      margin: 0;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      min-height: 100vh;
+    }
+    .overlay-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      max-width: 800px;
+      width: 100%;
+      background: rgba(20, 20, 20, 0.85);
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+    }
+    .data-item {
+      background-color: rgba(40, 40, 40, 0.7);
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(120, 120, 120, 0.4);
+      transition: transform 0.2s ease;
+    }
+    .data-item:hover {
+      transform: translateY(-3px);
+    }
+    .label {
+      font-size: 0.95em;
+      font-weight: bold;
+      margin-bottom: 8px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+      color: #f0f0f0;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 26px;
+      background-color: #333;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid #888;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 6px 0 0 6px;
+      transition: width 0.4s ease-out, background-color 0.4s ease;
+      width: 0%;
+    }
+    .value-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.85em;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+    }
+    #mood .progress-fill { background-color: #FFEB3B; }
+    #energy .progress-fill { background-color: #FF9800; }
+    #fullness .progress-fill { background-color: #E91E63; }
+    #budget .progress-fill { background-color: #2196F3; }
   </style>
 </head>
 <body>
@@ -41,6 +101,13 @@
         <div class="value-text"></div>
       </div>
     </div>
+    <div class="data-item" id="budget">
+      <div class="label">🦊💶 DAILY BUDGET 💶🦊</div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+        <div class="value-text"></div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -55,41 +122,54 @@
       maxValue = parseFloat(maxValue) || 100;
 
       if (maxValue > 0) {
-        percentage = Math.max(0, Math.min(100, currentValue));
-        displayText = `${percentage.toFixed(0)}${unit}`;
+        percentage = Math.max(0, Math.min(100, (currentValue / maxValue) * 100));
+        displayText = elementId === 'budget' ? `${currentValue.toFixed(2)}€ / ${maxValue}€` : `${percentage.toFixed(0)}${unit}`;
       }
 
       progressBarFill.style.width = `${percentage}%`;
       valueText.textContent = displayText;
 
-      // Reuse your color logic for mood
       if (elementId === 'mood') {
         if (percentage < 30) {
           progressBarFill.style.backgroundColor = '#78909C';
-          valueText.style.color = 'white'; valueText.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.8)';
+          valueText.style.color = 'white';
+          valueText.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.8)';
         } else if (percentage < 70) {
           progressBarFill.style.backgroundColor = '#FFEB3B';
-          valueText.style.color = '#333'; valueText.style.textShadow = 'none';
+          valueText.style.color = '#333';
+          valueText.style.textShadow = 'none';
         } else {
           progressBarFill.style.backgroundColor = '#CDDC39';
-          valueText.style.color = '#333'; valueText.style.textShadow = 'none';
+          valueText.style.color = '#333';
+          valueText.style.textShadow = 'none';
         }
       }
-      // Add similar logic for energy and fullness if needed
+      if (elementId === 'budget') {
+        if (percentage < 20) {
+          progressBarFill.style.backgroundColor = '#F44336';
+          valueText.style.color = 'white';
+        } else if (percentage < 50) {
+          progressBarFill.style.backgroundColor = '#FF9800';
+          valueText.style.color = 'white';
+        } else {
+          progressBarFill.style.backgroundColor = '#2196F3';
+          valueText.style.color = 'white';
+        }
+      }
     }
 
-    // Fetch stats from backend (e.g., Firebase)
     async function fetchStats() {
       // Example: const response = await fetch('/api/stats');
       // const stats = await response.json();
-      const stats = { mood: 70, energy: 60, fullness: 70 }; // Placeholder
+      const stats = { mood: 70, energy: 60, fullness: 70, budget: 35 }; // Placeholder
       updateProgressBar('mood', stats.mood, 100, '%');
       updateProgressBar('energy', stats.energy, 100, '%');
       updateProgressBar('fullness', stats.fullness, 100, '%');
+      updateProgressBar('budget', stats.budget, 50, '€');
     }
 
     fetchStats();
-    setInterval(fetchStats, 5000); // Poll every 5 seconds
+    setInterval(fetchStats, 5000);
   </script>
 </body>
 </html>
