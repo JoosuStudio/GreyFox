@@ -30,7 +30,7 @@
             gap: 15px; /* Space between the two stat blocks in a row */
         }
 
-        /* Container for a single stat (label + bar + value) */
+        /* Container for a single stat (label + bar) */
         .stat-block {
             flex: 1; /* Allow blocks to share space equally */
             display: flex;
@@ -45,24 +45,9 @@
             text-align: center; /* Center the label text */
         }
 
-        /* Container for the value and bar */
-        .stat-value-bar {
-            display: flex;
-            align-items: center; /* Vertically align value and bar */
-            gap: 10px; /* Space between value and bar */
-        }
-
-        /* Style for the value display */
-        .stat-value {
-            font-size: 0.9em;
-            font-weight: bold;
-            min-width: 40px; /* Ensure consistent width for alignment */
-            text-align: right; /* Align value to the right for better spacing */
-        }
-
         /* The background container of the bar */
         .stat-bar-container {
-            flex: 1; /* Take remaining space */
+            width: 100%;
             background-color: rgba(85, 85, 85, 0.7); /* Semi-transparent dark grey background */
             border-radius: 8px; /* Rounded corners */
             height: 30px; /* Height of the bar */
@@ -78,7 +63,7 @@
             border-radius: 8px; /* Match container's rounded corners */
             width: 0%; /* Initial width, will be set by JavaScript */
             transition: width 0.5s ease-in-out; /* Smooth animation when value changes */
-            display: flex; /* For potentially centering text inside later */
+            display: flex; /* For centering text */
             align-items: center;
             justify-content: center;
             font-size: 0.9em;
@@ -100,20 +85,14 @@
         <div class="stats-row">
             <div class="stat-block">
                 <div class="stat-label">Stomach</div>
-                <div class="stat-value-bar">
-                    <span class="stat-value" id="stomach-value"></span>
-                    <div class="stat-bar-container">
-                        <div class="stat-bar-fill" id="stomach-fill"></div>
-                    </div>
+                <div class="stat-bar-container">
+                    <div class="stat-bar-fill" id="stomach-fill"></div>
                 </div>
             </div>
             <div class="stat-block">
                 <div class="stat-label">Mood</div>
-                <div class="stat-value-bar">
-                    <span class="stat-value" id="mood-value"></span>
-                    <div class="stat-bar-container">
-                        <div class="stat-bar-fill" id="mood-fill"></div>
-                    </div>
+                <div class="stat-bar-container">
+                    <div class="stat-bar-fill" id="mood-fill"></div>
                 </div>
             </div>
         </div>
@@ -121,20 +100,14 @@
         <div class="stats-row">
             <div class="stat-block">
                 <div class="stat-label">Energy</div>
-                <div class="stat-value-bar">
-                    <span class="stat-value" id="exhaustion-value"></span>
-                    <div class="stat-bar-container">
-                        <div class="stat-bar-fill" id="exhaustion-fill"></div>
-                    </div>
+                <div class="stat-bar-container">
+                    <div class="stat-bar-fill" id="exhaustion-fill"></div>
                 </div>
             </div>
             <div class="stat-block">
                 <div class="stat-label">Daily Budget</div>
-                <div class="stat-value-bar">
-                    <span class="stat-value" id="budget-value"></span>
-                    <div class="stat-bar-container">
-                        <div class="stat-bar-fill" id="budget-fill"></div>
-                    </div>
+                <div class="stat-bar-container">
+                    <div class="stat-bar-fill" id="budget-fill"></div>
                 </div>
             </div>
         </div>
@@ -155,27 +128,27 @@
             // ============================================
             // ============================================
 
-            // Function to update a specific bar's width and value display
-            function updateBar(barId, valueId, percentage) {
+            // Function to update a specific bar's width and text
+            function updateBar(barId, percentage) {
                 const barFill = document.getElementById(barId);
-                const valueDisplay = document.getElementById(valueId);
-                if (barFill && valueDisplay) {
+                if (barFill) {
                     // Ensure percentage is between 0 and 100
                     const clampedPercentage = Math.max(0, Math.min(100, percentage));
                     barFill.style.width = clampedPercentage + '%';
-                    valueDisplay.textContent = clampedPercentage + '%';
+                    // Display the percentage value inside the bar
+                    barFill.textContent = clampedPercentage + '%';
                 } else {
-                    console.error(`Element with ID ${barId} or ${valueId} not found.`);
+                    console.error(`Element with ID ${barId} not found.`);
                 }
             }
 
             // Set initial values when the page loads
-            updateBar('stomach-fill', 'stomach-value', initialStats.stomach);
-            updateBar('mood-fill', 'mood-value', initialStats.mood);
-            updateBar('exhaustion-fill', 'exhaustion-value', initialStats.energy);
-            updateBar('budget-fill', 'budget-value', initialStats.budget);
+            updateBar('stomach-fill', initialStats.stomach);
+            updateBar('mood-fill', initialStats.mood);
+            updateBar('exhaustion-fill', initialStats.energy);
+            updateBar('budget-fill', initialStats.budget);
 
-        }); // End DOMContentLoaded
+        }); // eventListener
     </script>
 
 </body>
