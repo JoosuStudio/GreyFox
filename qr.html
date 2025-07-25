@@ -1,4 +1,4 @@
-i<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,6 +11,8 @@ i<!DOCTYPE html>
             background: transparent;
             color: #fff;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            min-height: 100vh; /* Ensure full viewport height */
+            position: relative; /* Context for absolute positioning */
         }
         .donation-container {
             display: flex;
@@ -23,6 +25,11 @@ i<!DOCTYPE html>
             font-weight: 700;
             opacity: 0; /* Initially hidden */
             transition: opacity 0.5s ease-in-out; /* Smooth fade effect */
+            position: absolute; /* Position at bottom */
+            bottom: 0; /* Stick to bottom */
+            left: 0;
+            width: 100%; /* Full width */
+            box-sizing: border-box; /* Include padding in width */
         }
         .donation-container.visible {
             opacity: 1; /* Visible state */
@@ -46,7 +53,9 @@ i<!DOCTYPE html>
 <body>
     <div class="donation-container" id="donationBar">
         <span class="donation-icon">🦊</span>
-        <span>Support Grey Fox! 🚴‍♂️ Make a screenshot & scan QR to make a donation!📱</span>
+        <span>Support Grey Fox! 🚴‍♂️ <a href="https://example.com/donate" target="_blank">Make a donation!</a> 📱</span>
+        <!-- Placeholder for QR code image; replace 'qr-code.png' with your actual QR code image -->
+        <img src="qr-code.png" alt="Donate QR Code" class="qr-code">
     </div>
 
     <script>
@@ -55,15 +64,15 @@ i<!DOCTYPE html>
         function toggleDonationBar() {
             donationBar.classList.add('visible'); // Show the bar
             setTimeout(() => {
-                donationBar.classList.remove('visible'); // Hide the bar after 1 minute
-            }, 60000); // 1 minute = 60,000 milliseconds
+                donationBar.classList.remove('visible'); // Hide the bar after 10 seconds
+            }, 10000); // 10 seconds = 10,000 milliseconds (adjusted for better visibility)
         }
 
         // Show the bar immediately when the page loads
         toggleDonationBar();
 
-        // Repeat the cycle every 2 minutes
-setInterval(toggleDonationBar, 120000); // 2 minutes = 120,000 milliseconds
+        // Repeat the cycle every 1 minute
+        setInterval(toggleDonationBar, 60000); // 1 minute = 60,000 milliseconds
     </script>
 </body>
 </html>
