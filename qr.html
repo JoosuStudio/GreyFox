@@ -21,7 +21,7 @@
             padding: 5px 10px;
             background: linear-gradient(90deg, rgba(255, 234, 0, 0.8), rgba(255, 215, 0, 0.8));
             border-radius: 15px;
-            font-size: 24px;
+            font-size: 32px; /* Matched to previous CSS font size */
             font-weight: 700;
             opacity: 0; /* Initially hidden */
             transition: opacity 0.5s ease-in-out; /* Smooth fade effect */
@@ -30,12 +30,13 @@
             left: 0;
             width: 100%; /* Full width */
             box-sizing: border-box; /* Include padding in width */
+            line-height: 40px; /* Adjusted for better text alignment with 40px height context */
         }
         .donation-container.visible {
             opacity: 1; /* Visible state */
         }
         .donation-icon {
-            font-size: 18px;
+            font-size: 32px; /* Matched to fox-icon and bike-icon size */
         }
         .qr-code {
             width: 150px;
@@ -65,7 +66,7 @@
             donationBar.classList.add('visible'); // Show the bar
             setTimeout(() => {
                 donationBar.classList.remove('visible'); // Hide the bar after 10 seconds
-            }, 10000); // 10 seconds = 10,000 milliseconds (adjusted for better visibility)
+            }, 10000); // 10 seconds = 10,000 milliseconds
         }
 
         // Show the bar immediately when the page loads
