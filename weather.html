@@ -129,7 +129,7 @@
                 const dateString = `${day}/${month}/${year}`;
 
                 document.getElementById("icon").textContent = icon;
-                document.getElementById("weather-text").textContent = `🇪🇪 ${city}, Estonia: ${temp}°C, ${weather}, Wind: ${windSpeed} m/s | ${timeString} ${dateString}`;
+                document.getElementById("weather-text").textContent = `${city}, Estonia 🇪🇪: ${temp}°C, ${weather}, Wind: ${windSpeed} m/s | ${dateString} 📅 ${timeString} 🕒`;
                 document.getElementById("weather-mood").textContent = weatherMood;
                 document.getElementById("temp-mood").textContent = tempMood;
             } catch (error) {
@@ -156,7 +156,7 @@
             const timeString = `${hours}:${minutes}`;
             const dateString = `${day}/${month}/${year}`;
             const weatherText = document.getElementById("weather-text").textContent.split(" | ")[0];
-            document.getElementById("weather-text").textContent = `${weatherText} | ${timeString} ${dateString}`;
+            document.getElementById("weather-text").textContent = `${weatherText} | ${dateString} 📅 ${timeString} 🕒`;
         }, 60000); // Update every minute
     </script>
 </body>
