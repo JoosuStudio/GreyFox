@@ -17,34 +17,20 @@
             display: flex;
             gap: 10px;
             opacity: 0;
-            animation: spinIn 0.5s forwards;
+            transform: rotate(-180deg) scale(0);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
         .overlay.visible {
-            animation: spinIn 0.5s forwards, spinOut 0.5s forwards 30s;
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+        .overlay.hidden {
+            opacity: 0;
+            transform: rotate(180deg) scale(0);
         }
         .qr-code {
             width: 220px;
             height: 220px;
-        }
-        @keyframes spinIn {
-            from {
-                transform: rotate(-180deg) scale(0);
-                opacity: 0;
-            }
-            to {
-                transform: rotate(0deg) scale(1);
-                opacity: 1;
-            }
-        }
-        @keyframes spinOut {
-            from {
-                transform: rotate(0deg) scale(1);
-                opacity: 1;
-            }
-            to {
-                transform: rotate(180deg) scale(0);
-                opacity: 0;
-            }
         }
     </style>
 </head>
@@ -58,10 +44,16 @@
         const overlay = document.getElementById('qrOverlay');
 
         function toggleOverlay() {
+            // Show the overlay
+            overlay.classList.remove('hidden');
             overlay.classList.add('visible');
-            // Remove the visible class after 30 seconds to trigger spinOut
+            console.log('Overlay shown at:', new Date().toLocaleTimeString());
+
+            // Hide the overlay after 30 seconds
             setTimeout(() => {
+                console.log('Attempting to hide overlay at:', new Date().toLocaleTimeString());
                 overlay.classList.remove('visible');
+                overlay.classList.add('hidden');
             }, 30000); // 30 seconds
         }
 
