@@ -26,7 +26,7 @@
             font-size: 28px;
         }
         .mood {
-            font-size: 24px; /* Reduced from 16px to 14px */
+            font-size: 24px;
             display: flex;
             gap: 5px;
         }
@@ -59,7 +59,7 @@
                 const data = await response.json();
                 const temp = Math.round(data.main.temp);
                 const weather = data.weather[0].main;
-                const city = data.name;
+                const city = data.name; // "Vinni"
                 const windSpeed = Math.round(data.wind.speed); // Wind speed in m/s
                 timezoneOffset = data.timezone; // Update global timezone offset
 
@@ -129,7 +129,7 @@
                 const dateString = `${day}/${month}/${year}`;
 
                 document.getElementById("icon").textContent = icon;
-                document.getElementById("weather-text").textContent = `${city}: ${temp}°C, ${weather}, Wind: ${windSpeed} m/s | ${timeString} | ${dateString}`;
+                document.getElementById("weather-text").textContent = `🇪🇪 ${city}, Estonia: ${temp}°C, ${weather}, Wind: ${windSpeed} m/s | ${timeString} ${dateString}`;
                 document.getElementById("weather-mood").textContent = weatherMood;
                 document.getElementById("temp-mood").textContent = tempMood;
             } catch (error) {
@@ -156,7 +156,7 @@
             const timeString = `${hours}:${minutes}`;
             const dateString = `${day}/${month}/${year}`;
             const weatherText = document.getElementById("weather-text").textContent.split(" | ")[0];
-            document.getElementById("weather-text").textContent = `${weatherText} | ${timeString} | ${dateString}`;
+            document.getElementById("weather-text").textContent = `${weatherText} | ${timeString} ${dateString}`;
         }, 60000); // Update every minute
     </script>
 </body>
