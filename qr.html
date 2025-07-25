@@ -11,36 +11,39 @@
             background: transparent;
             color: #fff;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-            min-height: 100vh; /* Ensure full viewport height */
-            position: relative; /* Context for absolute positioning */
+            min-height: 100vh;
+            position: relative;
         }
         .donation-container {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 5px 10px;
+            padding: 2px 10px; /* Reduced padding for slimmer look */
             background: linear-gradient(90deg, rgba(255, 234, 0, 0.8), rgba(255, 215, 0, 0.8));
-            border-radius: 15px;
-            font-size: 32px; /* Matched to previous CSS font size */
+            border-radius: 10px; /* Slightly smaller radius for slimmer feel */
+            font-size: 24px; /* Reduced from 32px for better fit in slimmer bar */
             font-weight: 700;
-            opacity: 0; /* Initially hidden */
-            transition: opacity 0.5s ease-in-out; /* Smooth fade effect */
-            position: absolute; /* Position at bottom */
-            bottom: 0; /* Stick to bottom */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            position: absolute;
+            bottom: 0;
             left: 0;
-            width: 100%; /* Full width */
-            box-sizing: border-box; /* Include padding in width */
-            line-height: 40px; /* Adjusted for better text alignment with 40px height context */
+            width: 100%;
+            box-sizing: border-box;
+            height: 30px; /* Slimmer height */
+            white-space: nowrap; /* Prevent text wrapping to keep in one row */
+            overflow: hidden; /* Hide any overflow if content is too long */
         }
         .donation-container.visible {
-            opacity: 1; /* Visible state */
+            opacity: 1;
         }
         .donation-icon {
-            font-size: 32px; /* Matched to fox-icon and bike-icon size */
+            font-size: 24px; /* Adjusted to match container font size */
         }
         .qr-code {
-            width: 150px;
-            height: 150px;
+            width: 100px; /* Reduced QR code size for slimmer bar */
+            height: 100px;
+            vertical-align: middle; /* Align with text */
         }
         a {
             color: #fff;
@@ -63,17 +66,14 @@
         const donationBar = document.getElementById('donationBar');
         
         function toggleDonationBar() {
-            donationBar.classList.add('visible'); // Show the bar
+            donationBar.classList.add('visible');
             setTimeout(() => {
-                donationBar.classList.remove('visible'); // Hide the bar after 10 seconds
-            }, 10000); // 10 seconds = 10,000 milliseconds
+                donationBar.classList.remove('visible');
+            }, 10000);
         }
 
-        // Show the bar immediately when the page loads
         toggleDonationBar();
-
-        // Repeat the cycle every 1 minute
-        setInterval(toggleDonationBar, 60000); // 1 minute = 60,000 milliseconds
+        setInterval(toggleDonationBar, 60000);
     </script>
 </body>
 </html>
