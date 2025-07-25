@@ -19,7 +19,7 @@
             padding: 5px 10px;
             background: linear-gradient(90deg, rgba(46, 139, 87, 0.8), rgba(112, 128, 144, 0.8));
             border-radius: 15px;
-            font-size:24px;
+            font-size: 24px;
             font-weight: 700;
         }
         .weather-icon {
@@ -116,16 +116,20 @@
                     tempMood = "Perfect Ride, Fox Pride 😍🦊"; // Comfortable range (16°C to 26°C)
                 }
 
-                // Calculate local time based on timezone offset
+                // Calculate local time and date based on timezone offset
                 const now = new Date();
                 const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000); // Convert to UTC
                 const localTime = new Date(utcTime + (timezoneOffset * 1000)); // Adjust for local timezone
                 const hours = localTime.getHours().toString().padStart(2, '0');
                 const minutes = localTime.getMinutes().toString().padStart(2, '0');
+                const day = localTime.getDate().toString().padStart(2, '0');
+                const month = (localTime.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
+                const year = localTime.getFullYear();
                 const timeString = `${hours}:${minutes}`;
+                const dateString = `${day}/${month}/${year}`;
 
                 document.getElementById("icon").textContent = icon;
-                document.getElementById("weather-text").textContent = `${city}: ${temp}°C, ${weather}, Wind: ${windSpeed} m/s | ${timeString}`;
+                document.getElementById("weather-text").textContent = `${city}: ${temp}°C, ${weather}, Wind: ${windSpeed} m/s | ${timeString} | ${dateString}`;
                 document.getElementById("weather-mood").textContent = weatherMood;
                 document.getElementById("temp-mood").textContent = tempMood;
             } catch (error) {
@@ -139,16 +143,20 @@
         fetchWeather();
         setInterval(fetchWeather, 600000);
 
-        // Update time every minute
+        // Update time and date every minute
         setInterval(() => {
             const now = new Date();
             const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
             const localTime = new Date(utcTime + (timezoneOffset * 1000));
             const hours = localTime.getHours().toString().padStart(2, '0');
             const minutes = localTime.getMinutes().toString().padStart(2, '0');
+            const day = localTime.getDate().toString().padStart(2, '0');
+            const month = (localTime.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
+            const year = localTime.getFullYear();
             const timeString = `${hours}:${minutes}`;
+            const dateString = `${day}/${month}/${year}`;
             const weatherText = document.getElementById("weather-text").textContent.split(" | ")[0];
-            document.getElementById("weather-text").textContent = `${weatherText} | ${timeString}`;
+            document.getElementById("weather-text").textContent = `${weatherText} | ${timeString} | ${dateString}`;
         }, 60000); // Update every minute
     </script>
 </body>
