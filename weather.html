@@ -129,7 +129,7 @@
                 const dateString = `${day}/${month}/${year}`;
 
                 document.getElementById("icon").textContent = icon;
-                document.getElementById("weather-text").textContent = `${city}, Estonia 🇪🇪: ${temp}°C, ${weather}, Wind: ${windSpeed} m/s | ${dateString} 📅 ${timeString} 🕒`;
+                document.getElementById("weather-text").textContent = `${city}, Estonia 🇪🇪 ${temp}°C, ${weather}, Wind: ${windSpeed} m/s  ${dateString} 📅 ${timeString} 🕒`;
                 document.getElementById("weather-mood").textContent = weatherMood;
                 document.getElementById("temp-mood").textContent = tempMood;
             } catch (error) {
