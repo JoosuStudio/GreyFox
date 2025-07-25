@@ -17,11 +17,10 @@
             display: flex;
             gap: 10px;
             opacity: 0;
-            animation: spinIn 0.5s forwards, spinOut 0.5s forwards 60s;
-            animation-play-state: paused;
+            animation: spinIn 0.5s forwards;
         }
         .overlay.visible {
-            animation-play-state: running;
+            animation: spinIn 0.5s forwards, spinOut 0.5s forwards 30s;
         }
         .qr-code {
             width: 220px;
@@ -60,13 +59,19 @@
 
         function toggleOverlay() {
             overlay.classList.add('visible');
+            // Remove the visible class after 30 seconds to trigger spinOut
             setTimeout(() => {
                 overlay.classList.remove('visible');
-            }, 30000); // 30 seconds (30 seconds)
+            }, 30000); // 30 seconds
         }
 
-        toggleOverlay(); // Initial display
-        setInterval(toggleOverlay, 300000); // 5 minutes (300 seconds)
+        // Initial display
+        toggleOverlay();
+
+        // Repeat every 5 minutes (300 seconds), with a delay to avoid immediate overlap
+        setInterval(() => {
+            toggleOverlay();
+        }, 300000); // 5 minutes
     </script>
 </body>
 </html>
