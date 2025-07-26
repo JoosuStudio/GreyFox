@@ -9,7 +9,7 @@
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background: transparent; /* Removed black background */
+            background: transparent; /* Transparent background */
         }
         .container {
             position: relative;
@@ -19,10 +19,11 @@
         }
         .image-container {
             position: relative;
-            width: 100%;
-            height: 400px; /* Increased height for better presentation */
+            width: 200px; /* Width for 4:16 ratio */
+            height: 800px; /* Height = 4 * Width for 1:4 ratio */
             overflow: hidden;
             border-radius: 15px; /* Rounded corners for image container */
+            margin: 0 auto; /* Center the container */
         }
         .image-container img {
             width: 100%;
@@ -71,7 +72,6 @@
             <p><strong>Nationality:</strong> Estonian 🇪🇪</p>
             <p><strong>Speaks:</strong> 🇪🇪🇬🇧</p>
             <p><strong>Profession:</strong> Glass Engraving Artist</p>
-            <p><strong>Studio/Journey:</strong> JoosuStudio and GreyFoxYourney</p>
         </div>
     </div>
 </body>
