@@ -72,7 +72,7 @@
 
     <script>
         // --- CONFIGURATION ---
-        **const stravaAccessToken = 33a82c702e912f0bc5f0504b437e8e6d97e27f3a; // <-- PASTE YOUR TOKEN HERE**
+        **const stravaAccessToken = 'GreyFoxYourney'; // <-- PASTE YOUR TOKEN HERE**
 
         // --- DOM ELEMENTS ---
         const contents = [
@@ -103,7 +103,7 @@
 
         // --- STRAVA API ---
         async function fetchStravaData() {
-            if (!stravaAccessToken || stravaAccessToken === 33a82c702e912f0bc5f0504b437e8e6d97e27f3a) {
+            if (!stravaAccessToken || stravaAccessToken === 'GreyFoxYourney') {
                 activityNameEl.textContent = "SETUP NEEDED";
                 distanceEl.textContent = "Add your token";
                 return;
