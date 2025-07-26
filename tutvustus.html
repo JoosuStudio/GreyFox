@@ -6,42 +6,54 @@
     <title>Janek Joosu Profile</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
+            background: #000; /* Dark background for game-like feel */
         }
         .container {
             position: relative;
             width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-            background: #f0f0f0;
+            max-width: 600px; /* Increased width for better readability */
+            margin: 20px auto;
         }
         .image-container {
             position: relative;
             width: 100%;
-            height: 300px;
+            height: 400px; /* Increased height for better presentation */
             overflow: hidden;
+            border-radius: 15px; /* Rounded corners for image container */
         }
         .image-container img {
             width: 100%;
             height: auto;
+            border-radius: 15px; /* Rounded corners for image */
         }
         .overlay {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 255, 0, 0.7); /* Green, 70% transparent */
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 10px; /* Rounded corners */
+            font-size: 18px; /* Larger text */
+            text-shadow: 2px 2px 4px #000; /* Game-like text shadow */
         }
         .stats {
-            padding: 10px;
-            background: #fff;
+            padding: 20px;
+            background: rgba(0, 255, 0, 0.7); /* Green, 70% transparent */
+            color: #fff;
+            border-radius: 15px; /* Rounded corners */
+            margin-top: 10px;
+            text-align: center; /* Centered text for dramatic effect */
         }
         .stats p {
-            margin: 5px 0;
+            margin: 10px 0;
+            font-size: 24px; /* Larger, game-like text */
+            font-weight: bold; /* Bold for emphasis */
+            text-transform: uppercase; /* Uppercase for character intro style */
+            text-shadow: 2px 2px 4px #000; /* Game-like text shadow */
         }
     </style>
 </head>
@@ -50,7 +62,7 @@
         <div class="image-container">
             <img src="https://joosustudio.github.io/GreyFox/IMG_20250708_182531.jpg" alt="Janek Joosu">
             <div class="overlay">
-                <!-- Removed weather data, keeping only the overlay design -->
+                <!-- Empty overlay for design purposes -->
             </div>
         </div>
         <div class="stats">
