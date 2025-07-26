@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Janek Joosu Journey</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: transparent;
+        }
+        .container {
+            width: 300px;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        .content {
+            width: 100%;
+            height: 100%;
+            display: none; /* Hidden by default, shown via JavaScript */
+        }
+        .image-container {
+            background: url('https://joosustudio.github.io/GreyFox/IMG_20250708_182531.jpg') no-repeat center;
+            background-size: cover;
+        }
+        .info-container, .stats-container {
+            padding: 20px;
+            box-sizing: border-box;
+            background: rgba(34, 139, 34, 0.8); /* Forest Green, 80% transparent */
+            color: #fff;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .info-container p, .stats-container p {
+            margin: 8px 0;
+            font-size: 16px;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px #000;
+        }
+        .map-container {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content image-container" id="imageContent"></div>
+        <div class="content info-container" id="infoContent">
+            <p><strong>Name:</strong> Janek Joosu</p>
+            <p><strong>Nationality:</strong> Estonian 🇪🇪</p>
+            <p><strong>Profession:</strong> Glass Engraving Artist</p>
+        </div>
+        <div class="content map-container" id="mapContent"></div>
+        <div class="content stats-container" id="statsContent">
+            <p><strong>Activity:</strong> <span id="activityName">--</span></p>
+            <p><strong>Distance:</strong> <span id="distance">0 km</span></p>
+            <p><strong>Speed (Avg):</strong> <span id="speed">0 km/h</span></p>
+            <p><strong>Elevation:</strong> <span id="elevation">0 m</span></p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/@mapbox/polyline@1.1.1/src/polyline.js"></script>
+
+    <script>
+        // --- CONFIGURATION ---
+        **const stravaAccessToken = 'GreyFoxYourney'; // <-- PASTE YOUR TOKEN HERE**
+
+        // --- DOM ELEMENTS ---
+        const contents = [
+            document.getElementById('imageContent'),
+            document.getElementById('infoContent'),
+            document.getElementById('mapContent'),
+            document.getElementById('statsContent')
+        ];
+        const activityNameEl = document.getElementById('activityName');
+        const distanceEl = document.getElementById('distance');
+        const speedEl = document.getElementById('speed');
+        const elevationEl = document.getElementById('elevation');
+        
+        let currentContentIndex = 0;
+        let map; // To hold the map instance
+
+        // --- MAP INITIALIZATION ---
+        function initMap() {
+            if (map) return; // Initialize map only once
+            map = L.map('mapContent', {
+                zoomControl: false, // Hide zoom buttons
+                attributionControl: false // Hide attribution
+            });
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19
+            }).addTo(map);
+        }
+
+        // --- STRAVA API ---
+        async function fetchStravaData() {
+            if (!stravaAccessToken || stravaAccessToken === 'GreyFoxYourney') {
+                activityNameEl.textContent = "SETUP NEEDED";
+                distanceEl.textContent = "Add your token";
+                return;
+            }
+
+            const apiUrl = 'https://www.strava.com/api/v3/athlete/activities?per_page=1&page=1';
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'Authorization': `Bearer ${stravaAccessToken}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Strava API Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                if (data.length > 0) {
+                    const latestActivity = data[0];
+                    updateStats(latestActivity);
+                    updateMap(latestActivity);
+                }
+            } catch (error) {
+                console.error('Error fetching Strava data:', error);
+                activityNameEl.textContent = "API Error";
+            }
+        }
+
+        // --- UI UPDATES ---
+        function updateStats(activity) {
+            // Convert from meters to km and m/s to km/h
+            const distanceKm = (activity.distance / 1000).toFixed(2);
+            const speedKmh = (activity.average_speed * 3.6).toFixed(1);
+            const elevationM = Math.round(activity.total_elevation_gain);
+
+            activityNameEl.textContent = activity.name;
+            distanceEl.textContent = `${distanceKm} km`;
+            speedEl.textContent = `${speedKmh} km/h`;
+            elevationEl.textContent = `${elevationM} m`;
+        }
+        
+        function updateMap(activity) {
+            if (activity.map && activity.map.summary_polyline) {
+                // Decode the polyline from Strava
+                const decodedPolyline = polyline.decode(activity.map.summary_polyline);
+                
+                // Clear old layers and add the new one
+                map.eachLayer(layer => {
+                    if (layer instanceof L.Polyline) {
+                        map.removeLayer(layer);
+                    }
+                });
+                
+                const route = L.polyline(decodedPolyline, { color: '#FC4C02', weight: 4 }).addTo(map);
+                map.fitBounds(route.getBounds().pad(0.1)); // Zoom map to fit the route
+            }
+        }
+
+        // --- MAIN LOGIC ---
+        function toggleContent() {
+            // Hide current content
+            contents[currentContentIndex].style.display = 'none';
+
+            // Move to the next index
+            currentContentIndex = (currentContentIndex + 1) % contents.length;
+
+            // Show new content
+            contents[currentContentIndex].style.display = 'block';
+            
+            // Invalidate map size if it's the map's turn to be shown
+            if (contents[currentContentIndex].id === 'mapContent') {
+                setTimeout(() => map.invalidateSize(), 0);
+            }
+        }
+
+        // --- INITIALIZATION ---
+        // Show the first panel
+        contents[0].style.display = 'block';
+        
+        // Initialize the map
+        initMap();
+
+        // Fetch data immediately on load, then set intervals
+        fetchStravaData();
+        setInterval(fetchStravaData, 60000); // Fetch new data every 60 seconds
+        setInterval(toggleContent, 15000); // Rotate content every 15 seconds
+    </script>
+</body>
+</html>
