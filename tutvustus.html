@@ -59,7 +59,6 @@
             font-weight: 700;
             color: #ffffff;
         }
-        /* --- NEW STYLES for the Countdown Panel --- */
         .countdown-title {
             font-size: 22px;
             font-weight: 700;
@@ -84,6 +83,30 @@
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
+        
+        /* --- NEW STYLES for the spinning emojis --- */
+        .countdown-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .spinning-emoji {
+            position: absolute;
+            font-size: 30px; /* Adjust size here */
+            animation: spin 6s linear infinite; /* Adjust speed here (e.g., 3s, 10s) */
+        }
+        #emoji-left {
+            left: 5px; /* Adjust position from left */
+        }
+        #emoji-right {
+            right: 5px; /* Adjust position from right */
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
         .map-container {
             width: 100%;
             height: 100%;
@@ -107,8 +130,12 @@
             <p style="font-size: 16px; opacity: 0.8; text-align: center;">(As a hobby since 2009)</p>
         </div>
         <div class="content countdown-container" id="countdownContent">
-            <p class="countdown-title">⛺🚴 My Journey Begins 🚴⛺</p>
-            <div id="countdownClock">--:--:--:--</div>
+            <p class="countdown-title">🚴 My Journey Begins 🚴</p>
+            <div class="countdown-wrapper">
+                <span class="spinning-emoji" id="emoji-left">🦊</span>
+                <div id="countdownClock">--:--:--:--</div>
+                <span class="spinning-emoji" id="emoji-right">🚴</span>
+            </div>
             <p class="countdown-description">Making art and bike touring from Estonia to Spain while livestreaming.</p>
         </div>
         <div class="content map-container" id="mapContent">
@@ -120,7 +147,6 @@
 
     <script>
         // --- DOM ELEMENTS ---
-        // NEW: Added the countdownContent to the array in the correct order
         const contents = [
             document.getElementById('imageContent'),
             document.getElementById('infoContent'),
@@ -131,7 +157,7 @@
         
         let currentContentIndex = 0;
 
-        // --- NEW: Countdown Clock Logic ---
+        // --- Countdown Clock Logic ---
         function updateCountdown() {
             const targetDate = new Date('2026-05-01T12:00:00');
             const now = new Date();
