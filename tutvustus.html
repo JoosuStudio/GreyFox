@@ -31,35 +31,37 @@
             background: url('https://joosustudio.github.io/GreyFox/IMG_20250708_182531.jpg') no-repeat center;
             background-size: cover;
         }
-        /* Darker green and centered text */
+        /* --- CHANGED: Added align-items for perfect centering --- */
         .info-container {
-            padding: 20px;
+            padding: 10px; /* Reduced padding to allow text to fill more space */
             box-sizing: border-box;
             background: linear-gradient(135deg, rgba(10, 80, 40, 0.9), rgba(20, 110, 50, 0.9));
             color: #fff;
             text-align: center; 
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: center; /* This centers it vertically */
+            align-items: center;     /* This centers it horizontally */
         }
+        /* --- CHANGED: Increased font size and line spacing --- */
         .info-container p {
-            margin: 12px 0;
-            font-size: 20px;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+            margin: 15px 0;
+            font-size: 26px; /* Much larger base font size */
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
         }
-        /* Made labels uppercase and brighter for high visibility */
+        /* --- CHANGED: Scaled up label size --- */
         .label {
-            font-weight: 400; /* Regular weight */
-            font-size: 16px;  /* Slightly smaller than the value */
-            color: #FFFFFF;    /* White color */
-            opacity: 0.7;       /* But slightly transparent to stand out less than the value */
-            text-transform: uppercase; /* All caps */
-            letter-spacing: 1px;       /* A little space between letters */
-            margin-right: 10px;
+            font-weight: 400; 
+            font-size: 22px;  /* Larger label size */
+            color: #FFFFFF;    
+            opacity: 0.7;       
+            text-transform: uppercase; 
+            letter-spacing: 1px;       
+            margin-right: 12px;
         }
         .value {
-            font-weight: 700; /* Bold weight */
-            color: #ffffff; /* Pure white for the value */
+            font-weight: 700;
+            color: #ffffff; 
         }
         .map-container {
             width: 100%;
@@ -81,7 +83,7 @@
             <p><span class="label">Age:</span><span class="value">38</span></p>
             <p><span class="label">From:</span><span class="value">Estonia 🇪🇪</span></p>
             <p><span class="label">Profession:</span><span class="value">Glass Engraving Artist</span></p>
-            <p style="font-size: 16px; opacity: 0.8; text-align: center;">(As a hobby since 2009)</p>
+            <p style="font-size: 20px; opacity: 0.8; text-align: center;">(Hobby since 2009)</p>
         </div>
         <div class="content map-container" id="mapContent">
             <iframe name="fmeeframe" 
