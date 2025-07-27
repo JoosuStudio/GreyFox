@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Art Showcase Card</title>
+    <title>Art Gallery Card</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
@@ -12,6 +12,7 @@
             --text-color: #EFEFEF;
             --accent-color: #AACCFF;
             --border-color: rgba(170, 204, 255, 0.5);
+            --image-display-time: 7s; /* How long each image is visible */
         }
 
         body, html {
@@ -24,17 +25,14 @@
             overflow: hidden;
         }
 
-        /* --- Main Card Container --- */
         .card-container {
-            /* Fix for spacing issues */
             position: absolute;
             top: 0;
             left: 0;
-
-            /* Final dimensions */
+            /* --- FINAL DIMENSIONS --- */
             width: 870px;
             height: 358px;
-
+            /* ------------------------ */
             background-color: var(--bg-color);
             border: 2px solid var(--border-color);
             border-radius: 15px;
@@ -42,8 +40,8 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
-        /* --- Image Container for the Ken Burns Effect --- */
-        .image-container {
+        /* --- GALLERY IMAGE CONTAINER --- */
+        .image-gallery {
             position: absolute;
             top: 0;
             left: 0;
@@ -52,21 +50,35 @@
             z-index: 1;
         }
 
-        .image-container img {
+        .image-gallery img {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.35;
-            animation: kenburns 30s ease-in-out infinite alternate;
+            opacity: 0; /* All images start invisible */
+            animation-name: imageFade;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            /* Total duration = 5 images * 7s per image */
+            animation-duration: calc(5 * var(--image-display-time));
         }
 
-        @keyframes kenburns {
-            0% {
-                transform: scale(1.1) translate(-2%, 2%);
-            }
-            100% {
-                transform: scale(1.25) translate(2%, -2%);
-            }
+        /* Stagger the animations */
+        .image-gallery img:nth-child(1) { animation-delay: calc(0 * var(--image-display-time)); }
+        .image-gallery img:nth-child(2) { animation-delay: calc(1 * var(--image-display-time)); }
+        .image-gallery img:nth-child(3) { animation-delay: calc(2 * var(--image-display-time)); }
+        .image-gallery img:nth-child(4) { animation-delay: calc(3 * var(--image-display-time)); }
+        .image-gallery img:nth-child(5) { animation-delay: calc(4 * var(--image-display-time)); }
+
+
+        /* --- The Fade Animation --- */
+        @keyframes imageFade {
+            0% { opacity: 0; }
+            20% { opacity: 0.35; } /* Fade in */
+            80% { opacity: 0.35; } /* Stay visible */
+            100% { opacity: 0; } /* Fade out */
         }
 
         /* --- Text Content Styling --- */
@@ -83,22 +95,23 @@
             box-sizing: border-box;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
         }
-
+        
+        /* Adjusted font sizes for the new taller container */
         .card-title {
-            font-size: 3em;
+            font-size: 3.5em; 
             font-weight: 700;
             color: var(--text-color);
             margin: 0;
         }
 
         .card-subtitle {
-            font-size: 1.3em;
+            font-size: 1.4em;
             font-weight: 400;
             color: var(--accent-color);
             margin: 0;
             border: 1px solid var(--accent-color);
-            padding: 8px 20px;
-            border-radius: 25px;
+            padding: 10px 25px;
+            border-radius: 30px;
         }
 
     </style>
@@ -107,8 +120,12 @@
 
     <div class="card-container">
 
-        <div class="image-container">
-            <img src="https://images.pexels.com/photos/161154/stained-glass-spiral-circle-pattern-161154.jpeg" alt="Background glass art">
+        <div class="image-gallery">
+            <img src="https://images.pexels.com/photos/161154/stained-glass-spiral-circle-pattern-161154.jpeg" alt="Art 1">
+            <img src="https://images.pexels.com/photos/327490/pexels-photo-327490.jpeg" alt="Art 2">
+            <img src="https://images.pexels.com/photos/208636/pexels-photo-208636.jpeg" alt="Art 3">
+            <img src="https://images.pexels.com/photos/4039754/pexels-photo-4039754.jpeg" alt="Art 4">
+            <img src="https://images.pexels.com/photos/3482526/pexels-photo-3482526.jpeg" alt="Art 5">
         </div>
 
         <div class="text-content">
