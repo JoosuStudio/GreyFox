@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Art Gallery Card - Tuned</title>
+    <title>Art Gallery Card - Perfected Fade</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
@@ -12,9 +12,13 @@
             --text-color: #EFEFEF;
             --accent-color: #AACCFF;
             --border-color: rgba(170, 204, 255, 0.5);
-            /* --- UPDATED TIMING --- */
-            /* Total cycle for one image (1.5s fade-in + 3s visible + 1.5s fade-out) */
-            --image-display-time: 6s;
+            
+            /* --- FINAL TIMING --- */
+            --hold-time: 3s;
+            --transition-time: 1.5s;
+            
+            /* Calculated time for one image's "slot" */
+            --slot-time: calc(var(--hold-time) + var(--transition-time));
         }
 
         body, html {
@@ -57,28 +61,36 @@
             height: 100%;
             object-fit: cover;
             opacity: 0;
-            animation-name: imageFade;
-            animation-timing-function: linear; /* Use linear for precise timing */
+            animation-name: perfectFade;
+            animation-timing-function: linear;
             animation-iteration-count: infinite;
-            /* Total duration = 5 images * 6s per image */
-            animation-duration: calc(5 * var(--image-display-time));
+            /* Total duration = 5 images * 4.5s per slot */
+            animation-duration: calc(5 * var(--slot-time));
         }
 
-        /* Stagger the animations */
-        .image-gallery img:nth-child(1) { animation-delay: calc(0 * var(--image-display-time)); }
-        .image-gallery img:nth-child(2) { animation-delay: calc(1 * var(--image-display-time)); }
-        .image-gallery img:nth-child(3) { animation-delay: calc(2 * var(--image-display-time)); }
-        .image-gallery img:nth-child(4) { animation-delay: calc(3 * var(--image-display-time)); }
-        .image-gallery img:nth-child(5) { animation-delay: calc(4 * var(--image-display-time)); }
+        /* Stagger the animations based on the 4.5s slot time */
+        .image-gallery img:nth-child(1) { animation-delay: calc(0 * var(--slot-time)); }
+        .image-gallery img:nth-child(2) { animation-delay: calc(1 * var(--slot-time)); }
+        .image-gallery img:nth-child(3) { animation-delay: calc(2 * var(--slot-time)); }
+        .image-gallery img:nth-child(4) { animation-delay: calc(3 * var(--slot-time)); }
+        .image-gallery img:nth-child(5) { animation-delay: calc(4 * var(--slot-time)); }
 
 
-        /* --- UPDATED FADE ANIMATION with precise timing --- */
-        /* Total cycle is 6s. 1.5s is 25% of 6s. 3s is 50% of 6s. */
-        @keyframes imageFade {
-            0%      { opacity: 0; }
-            25%     { opacity: 0.35; } /* Fade-in ends at 1.5s (25% of 6s) */
-            75%     { opacity: 0.35; } /* Stay visible until 4.5s (75% of 6s), a 3s duration */
-            100%    { opacity: 0; }   /* Fade-out ends at 6s */
+        /* --- THE PERFECTED FADE ANIMATION --- */
+        /*
+          This keyframe ensures an image is ONLY visible during its designated time.
+          Total cycle for 5 images is 22.5s (5 * 4.5s).
+          - Hold for 3s (13.33% of 22.5s)
+          - Fade out over 1.5s (6.67% of 22.5s)
+          - Stay invisible
+          - Fade in over 1.5s (at the very end to prep for the next loop)
+        */
+        @keyframes perfectFade {
+            0%      { opacity: 0.35; } /* Start of 3s solo hold */
+            13.33%  { opacity: 0.35; } /* End of 3s solo hold */
+            20%     { opacity: 0; }    /* End of 1.5s fade-out (13.33% + 6.67%) */
+            93.33%  { opacity: 0; }    /* Stay invisible until the final 1.5s */
+            100%    { opacity: 0.35; } /* Complete 1.5s fade-in, ready for next loop */
         }
 
         .text-content {
