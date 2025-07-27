@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- CHANGED: Using the new Roboto font --- */
+        /* Using the new Roboto font */
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
@@ -31,7 +31,7 @@
             background: url('https://joosustudio.github.io/GreyFox/IMG_20250708_182531.jpg') no-repeat center;
             background-size: cover;
         }
-        /* --- CHANGED: Darker green and centered text --- */
+        /* Darker green and centered text */
         .info-container {
             padding: 20px;
             box-sizing: border-box;
@@ -42,16 +42,21 @@
             flex-direction: column;
             justify-content: center;
         }
+        /* --- CHANGED: Adjusted font size for better hierarchy --- */
         .info-container p {
             margin: 12px 0;
             font-size: 20px;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
         }
-        /* --- CHANGED: Styling for better readability --- */
+        /* --- CHANGED: Made labels uppercase and brighter for high visibility --- */
         .label {
             font-weight: 400; /* Regular weight */
-            color: #c0c0c0; /* Light grey for the label */
-            margin-right: 8px;
+            font-size: 16px;  /* Slightly smaller than the value */
+            color: #FFFFFF;    /* White color */
+            opacity: 0.7;       /* But slightly transparent to stand out less than the value */
+            text-transform: uppercase; /* All caps */
+            letter-spacing: 1px;       /* A little space between letters */
+            margin-right: 10px;
         }
         .value {
             font-weight: 700; /* Bold weight */
@@ -81,5 +86,21 @@
         </div>
         <div class="content map-container" id="mapContent">
             <iframe name="fmeeframe" 
-                    src="https://www.followmee.com/maps.aspx?key=0a946d7feb2ad4f22f0893522d5e7856&username=greyfoxyourney&type=2&deviceid=12846319&function=currentfordevice&z=12">
+                    src="https://www.followmee.com/maps.aspx?key=0a946d7feb2ad4f22f0893522d5e7856&username=greyfoxyourney&type=2&deviceid=12846319&function=currentfordevice">
             </iframe>
+        </div>
+    </div>
+
+    <script>
+        // A much simpler script to rotate the panels. No API calls needed!
+        
+        // --- DOM ELEMENTS ---
+        const contents = [
+            document.getElementById('imageContent'),
+            document.getElementById('infoContent'),
+            document.getElementById('mapContent')
+        ];
+        
+        let currentContentIndex = 0;
+
+        // --- MAIN LOGIC ---
