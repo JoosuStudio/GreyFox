@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Art Gallery Card - Perfected Fade</title>
+    <title>Art Gallery Card - Final</title>
+
+    <link rel="preload" as="image" href="https://images.pexels.com/photos/161154/stained-glass-spiral-circle-pattern-161154.jpeg">
+    <link rel="preload" as="image" href="https://images.pexels.com/photos/327490/pexels-photo-327490.jpeg">
+    <link rel="preload" as="image" href="https://images.pexels.com/photos/208636/pexels-photo-208636.jpeg">
+    <link rel="preload" as="image" href="https://images.pexels.com/photos/4039754/pexels-photo-4039754.jpeg">
+    <link rel="preload" as="image" href="https://images.pexels.com/photos/3482526/pexels-photo-3482526.jpeg">
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
@@ -13,12 +20,12 @@
             --accent-color: #AACCFF;
             --border-color: rgba(170, 204, 255, 0.5);
             
-            /* --- FINAL TIMING --- */
+            /* --- FINAL TIMING with 6s Transition --- */
             --hold-time: 3s;
-            --transition-time: 1.5s;
+            --transition-time: 6s;
             
             /* Calculated time for one image's "slot" */
-            --slot-time: calc(var(--hold-time) + var(--transition-time));
+            --slot-time: calc(var(--hold-time) + var(--transition-time)); /* This will be 9s */
         }
 
         body, html {
@@ -61,75 +68,55 @@
             height: 100%;
             object-fit: cover;
             opacity: 0;
-            animation-name: perfectFade;
+            animation-name: finalFade;
             animation-timing-function: linear;
             animation-iteration-count: infinite;
-            /* Total duration = 5 images * 4.5s per slot */
+            /* Total duration = 5 images * 9s per slot */
             animation-duration: calc(5 * var(--slot-time));
         }
 
-        /* Stagger the animations based on the 4.5s slot time */
+        /* Stagger the animations based on the 9s slot time */
         .image-gallery img:nth-child(1) { animation-delay: calc(0 * var(--slot-time)); }
         .image-gallery img:nth-child(2) { animation-delay: calc(1 * var(--slot-time)); }
         .image-gallery img:nth-child(3) { animation-delay: calc(2 * var(--slot-time)); }
         .image-gallery img:nth-child(4) { animation-delay: calc(3 * var(--slot-time)); }
         .image-gallery img:nth-child(5) { animation-delay: calc(4 * var(--slot-time)); }
 
-
-        /* --- THE PERFECTED FADE ANIMATION --- */
+        /* --- FINAL FADE ANIMATION --- */
         /*
-          This keyframe ensures an image is ONLY visible during its designated time.
-          Total cycle for 5 images is 22.5s (5 * 4.5s).
-          - Hold for 3s (13.33% of 22.5s)
-          - Fade out over 1.5s (6.67% of 22.5s)
-          - Stay invisible
-          - Fade in over 1.5s (at the very end to prep for the next loop)
+          Total cycle for 5 images is 45s (5 * 9s).
+          - Hold for 3s (6.67% of 45s)
+          - Fade out over 6s (13.33% of 45s)
         */
-        @keyframes perfectFade {
+        @keyframes finalFade {
             0%      { opacity: 0.35; } /* Start of 3s solo hold */
-            13.33%  { opacity: 0.35; } /* End of 3s solo hold */
-            20%     { opacity: 0; }    /* End of 1.5s fade-out (13.33% + 6.67%) */
-            93.33%  { opacity: 0; }    /* Stay invisible until the final 1.5s */
-            100%    { opacity: 0.35; } /* Complete 1.5s fade-in, ready for next loop */
+            6.67%   { opacity: 0.35; } /* End of 3s solo hold */
+            20%     { opacity: 0; }    /* End of 6s fade-out (6.67% + 13.33%) */
+            86.67%  { opacity: 0; }    /* Stay invisible until the final 6s */
+            100%    { opacity: 0.35; } /* Complete 6s fade-in, ready for next loop */
         }
 
         .text-content {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            padding: 20px;
-            box-sizing: border-box;
+            position: relative; z-index: 2; display: flex; flex-direction: row;
+            justify-content: space-around; align-items: center; width: 100%;
+            height: 100%; padding: 20px; box-sizing: border-box;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
         }
         
         .card-title {
-            font-size: 3.5em; 
-            font-weight: 700;
-            color: var(--text-color);
-            margin: 0;
+            font-size: 3.5em; font-weight: 700; color: var(--text-color); margin: 0;
         }
 
         .card-subtitle {
-            font-size: 1.4em;
-            font-weight: 400;
-            color: var(--accent-color);
-            margin: 0;
-            border: 1px solid var(--accent-color);
-            padding: 10px 25px;
-            border-radius: 30px;
+            font-size: 1.4em; font-weight: 400; color: var(--accent-color);
+            margin: 0; border: 1px solid var(--accent-color);
+            padding: 10px 25px; border-radius: 30px;
         }
 
     </style>
 </head>
 <body>
-
     <div class="card-container">
-
         <div class="image-gallery">
             <img src="https://images.pexels.com/photos/161154/stained-glass-spiral-circle-pattern-161154.jpeg" alt="Art 1">
             <img src="https://images.pexels.com/photos/327490/pexels-photo-327490.jpeg" alt="Art 2">
@@ -137,13 +124,10 @@
             <img src="https://images.pexels.com/photos/4039754/pexels-photo-4039754.jpeg" alt="Art 4">
             <img src="https://images.pexels.com/photos/3482526/pexels-photo-3482526.jpeg" alt="Art 5">
         </div>
-
         <div class="text-content">
             <h1 class="card-title">Glass Engraving, Art & Journey</h1>
             <p class="card-subtitle">Commissions Open</p>
         </div>
-
     </div>
-
 </body>
 </html>
