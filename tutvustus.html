@@ -31,37 +31,58 @@
             background: url('https://joosustudio.github.io/GreyFox/IMG_20250708_182531.jpg') no-repeat center;
             background-size: cover;
         }
-        /* --- CHANGED: Added align-items for perfect centering --- */
-        .info-container {
-            padding: 10px; /* Reduced padding to allow text to fill more space */
+        .info-container, .countdown-container {
+            padding: 20px;
             box-sizing: border-box;
             background: linear-gradient(135deg, rgba(10, 80, 40, 0.9), rgba(20, 110, 50, 0.9));
             color: #fff;
             text-align: center; 
             display: flex;
             flex-direction: column;
-            justify-content: center; /* This centers it vertically */
-            align-items: center;     /* This centers it horizontally */
+            justify-content: center;
         }
-        /* --- CHANGED: Increased font size and line spacing --- */
         .info-container p {
-            margin: 15px 0;
-            font-size: 26px; /* Much larger base font size */
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+            margin: 12px 0;
+            font-size: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
         }
-        /* --- CHANGED: Scaled up label size --- */
         .label {
-            font-weight: 400; 
-            font-size: 22px;  /* Larger label size */
-            color: #FFFFFF;    
-            opacity: 0.7;       
-            text-transform: uppercase; 
-            letter-spacing: 1px;       
-            margin-right: 12px;
+            font-weight: 400;
+            font-size: 16px;
+            color: #FFFFFF;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-right: 10px;
         }
         .value {
             font-weight: 700;
-            color: #ffffff; 
+            color: #ffffff;
+        }
+        /* --- NEW STYLES for the Countdown Panel --- */
+        .countdown-title {
+            font-size: 22px;
+            font-weight: 700;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+        }
+        #countdownClock {
+            font-size: 48px;
+            font-weight: 700;
+            margin: 15px 0;
+            color: #ffc107; /* A nice gold color */
+            text-shadow: 0 0 10px #ffc107, 0 0 20px rgba(0,0,0,0.7);
+            animation: pulse 2s infinite; /* Pulsing animation */
+        }
+        .countdown-description {
+            font-size: 16px;
+            opacity: 0.9;
+            padding: 0 10px;
+            line-height: 1.4;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
         .map-container {
             width: 100%;
@@ -83,7 +104,12 @@
             <p><span class="label">Age:</span><span class="value">38</span></p>
             <p><span class="label">From:</span><span class="value">Estonia 🇪🇪</span></p>
             <p><span class="label">Profession:</span><span class="value">Glass Engraving Artist</span></p>
-            <p style="font-size: 20px; opacity: 0.8; text-align: center;">(Hobby since 2009)</p>
+            <p style="font-size: 16px; opacity: 0.8; text-align: center;">(As a hobby since 2009)</p>
+        </div>
+        <div class="content countdown-container" id="countdownContent">
+            <p class="countdown-title">⛺🚴🦊 My Journey Begins 🦊🚴⛺</p>
+            <div id="countdownClock">--:--:--:--</div>
+            <p class="countdown-description">Making art and bike touring from Estonia to Spain while livestreaming.</p>
         </div>
         <div class="content map-container" id="mapContent">
             <iframe name="fmeeframe" 
@@ -93,34 +119,58 @@
     </div>
 
     <script>
-        // A much simpler script to rotate the panels. No API calls needed!
-        
         // --- DOM ELEMENTS ---
+        // NEW: Added the countdownContent to the array in the correct order
         const contents = [
             document.getElementById('imageContent'),
             document.getElementById('infoContent'),
+            document.getElementById('countdownContent'),
             document.getElementById('mapContent')
         ];
+        const countdownClockEl = document.getElementById('countdownClock');
         
         let currentContentIndex = 0;
 
+        // --- NEW: Countdown Clock Logic ---
+        function updateCountdown() {
+            const targetDate = new Date('2026-05-01T12:00:00');
+            const now = new Date();
+            const difference = targetDate - now;
+
+            if (difference < 0) {
+                countdownClockEl.innerHTML = "Journey Started!";
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            // Add leading zeros
+            const h = hours < 10 ? '0' + hours : hours;
+            const m = minutes < 10 ? '0' + minutes : minutes;
+            const s = seconds < 10 ? '0' + seconds : seconds;
+
+            countdownClockEl.innerHTML = `${days}d ${h}:${m}:${s}`;
+        }
+
+
         // --- MAIN LOGIC ---
         function toggleContent() {
-            // Hide current content
             contents[currentContentIndex].style.display = 'none';
-            
-            // Move to the next index
             currentContentIndex = (currentContentIndex + 1) % contents.length;
-            
-            // Show new content
             contents[currentContentIndex].style.display = 'block';
         }
 
         // --- INITIALIZATION ---
-        // Show the first panel
         contents[0].style.display = 'block';
         
-        // Set interval for toggling every 20 seconds
+        // Start the countdown immediately and update it every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Set interval for toggling panels every 20 seconds
         setInterval(toggleContent, 20000);
     </script>
 </body>
