@@ -11,12 +11,13 @@
             padding: 0;
             background: transparent;
         }
+        /* --- CHANGED: Increased container size --- */
         .container {
-            width: 300px;
-            height: 300px;
+            width: 350px;
+            height: 350px;
             overflow: hidden;
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
         .content {
             width: 100%;
@@ -27,21 +28,29 @@
             background: url('https://joosustudio.github.io/GreyFox/IMG_20250708_182531.jpg') no-repeat center;
             background-size: cover;
         }
+        /* --- CHANGED: Updated background style --- */
         .info-container {
             padding: 20px;
             box-sizing: border-box;
-            background: rgba(34, 139, 34, 0.8); /* Forest Green, 80% transparent */
+            background: linear-gradient(135deg, rgba(20, 80, 40, 0.9), rgba(30, 100, 50, 0.9));
             color: #fff;
-            text-align: center;
+            text-align: left; /* Aligned text to the left for a cleaner look */
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
+        /* --- CHANGED: Increased font size and spacing, stronger shadow --- */
         .info-container p {
-            margin: 8px 0;
-            font-size: 16px;
+            margin: 12px 0;
+            font-size: 20px;
             font-weight: bold;
-            text-shadow: 1px 1px 3px #000;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+        }
+        /* --- NEW: Added a style for the labels to make them stand out less --- */
+        .label {
+            font-weight: normal;
+            opacity: 0.8;
+            margin-right: 8px;
         }
         .map-container {
             width: 100%;
@@ -59,13 +68,15 @@
     <div class="container">
         <div class="content image-container" id="imageContent"></div>
         <div class="content info-container" id="infoContent">
-            <p><strong>Name:</strong> Janek Joosu</p>
-            <p><strong>Nationality:</strong> Estonian 🇪🇪</p>
-            <p><strong>Profession:</strong> Glass Engraving Artist</p>
+            <p><span class="label">Name:</span>Janek Joosu</p>
+            <p><span class="label">Age:</span>38</p>
+            <p><span class="label">From:</span>Estonia 🇪🇪</p>
+            <p><span class="label">Profession:</span>Glass Engraving Artist</p>
+            <p style="font-size: 16px; opacity: 0.8; text-align: center;">(As a hobby since 2009)</p>
         </div>
         <div class="content map-container" id="mapContent">
             <iframe name="fmeeframe" 
-                    src="https://www.followmee.com/maps.aspx?key=0a946d7feb2ad4f22f0893522d5e7856&username=greyfoxyourney&type=2&deviceid=12846319&function=currentfordevice&x=11">
+                    src="https://www.followmee.com/maps.aspx?key=0a946d7feb2ad4f22f0893522d5e7856&username=greyfoxyourney&type=2&deviceid=12846319&function=currentfordevice">
             </iframe>
         </div>
     </div>
