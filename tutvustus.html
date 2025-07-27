@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Janek Joosu Journey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* --- CHANGED: Using the new Roboto font --- */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             background: transparent;
         }
-        /* --- CHANGED: Increased container size --- */
         .container {
             width: 350px;
             height: 350px;
@@ -28,29 +31,31 @@
             background: url('https://joosustudio.github.io/GreyFox/IMG_20250708_182531.jpg') no-repeat center;
             background-size: cover;
         }
-        /* --- CHANGED: Updated background style --- */
+        /* --- CHANGED: Darker green and centered text --- */
         .info-container {
             padding: 20px;
             box-sizing: border-box;
-            background: linear-gradient(135deg, rgba(20, 80, 40, 0.9), rgba(30, 100, 50, 0.9));
+            background: linear-gradient(135deg, rgba(10, 80, 40, 0.9), rgba(20, 110, 50, 0.9));
             color: #fff;
-            text-align: left; /* Aligned text to the left for a cleaner look */
+            text-align: center; 
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
-        /* --- CHANGED: Increased font size and spacing, stronger shadow --- */
         .info-container p {
             margin: 12px 0;
             font-size: 20px;
-            font-weight: bold;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
         }
-        /* --- NEW: Added a style for the labels to make them stand out less --- */
+        /* --- CHANGED: Styling for better readability --- */
         .label {
-            font-weight: normal;
-            opacity: 0.8;
+            font-weight: 400; /* Regular weight */
+            color: #c0c0c0; /* Light grey for the label */
             margin-right: 8px;
+        }
+        .value {
+            font-weight: 700; /* Bold weight */
+            color: #ffffff; /* Pure white for the value */
         }
         .map-container {
             width: 100%;
@@ -68,49 +73,13 @@
     <div class="container">
         <div class="content image-container" id="imageContent"></div>
         <div class="content info-container" id="infoContent">
-            <p><span class="label">Name:</span>Janek Joosu</p>
-            <p><span class="label">Age:</span>38</p>
-            <p><span class="label">From:</span>Estonia 🇪🇪</p>
-            <p><span class="label">Profession:</span>Glass Engraving Artist</p>
+            <p><span class="label">Name:</span><span class="value">Janek Joosu</span></p>
+            <p><span class="label">Age:</span><span class="value">38</span></p>
+            <p><span class="label">From:</span><span class="value">Estonia 🇪🇪</span></p>
+            <p><span class="label">Profession:</span><span class="value">Glass Engraving Artist</span></p>
             <p style="font-size: 16px; opacity: 0.8; text-align: center;">(As a hobby since 2009)</p>
         </div>
         <div class="content map-container" id="mapContent">
             <iframe name="fmeeframe" 
                     src="https://www.followmee.com/maps.aspx?key=0a946d7feb2ad4f22f0893522d5e7856&username=greyfoxyourney&type=2&deviceid=12846319&function=currentfordevice">
             </iframe>
-        </div>
-    </div>
-
-    <script>
-        // A much simpler script to rotate the panels. No API calls needed!
-        
-        // --- DOM ELEMENTS ---
-        const contents = [
-            document.getElementById('imageContent'),
-            document.getElementById('infoContent'),
-            document.getElementById('mapContent')
-        ];
-        
-        let currentContentIndex = 0;
-
-        // --- MAIN LOGIC ---
-        function toggleContent() {
-            // Hide current content
-            contents[currentContentIndex].style.display = 'none';
-            
-            // Move to the next index
-            currentContentIndex = (currentContentIndex + 1) % contents.length;
-            
-            // Show new content
-            contents[currentContentIndex].style.display = 'block';
-        }
-
-        // --- INITIALIZATION ---
-        // Show the first panel
-        contents[0].style.display = 'block';
-        
-        // Set interval for toggling every 20 seconds
-        setInterval(toggleContent, 20000);
-    </script>
-</body>
-</html>
