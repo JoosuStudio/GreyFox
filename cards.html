@@ -19,13 +19,6 @@
             --text-color: #EFEFEF;
             --accent-color: #AACCFF;
             --border-color: rgba(170, 204, 255, 0.5);
-            
-            /* --- FINAL TIMING with 6s Transition --- */
-            --hold-time: 3s;
-            --transition-time: 6s;
-            
-            /* Calculated time for one image's "slot" */
-            --slot-time: calc(var(--hold-time) + var(--transition-time)); /* This will be 9s */
         }
 
         body, html {
@@ -71,29 +64,28 @@
             animation-name: finalFade;
             animation-timing-function: linear;
             animation-iteration-count: infinite;
-            /* Total duration = 5 images * 9s per slot */
-            animation-duration: calc(5 * var(--slot-time));
+            animation-duration: 45s; /* Total duration: 5 images * 9s per slot */
         }
 
-        /* Stagger the animations based on the 9s slot time */
-        .image-gallery img:nth-child(1) { animation-delay: calc(0 * var(--slot-time)); }
-        .image-gallery img:nth-child(2) { animation-delay: calc(1 * var(--slot-time)); }
-        .image-gallery img:nth-child(3) { animation-delay: calc(2 * var(--slot-time)); }
-        .image-gallery img:nth-child(4) { animation-delay: calc(3 * var(--slot-time)); }
-        .image-gallery img:nth-child(5) { animation-delay: calc(4 * var(--slot-time)); }
+        /* --- UPDATED: Stagger animations with hardcoded values for compatibility --- */
+        .image-gallery img:nth-child(1) { animation-delay: 0s; }
+        .image-gallery img:nth-child(2) { animation-delay: 9s; }  /* 1 * 9s */
+        .image-gallery img:nth-child(3) { animation-delay: 18s; } /* 2 * 9s */
+        .image-gallery img:nth-child(4) { animation-delay: 27s; } /* 3 * 9s */
+        .image-gallery img:nth-child(5) { animation-delay: 36s; } /* 4 * 9s */
 
-        /* --- FINAL FADE ANIMATION --- */
+
         /*
-          Total cycle for 5 images is 45s (5 * 9s).
-          - Hold for 3s (6.67% of 45s)
-          - Fade out over 6s (13.33% of 45s)
+          Animation for a 45s total cycle.
+          - Hold for 3s (6.67%)
+          - Fade out over 6s (13.33%)
         */
         @keyframes finalFade {
             0%      { opacity: 0.35; } /* Start of 3s solo hold */
             6.67%   { opacity: 0.35; } /* End of 3s solo hold */
-            20%     { opacity: 0; }    /* End of 6s fade-out (6.67% + 13.33%) */
+            20%     { opacity: 0; }    /* End of 6s fade-out */
             86.67%  { opacity: 0; }    /* Stay invisible until the final 6s */
-            100%    { opacity: 0.35; } /* Complete 6s fade-in, ready for next loop */
+            100%    { opacity: 0.35; } /* Complete 6s fade-in for next loop */
         }
 
         .text-content {
@@ -118,7 +110,7 @@
 <body>
     <div class="card-container">
         <div class="image-gallery">
-            <img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg">
+            <img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg" alt="Art 1">
             <img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg" alt="Art 2">
             <img src="https://images.pexels.com/photos/208636/pexels-photo-208636.jpeg" alt="Art 3">
             <img src="https://images.pexels.com/photos/4039754/pexels-photo-4039754.jpeg" alt="Art 4">
