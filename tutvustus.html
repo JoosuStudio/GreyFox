@@ -42,13 +42,12 @@
             flex-direction: column;
             justify-content: center;
         }
-        /* --- CHANGED: Adjusted font size for better hierarchy --- */
         .info-container p {
             margin: 12px 0;
             font-size: 20px;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
         }
-        /* --- CHANGED: Made labels uppercase and brighter for high visibility --- */
+        /* Made labels uppercase and brighter for high visibility */
         .label {
             font-weight: 400; /* Regular weight */
             font-size: 16px;  /* Slightly smaller than the value */
@@ -104,3 +103,23 @@
         let currentContentIndex = 0;
 
         // --- MAIN LOGIC ---
+        function toggleContent() {
+            // Hide current content
+            contents[currentContentIndex].style.display = 'none';
+            
+            // Move to the next index
+            currentContentIndex = (currentContentIndex + 1) % contents.length;
+            
+            // Show new content
+            contents[currentContentIndex].style.display = 'block';
+        }
+
+        // --- INITIALIZATION ---
+        // Show the first panel
+        contents[0].style.display = 'block';
+        
+        // Set interval for toggling every 20 seconds
+        setInterval(toggleContent, 20000);
+    </script>
+</body>
+</html>
