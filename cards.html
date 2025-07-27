@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Art Showcase Card</title>
+    <title>Art Showcase Card v2</title>
     <style>
         /* --- Google Font --- */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
         /* --- Global Settings & Color Variables --- */
         :root {
-            /* Feel free to change these colors! */
-            --bg-color: rgba(20, 20, 30, 0.85); /* Semi-transparent dark blueish background */
-            --text-color: #EFEFEF; /* Light text for readability */
-            --accent-color: #AACCFF; /* A light blue for the subtitle */
-            --border-color: rgba(170, 204, 255, 0.5); /* Border color to match accent */
+            --bg-color: rgba(20, 20, 30, 0.85);
+            --text-color: #EFEFEF;
+            --accent-color: #AACCFF;
+            --border-color: rgba(170, 204, 255, 0.5);
         }
 
         body, html {
@@ -23,23 +22,23 @@
             width: 100%;
             height: 100%;
             font-family: 'Poppins', sans-serif;
-            background-color: transparent; /* Makes the background invisible in OBS */
-            overflow: hidden; /* Prevents any weird scrollbars */
+            background-color: transparent;
+            overflow: hidden;
         }
 
         /* --- Main Card Container --- */
         .card-container {
-            /* --- IMPORTANT: Set the size of your card here --- */
-            width: 500px;
-            height: 280px;
-            /* ----------------------------------------------- */
+            /* --- UPDATED: New dimensions based on your test --- */
+            width: 350px;
+            height: 150px;
+            /* ---------------------------------------------------- */
 
             background-color: var(--bg-color);
             border: 2px solid var(--border-color);
-            border-radius: 15px; /* Soft corners */
-            overflow: hidden; /* This is CRUCIAL for the Ken Burns effect */
-            position: relative; /* Needed for positioning text over the image */
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Adds depth */
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
         /* --- Image Container for the Ken Burns Effect --- */
@@ -49,19 +48,17 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1; /* Places the image behind the text */
+            z-index: 1;
         }
 
         .image-container img {
-            /* The image will be animated */
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ensures the image covers the area without distortion */
-            opacity: 0.4; /* Makes the image slightly faded so text is readable */
+            object-fit: cover;
+            opacity: 0.4;
             animation: kenburns 25s ease-in-out infinite alternate;
         }
 
-        /* --- The Ken Burns Animation --- */
         @keyframes kenburns {
             0% {
                 transform: scale(1.1) translate(-2%, -2%);
@@ -71,35 +68,34 @@
             }
         }
 
-        /* --- Text Content Styling --- */
+        /* --- UPDATED: Text Content Styling for a wide layout --- */
         .text-content {
             position: relative;
-            z-index: 2; /* Ensures text is on top of the image */
+            z-index: 2;
             display: flex;
-            flex-direction: column;
-            justify-content: center; /* Centers text vertically */
-            align-items: center; /* Centers text horizontally */
+            flex-direction: row; /* Lay out items side-by-side */
+            justify-content: space-around; /* Space them out evenly */
+            align-items: center; /* Center them vertically */
             width: 100%;
             height: 100%;
-            padding: 20px;
-            box-sizing: border-box; /* Includes padding in the element's total width and height */
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8); /* Makes text pop */
+            padding: 10px;
+            box-sizing: border-box;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
         }
 
+        /* --- UPDATED: Smaller font sizes for the new container size --- */
         .card-title {
-            font-size: 2.5em; /* 1em = 16px, so this is 40px */
+            font-size: 2em; /* Reduced from 2.5em */
             font-weight: 700;
             color: var(--text-color);
             margin: 0;
-            text-align: center;
         }
 
         .card-subtitle {
-            font-size: 1.2em;
+            font-size: 0.9em; /* Reduced from 1.2em */
             font-weight: 400;
             color: var(--accent-color);
-            margin: 10px 0 0 0;
-            text-align: center;
+            margin: 0;
             border: 1px solid var(--accent-color);
             padding: 5px 15px;
             border-radius: 20px;
@@ -116,8 +112,8 @@
         </div>
 
         <div class="text-content">
-            <h1 class="card-title">My Glass Art</h1>
-            <p class="card-subtitle">Commissions Open!</p>
+            <h1 class="card-title">Glass Art</h1>
+            <p class="card-subtitle">Commissions Open</p>
         </div>
 
     </div>
