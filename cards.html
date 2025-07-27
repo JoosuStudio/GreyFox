@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Art Gallery Card - Final</title>
+    <title>Art Gallery Card - Ken Burns</title>
 
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg">
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg">
@@ -53,39 +53,65 @@
             z-index: 1;
         }
 
-        .image-gallery img {
+        /* NEW: The wrapper handles the fade animation and positioning */
+        .image-wrapper {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
             opacity: 0;
+            overflow: hidden; /* Crucial for clipping the scaled image */
             animation-name: finalFade;
             animation-timing-function: linear;
             animation-iteration-count: infinite;
-            animation-duration: 45s; /* Total duration: 5 images * 9s per slot */
+            animation-duration: 45s; /* 5 images * 9s slot */
+        }
+        
+        /* The image inside the wrapper now handles the Ken Burns animation */
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* The image itself is now animated with a pan/zoom effect */
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            animation-duration: 12s; /* A slow, steady pan over 12 seconds */
+            animation-direction: alternate; /* Zooms in, then zooms out */
         }
 
-        /* --- UPDATED: Stagger animations with hardcoded values for compatibility --- */
-        .image-gallery img:nth-child(1) { animation-delay: 0s; }
-        .image-gallery img:nth-child(2) { animation-delay: 9s; }  /* 1 * 9s */
-        .image-gallery img:nth-child(3) { animation-delay: 18s; } /* 2 * 9s */
-        .image-gallery img:nth-child(4) { animation-delay: 27s; } /* 3 * 9s */
-        .image-gallery img:nth-child(5) { animation-delay: 36s; } /* 4 * 9s */
+        /* Stagger the FADE animations on the WRAPPERS */
+        .image-gallery .image-wrapper:nth-child(1) { animation-delay: 0s; }
+        .image-gallery .image-wrapper:nth-child(2) { animation-delay: 9s; }
+        .image-gallery .image-wrapper:nth-child(3) { animation-delay: 18s; }
+        .image-gallery .image-wrapper:nth-child(4) { animation-delay: 27s; }
+        .image-gallery .image-wrapper:nth-child(5) { animation-delay: 36s; }
+        
+        /* Apply different Ken Burns effects to alternating images for variety */
+        .image-gallery .image-wrapper:nth-child(odd) img {
+            animation-name: kenburns-1;
+        }
+        .image-gallery .image-wrapper:nth-child(even) img {
+            animation-name: kenburns-2;
+        }
 
-
-        /*
-          Animation for a 45s total cycle.
-          - Hold for 3s (6.67%)
-          - Fade out over 6s (13.33%)
-        */
         @keyframes finalFade {
-            0%      { opacity: 0.35; } /* Start of 3s solo hold */
-            6.67%   { opacity: 0.35; } /* End of 3s solo hold */
-            20%     { opacity: 0; }    /* End of 6s fade-out */
-            86.67%  { opacity: 0; }    /* Stay invisible until the final 6s */
-            100%    { opacity: 0.35; } /* Complete 6s fade-in for next loop */
+            0%      { opacity: 0.35; }
+            6.67%   { opacity: 0.35; }
+            20%     { opacity: 0; }
+            86.67%  { opacity: 0; }
+            100%    { opacity: 0.35; }
+        }
+        
+        /* --- NEW: KEN BURNS ANIMATIONS --- */
+        @keyframes kenburns-1 {
+            from { transform: scale(1.0) translate(0, 0); }
+            to { transform: scale(1.15) translate(2%, -3%); }
+        }
+
+        @keyframes kenburns-2 {
+            from { transform: scale(1.0) translate(0, 0); }
+            to { transform: scale(1.15) translate(-2%, 2%); }
         }
 
         .text-content {
@@ -110,11 +136,11 @@
 <body>
     <div class="card-container">
         <div class="image-gallery">
-            <img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg" alt="Art 1">
-            <img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg" alt="Art 2">
-            <img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg" alt="Art 3">
-            <img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656784568.jpg" alt="Art 4">
-            <img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656718038.jpg" alt="Art 5">
+            <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg" alt="Art 1"></div>
+            <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg" alt="Art 2"></div>
+            <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg" alt="Art 3"></div>
+            <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656784568.jpg" alt="Art 4"></div>
+            <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656718038.jpg" alt="Art 5"></div>
         </div>
         <div class="text-content">
             <h1 class="card-title">Glass Engraving, Art & Journey</h1>
