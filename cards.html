@@ -17,13 +17,9 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         :root {
-            --card-hold-time: 13s; /* How long a card is fully visible */
-            --card-transition-time: 2s; /* How long the fade between cards takes */
+            /* --- UPDATED TIMING: 1s fade-in, 10s hold, 1s fade-out --- */
+            --card-display-time: 12s;
             
-            /* Calculated values */
-            --card-slot-time: calc(var(--card-hold-time) + var(--card-transition-time)); /* Total time per card slot */
-            --total-carousel-duration: calc(3 * var(--card-slot-time)); /* Total animation duration for 3 cards */
-
             --bg-color: rgba(20, 20, 30, 0.9);
             --text-color: #EFEFEF;
         }
@@ -36,22 +32,21 @@
             width: 100%; height: 100%;
             opacity: 0;
             visibility: hidden;
-            animation-name: perfectCardSwap; /* Using new animation */
-            animation-timing-function: linear; /* Use linear for precise timing */
+            animation-name: cleanSwap; /* Using the new, simpler animation */
+            animation-timing-function: ease-in-out;
             animation-iteration-count: infinite;
-            animation-duration: var(--total-carousel-duration);
+            animation-duration: calc(3 * var(--card-display-time)); /* Total duration is now 36s */
         }
-        .card:nth-child(1) { animation-delay: calc(0 * var(--card-slot-time)); }
-        .card:nth-child(2) { animation-delay: calc(1 * var(--card-slot-time)); }
-        .card:nth-child(3) { animation-delay: calc(2 * var(--card-slot-time)); }
+        .card:nth-child(1) { animation-delay: calc(0 * var(--card-display-time)); }
+        .card:nth-child(2) { animation-delay: calc(1 * var(--card-display-time)); }
+        .card:nth-child(3) { animation-delay: calc(2 * var(--card-display-time)); }
 
-        /* NEW Animation for a perfect cross-fade between cards */
-        @keyframes perfectCardSwap {
-            0% { opacity: 1; visibility: visible; } /* Start of hold */
-            /* End of hold period: e.g. 13s / 15s = 86.67% */
-            calc(var(--card-hold-time) / var(--card-slot-time) * 100%) { opacity: 1; visibility: visible; }
-            /* End of transition period */
-            100% { opacity: 0; visibility: hidden; }
+        /* NEW Animation for a clean fade-out / fade-in with no overlap */
+        @keyframes cleanSwap {
+            0%      { opacity: 0; visibility: hidden; }
+            8.33%   { opacity: 1; visibility: visible; }  /* 1s fade-in (1s / 12s) */
+            91.67%  { opacity: 1; visibility: visible; }  /* 10s hold, starts fade-out at 11s (11s / 12s) */
+            100%    { opacity: 0; visibility: hidden; }
         }
 
         .card-container-inner { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); border: 2px solid var(--border-color); border-radius: 15px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); display: flex; }
@@ -81,7 +76,7 @@
         
         /* --- CARD 2: FOLLOW ME --- */
         .follow-card { --accent-color: #AACCFF; --border-color: rgba(170, 204, 255, 0.5); }
-        .follow-card .card-container-inner { background: var(--bg-color); } /* Solid background */
+        .follow-card .card-container-inner { background: var(--bg-color); }
         .follow-card .column { gap: 30px; }
         .follow-card h2 { font-size: 2.5em; margin: 0; text-shadow: 2px 2px 5px rgba(0,0,0,0.7); }
         .follow-card .social-list { display: flex; flex-direction: column; gap: 25px; align-items: flex-start; }
@@ -90,7 +85,7 @@
         
         /* --- CARD 3: SUPPORT MISSION --- */
         .support-card { --accent-color: #77dd77; --border-color: rgba(119, 221, 119, 0.5); }
-        .support-card .card-container-inner { background: var(--bg-color); } /* Solid background */
+        .support-card .card-container-inner { background: var(--bg-color); }
         .support-card h2 { font-size: 1.8em; margin: 0; text-shadow: 2px 2px 5px rgba(0,0,0,0.7); color: var(--accent-color); }
         .support-card .logo-group { display: flex; flex-direction: column; align-items: center; }
         .support-card .logo-group .handle { font-size: 1.1em; font-weight: 600; margin-bottom: 15px; }
