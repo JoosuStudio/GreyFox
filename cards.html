@@ -3,170 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Traveler's HUD Overlay</title>
+    <title>Stream Overlay - Janek Joosu</title>
 
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg">
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg">
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg">
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656784568.jpg">
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656718038.jpg">
+    <link rel="preload" as="image" href="https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg">
+    <link rel="preload" as="image" href="https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg">
+    <link rel="preload" as="image" href="https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Merriweather:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
         :root {
-            /* --- Timing Control --- */
-            --slide-duration: 12s; /* How long each central slide is visible */
-
-            /* --- New Color Palette --- */
-            --bg-color: rgba(35, 40, 45, 0.9);
-            --text-color: #EAEAEA;
-            --header-color: #FFFFFF;
-            --accent-color: #F5A623; /* Sunset Orange */
-            --border-color: rgba(255, 255, 255, 0.1);
+            --bg-color: rgba(20, 20, 30, 0.85);
+            --text-color: #EFEFEF;
+            --accent-color: #77dd77;
+            --border-color: rgba(119, 221, 119, 0.5);
         }
 
         body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
             font-family: 'Poppins', sans-serif;
             background-color: transparent;
             overflow: hidden;
-            color: var(--text-color);
         }
 
-        /* Main footer bar */
-        .hud-footer {
-            position: fixed;
-            bottom: 0; left: 0;
-            width: 100%;
-            height: 150px;
+        .card-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 870px;
+            height: 358px;
             background-color: var(--bg-color);
-            border-top: 2px solid var(--border-color);
-            box-shadow: 0 -5px 25px rgba(0,0,0,0.3);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            animation: cardFade 30s linear infinite;
+        }
+
+        .card-container:nth-child(1) { animation-delay: 0s; }
+        .card-container:nth-child(2) { animation-delay: 10s; }
+        .card-container:nth-child(3) { animation-delay: 20s; }
+
+        @keyframes cardFade {
+            0% { opacity: 1; }
+            33% { opacity: 1; }
+            34% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        .image-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: kenburns 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes kenburns {
+            from { transform: scale(1.0) translate(0, 0); }
+            to { transform: scale(1.15) translate(2%, -2%); }
+        }
+
+        .text-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            color: var(--text-color);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Art & Journey Card */
+        .art-journey {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100%;
+        }
+
+        .art-journey .column {
+            flex: 1;
+            text-align: center;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .art-journey .column:last-child {
+            border-right: none;
+        }
+
+        .art-journey h2 {
+            font-size: 2.5em;
+            margin: 0;
+        }
+
+        .art-journey .social-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .art-journey .social-item {
             display: flex;
             align-items: center;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            animation: slideUp 1s ease-out forwards;
-        }
-        @keyframes slideUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* --- Layout Zones --- */
-        .hud-left { flex-basis: 300px; padding: 0 25px; text-align: left; }
-        .hud-center { flex-grow: 1; height: 100%; overflow: hidden; position: relative; }
-        .hud-right { flex-basis: 400px; padding: 0 25px; display: flex; justify-content: flex-end; align-items: center; gap: 15px; }
-
-        /* --- Left Zone: Mission Statement --- */
-        .hud-left h3 {
-            font-family: 'Merriweather', serif;
-            color: var(--header-color);
-            margin: 0 0 8px 0;
+            gap: 10px;
             font-size: 1.2em;
         }
-        .hud-left p {
-            margin: 0;
-            font-size: 0.9em;
-            line-height: 1.4;
-        }
-        .hud-left .highlight { color: var(--accent-color); font-weight: 600; }
 
-        /* --- Center Zone: Sliding Carousel --- */
-        .carousel-track {
-            display: flex;
-            height: 100%;
-            width: 300%; /* 3 slides */
-            animation: slideAnimation calc(3 * var(--slide-duration)) steps(3, end) infinite;
-        }
-        @keyframes slideAnimation {
-            100% { transform: translateX(-100%); }
+        .art-journey .social-item svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--text-color);
         }
 
-        .slide {
-            width: 100%;
-            height: 100%;
+        /* Support Card */
+        .support-card .column {
+            flex: 1;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: space-evenly;
-            padding: 0 20px;
-            box-sizing: border-box;
+            text-align: center;
         }
-        .support-item { text-align: center; }
-        .support-item .handle { font-size: 1em; font-weight: 600; margin-top: 8px; }
-        .support-item .qr-code {
-            width: 90px; height: 90px;
-            border-radius: 8px;
-            border: 2px solid var(--accent-color);
-        }
-        .contact-info { font-size: 1.1em; font-weight: 600; letter-spacing: 1px; }
 
-        /* --- Right Zone: Art Showcase --- */
-        .art-preview {
-            width: 100px; height: 100px;
-            border: 4px solid white;
-            border-radius: 5px;
-            box-shadow: 3px 3px 10px rgba(0,0,0,0.4);
-            transform: rotate(-3deg);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .support-card .column:not(:last-child) {
+            border-right: 1px solid var(--border-color);
         }
-        .art-preview:hover { transform: scale(1.1) rotate(2deg); z-index: 10; box-shadow: 5px 5px 15px rgba(0,0,0,0.5); }
-        .art-preview:nth-child(2) { transform: rotate(2deg); }
-        .art-preview:nth-child(3) { transform: rotate(-5deg); }
-        
-        .art-preview img { width: 100%; height: 100%; object-fit: cover; }
 
+        .support-card h2 {
+            font-size: 1.8em;
+            color: var(--accent-color);
+        }
+
+        .support-card .qr-code {
+            width: 150px;
+            height: 150px;
+            border: 3px solid var(--accent-color);
+            border-radius: 10px;
+        }
+
+        .support-card .stream-tip-box {
+            width: 95%;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .support-card .stream-tip-box .qr-code {
+            width: 120px;
+            height: 120px;
+        }
     </style>
 </head>
 <body>
-
-    <footer class="hud-footer">
-        <div class="hud-left">
-            <h3>Glass, Steel & The Open Road</h3>
-            <p>From <span class="highlight">Estonia</span> to <span class="highlight">Spain</span> 🇪🇸, one engraving at a time. Follow the journey.</p>
+    <div class="card-container">
+        <div class="image-wrapper">
+            <img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg" alt="Art 1">
         </div>
-
-        <div class="hud-center">
-            <div class="carousel-track">
-                <div class="slide">
-                    <div class="support-item">
-                        <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=https://paypal.me/JanekJoosu" alt="PayPal QR Code">
-                        <div class="handle">PayPal</div>
+        <div class="text-content art-journey">
+            <div class="column">
+                <h2>The Art</h2>
+                <div class="social-list">
+                    <div class="social-item">
+                        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.784.297-1.457.718-2.123 1.384S.927 3.356.63 4.14C.333 4.905.13 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.26 2.148.558 2.913.297.784.718 1.457 1.384 2.123s1.34 1.087 2.123 1.384c.766.298 1.636.498 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.26 2.913-.558.784-.297 1.457-.718 2.123-1.384s1.087-1.34 1.384-2.123c.298-.766.498-1.636.558-2.913C23.988 15.667 24 15.26 24 12s-.015-3.667-.072-4.947c-.06-1.277-.26-2.148-.558-2.913-.297-.784-.718-1.457-1.384-2.123S20.644.927 19.86.63c-.766-.298-1.636-.498-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.06 1.17-.249 1.805-.413 2.227-.217.562-.477.96-.896 1.381-.42.419-.82-.679-1.38.896-.423.164-1.057-.36-2.227-.413-1.266.057-1.646.07-4.85.07s-3.585-.015-4.85-.074c-1.17-.06-1.805-.249-2.227-.413-.562-.217-.96-.477-1.381-.896-.419-.42-.679-.82-.896-1.38.165-.423-.36-1.057-.413-2.227-.057-1.266-.07-1.646-.07-4.85s.015-3.585.07-4.85c.06-1.17.25-1.805.413-2.227.217-.562.477-.96.896-1.381.42-.419.82-.679 1.38-.896.423-.164 1.057-.36 2.227-.413C8.415 2.175 8.797 2.16 12 2.16zm0 9.09c-2.842 0-5.125 2.283-5.125 5.125S9.158 21.375 12 21.375s5.125-2.283 5.125-5.125S14.842 11.25 12 11.25zm0 8.56c-1.898 0-3.435-1.536-3.435-3.435s1.537-3.435 3.435-3.435 3.435 1.536 3.435 3.435-1.537 3.435-3.435 3.435zm6.405-11.845c-.796 0-1.44-.645-1.44-1.44s.645-1.44 1.44-1.44c.795 0 1.44.645 1.44 1.44s-.645 1.44-1.44 1.44z"/></svg>
+                        <span>@JoosuStudio</span>
                     </div>
-                    <div class="support-item">
-                        <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=https://wise.com/pay/me/janekj6" alt="Wise QR Code">
-                        <div class="handle">Wise</div>
+                    <div class="social-item">
+                        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        <span>/JoosuStudio</span>
                     </div>
-                    <div class="support-item">
-                        <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=https://streamlabs.com/joosustudio/tip" alt="Streamlabs QR Code">
-                        <div class="handle">Streamlabs</div>
+                    <div class="social-item">
+                        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        <span>/JoosuStudio</span>
                     </div>
                 </div>
-                <div class="slide">
-                    <div class="contact-info">
-                        For Commissions & Inquiries: <span class="highlight">joosustudio@gmail.com</span>
+            </div>
+            <div class="column">
+                <h2>The Journey</h2>
+                <div class="social-list">
+                    <div class="social-item">
+                        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.784.297-1.457.718-2.123 1.384S.927 3.356.63 4.14C.333 4.905.13 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.26 2.148.558 2.913.297.784.718 1.457 1.384 2.123s1.34 1.087 2.123 1.384c.766.298 1.636.498 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.26 2.913-.558.784-.297 1.457-.718 2.123-1.384s1.087-1.34 1.384-2.123c.298-.766.498-1.636.558-2.913C23.988 15.667 24 15.26 24 12s-.015-3.667-.072-4.947c-.06-1.277-.26-2.148-.558-2.913-.297-.784-.718-1.457-1.384-2.123S20.644.927 19.86.63c-.766-.298-1.636-.498-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.06 1.17-.249 1.805-.413 2.227-.217.562-.477.96-.896 1.381-.42.419-.82-.679-1.38.896-.423.164-1.057-.36-2.227-.413-1.266.057-1.646.07-4.85.07s-3.585-.015-4.85-.074c-1.17-.06-1.805-.249-2.227-.413-.562-.217-.96-.477-1.381-.896-.419-.42-.679-.82-.896-1.38.165-.423-.36-1.057-.413-2.227-.057-1.266-.07-1.646-.07-4.85s.015-3.585.07-4.85c.06-1.17.25-1.805.413-2.227.217-.562.477-.96.896-1.381.42-.419.82-.679 1.38-.896.423-.164 1.057-.36 2.227-.413C8.415 2.175 8.797 2.16 12 2.16zm0 9.09c-2.842 0-5.125 2.283-5.125 5.125S9.158 21.375 12 21.375s5.125-2.283 5.125-5.125S14.842 11.25 12 11.25zm0 8.56c-1.898 0-3.435-1.536-3.435-3.435s1.537-3.435 3.435-3.435 3.435 1.536 3.435 3.435-1.537 3.435-3.435 3.435zm6.405-11.845c-.796 0-1.44-.645-1.44-1.44s.645-1.44 1.44-1.44c.795 0 1.44.645 1.44 1.44s-.645 1.44-1.44 1.44z"/></svg>
+                        <span>@GreyFoxJourney</span>
+                    </div>
+                    <div class="social-item">
+                        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        <span>/GreyFoxJourney</span>
+                    </div>
+                    <div class="social-item">
+                        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        <span>/GreyFoxJourney</span>
                     </div>
                 </div>
-                <div class="slide">
-                    <div class="support-item handle">IG: @JoosuStudio</div>
-                    <div class="support-item handle">YT: /JoosuStudio</div>
-                    <div class="support-item handle">IG: @GreyFoxJourney</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="image-wrapper">
+            <img src="https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg" alt="Road at sunset">
+        </div>
+        <div class="text-content">
+            <h1>Glass Engraving, Art & Journey</h1>
+            <p>Commissions Open - Janek Joosu, Estonia</p>
+        </div>
+    </div>
+
+    <div class="card-container support-card">
+        <div class="image-wrapper">
+            <img src="https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg" alt="Starry night sky">
+        </div>
+        <div class="text-content">
+            <div class="foreground-content">
+                <div class="column">
+                    <h2>PayPal</h2>
+                    <span class="handle">paypal.me/JanekJoosu</span>
+                    <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://paypal.me/JanekJoosu" alt="PayPal QR Code">
+                </div>
+                <div class="column">
+                    <h2>Wise</h2>
+                    <span class="handle">@janekj6</span>
+                    <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wise.com/pay/me/janekj6" alt="Wise QR Code">
+                </div>
+                <div class="column">
+                    <h2>On-Stream</h2>
+                    <div class="stream-tip-box">
+                        <span class="handle">Tips seen on stream!</span>
+                        <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://streamlabs.com/joosustudio/tip" alt="Streamlabs Tip Page QR Code">
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="hud-right">
-            <div class="art-preview">
-                <img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg" alt="Engraved Glass Art 1">
-            </div>
-            <div class="art-preview">
-                <img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg" alt="Engraved Glass Art 2">
-            </div>
-            <div class="art-preview">
-                <img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg" alt="Engraved Glass Art 3">
-            </div>
-        </div>
-
-    </footer>
-
+    </div>
 </body>
 </html>
