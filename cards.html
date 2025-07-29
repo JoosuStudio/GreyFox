@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hybrid Stream Overlay - Final</title>
+    <title>Hybrid Stream Overlay - Final Fix</title>
 
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg">
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg">
@@ -32,7 +32,7 @@
             position: relative; z-index: 2;
             width: 100%; height: 100%;
             display: grid;
-            grid-template-columns: 260px 1fr;
+            grid-template-columns: 260px 1fr; /* Art Panel | Carousel Panel */
         }
 
         .panel { background-color: var(--bg-panel); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
@@ -53,38 +53,48 @@
         .carousel-panel { position: relative; overflow: hidden; }
         .info-card {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0;
-            animation-duration: calc(2 * var(--card-display-time));
+            opacity: 0; /* Start hidden */
+            animation-duration: calc(2 * var(--card-display-time)); /* Total cycle time (30s) */
             animation-timing-function: ease-in-out;
             animation-iteration-count: infinite;
         }
+        
+        /* --- NEW: Two separate animations for rock-solid swapping --- */
         .follow-card { animation-name: show-follow-card; }
         .support-card { animation-name: show-support-card; }
 
         @keyframes show-follow-card {
-            0% { opacity: 0; } 5% { opacity: 1; } 45% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 0; }
+            0%      { opacity: 0; }
+            5%      { opacity: 1; } /* Fade in */
+            45%     { opacity: 1; } /* Hold */
+            50%     { opacity: 0; } /* Fade out */
+            100%    { opacity: 0; }
         }
+
         @keyframes show-support-card {
-            0% { opacity: 0; } 50% { opacity: 0; } 55% { opacity: 1; } 95% { opacity: 1; } 100% { opacity: 0; }
+            0%      { opacity: 0; }
+            50%     { opacity: 0; } /* Wait for the first card to finish */
+            55%     { opacity: 1; } /* Fade in */
+            95%     { opacity: 1; } /* Hold */
+            100%    { opacity: 0; } /* Fade out */
         }
         
+        /* --- Card Specific Styles --- */
         .follow-card, .support-card { display: flex; flex-direction: column; padding: 20px; box-sizing: border-box; align-items: center; justify-content: space-evenly; }
         
-        /* Follow Card Styles */
         .follow-card h1 { font-family: 'Montserrat', sans-serif; font-size: 2.2em; color: var(--accent-gold); text-align: center; margin: 0; line-height: 1.2; }
         .follow-card .social-grid { display: flex; width: 100%; justify-content: space-evenly; }
         .follow-card .social-column h2 { font-size: 1.5em; margin-bottom: 15px; color: var(--text-light); }
         .follow-card .social-list { display: flex; flex-direction: column; gap: 15px; align-items: flex-start; }
-        .follow-card .social-item { display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 1.3em; /* FONT-SIZE INCREASED */ }
+        .follow-card .social-item { display: flex; align-items: center; gap: 12px; font-size: 1.1em; color: var(--text-muted); }
         .follow-card .social-item strong { color: var(--text-light); }
-        .follow-card .social-item svg { width: 28px; height: 28px; fill: var(--text-muted); }
+        .follow-card .social-item svg { width: 24px; height: 24px; fill: var(--text-muted); }
 
-        /* Support Card Styles */
         .support-card .qr-grid { display: flex; width: 100%; justify-content: space-around; align-items: flex-start; padding-top: 20px;}
         .support-card .qr-code-item { text-align: center; }
         .support-card .qr-code-item img { width: 160px; height: 160px; border-radius: 12px; border: 3px solid var(--accent-green); }
         .support-card .qr-code-item p { margin: 10px 0 0 0; font-size: 1.2em; font-weight: 600; color: var(--accent-green); }
-        .support-card .qr-code-item span { font-size: 1.2em; color: var(--text-muted); /* FONT-SIZE INCREASED */ }
+        .support-card .qr-code-item span { font-size: 0.9em; color: var(--text-muted); }
     </style>
 </head>
 <body>
@@ -119,7 +129,7 @@
                         </div>
                     </div>
                      <div class="social-item">
-                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6ZM20 6L12 11L4 6H20ZM20 18H4V8L12 13L20 8V18Z"></path></svg>
+                        <svg viewBox="0 0 24 24"><path d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6ZM20 6L12 11L4 6H20ZM20 18H4V8L12 13L20 8V18Z"></path></svg>
                         <strong>joosustudio@gmail.com</strong>
                     </div>
                 </div>
