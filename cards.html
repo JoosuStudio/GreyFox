@@ -3,139 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hybrid Stream Overlay - Final</title>
+    <title>Stream Overlay - Janek Joosu</title>
 
+    <!-- Preload images for better performance -->
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg">
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg">
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg">
-    <link rel="preload" as="image" href="https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg">
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656784568.jpg">
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656718038.jpg">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
         :root {
-            --card-display-time: 15s;
-            --bg-panel: rgba(10, 20, 30, 0.75);
-            --border-color: rgba(255, 196, 10, 0.4);
-            --accent-gold: #FFC40A;
-            --accent-green: #77dd77;
-            --text-light: #F0F0F0;
-            --text-muted: #A0A0B0;
+            --bg-color: rgba(15, 25, 15, 0.9); /* Darker green tint */
+            --text-color: #E0F0E0;
+            --accent-color: #77dd77;
+            --border-color: rgba(119, 221, 119, 0.6);
         }
 
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Poppins', sans-serif; background-color: transparent; overflow: hidden; }
-
-        .overlay-container { position: relative; width: 870px; height: 358px; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37); }
-        .background-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(2px) brightness(0.6); transform: scale(1.05); }
-        
-        .content-grid {
-            position: relative; z-index: 2;
-            width: 100%; height: 100%;
-            display: grid;
-            grid-template-columns: 260px 1fr; /* Art Panel | Carousel Panel */
-        }
-
-        .panel { background-color: var(--bg-panel); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-
-        /* --- 1. Persistent Art Panel (Left) --- */
-        .art-panel {
+        body, html {
+            margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: transparent;
+            overflow: hidden;
+        }
+
+        .card-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 870px;
+            height: 358px;
+            background-color: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            animation: fadeCycle 30s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-container:nth-child(1) { animation-delay: 0s; }
+        .card-container:nth-child(2) { animation-delay: 10s; }
+        .card-container:nth-child(3) { animation-delay: 20s; }
+
+        @keyframes fadeCycle {
+            0% { opacity: 1; }
+            33% { opacity: 1; }
+            34% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        .background-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            animation: zoomEffect 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes zoomEffect {
+            from { transform: scale(1.0) translate(0, 0); }
+            to { transform: scale(1.2) translate(1%, -1%); }
+        }
+
+        .content {
             position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            color: var(--text-color);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        /* Art & Journey Card */
+        .art-journey {
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+        .art-journey .section {
+            flex: 1;
+            text-align: center;
             border-right: 1px solid var(--border-color);
         }
-        .art-panel .art-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: artFade 18s linear infinite; }
-        .art-panel .art-image:nth-child(1) { animation-delay: 0s; }
-        .art-panel .art-image:nth-child(2) { animation-delay: 6s; }
-        .art-panel .art-image:nth-child(3) { animation-delay: 12s; }
-        @keyframes artFade { 0% { opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; } }
 
-        /* --- 2. Carousel Panel (Right) --- */
-        .carousel-panel { position: relative; overflow: hidden; }
-        .info-card {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0;
-            animation-duration: calc(2 * var(--card-display-time)); /* Total cycle time (30s) */
-            animation-timing-function: ease-in-out;
-            animation-iteration-count: infinite;
+        .art-journey .section:last-child {
+            border-right: none;
         }
-        
-        .follow-card { animation-name: show-follow-card; }
-        .support-card { animation-name: show-support-card; }
-        @keyframes show-follow-card {
-            0% { opacity: 0; } 5% { opacity: 1; } 45% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 0; }
-        }
-        @keyframes show-support-card {
-            0% { opacity: 0; } 50% { opacity: 0; } 55% { opacity: 1; } 95% { opacity: 1; } 100% { opacity: 0; }
-        }
-        
-        /* --- Card Specific Styles --- */
-        .follow-card, .support-card { display: flex; flex-direction: column; padding: 20px; box-sizing: border-box; align-items: center; justify-content: space-evenly; }
-        
-        /* Follow Card Styles */
-        .follow-card h1 { font-family: 'Montserrat', sans-serif; font-size: 2.2em; color: var(--accent-gold); text-align: center; margin: 0; line-height: 1.2; }
-        .follow-card .social-grid { display: flex; width: 100%; justify-content: space-evenly; }
-        .follow-card .social-column h2 { font-size: 1.5em; margin-bottom: 15px; color: var(--text-light); }
-        .follow-card .social-list { display: flex; flex-direction: column; gap: 18px; align-items: flex-start; }
-        .follow-card .social-item { display: flex; align-items: center; gap: 12px; font-size: 1.3em; color: var(--text-muted); } /* FONT SIZE INCREASED */
-        .follow-card .social-item strong { color: var(--text-light); }
-        .follow-card .social-item svg { width: 28px; height: 28px; fill: var(--text-muted); }
 
-        /* Support Card Styles */
-        .support-card .qr-grid { display: flex; width: 100%; justify-content: space-evenly; align-items: flex-start; padding-top: 20px;}
-        .support-card .qr-code-item { text-align: center; }
-        .support-card .qr-code-item img { width: 160px; height: 160px; border-radius: 12px; border: 3px solid var(--accent-green); }
-        .support-card .qr-code-item p { margin: 10px 0 0 0; font-size: 1.2em; font-weight: 600; color: var(--accent-green); }
-        .support-card .qr-code-item span { font-size: 1.1em; color: var(--text-muted); } /* FONT SIZE INCREASED */
+        .art-journey h2 {
+            font-size: 2.5em;
+            margin: 0;
+            color: var(--accent-color);
+        }
+
+        .art-journey .social-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .art-journey .social-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2em;
+            margin: 5px 0;
+        }
+
+        .art-journey .social-item svg {
+            width: 25px;
+            height: 25px;
+            fill: var(--text-color);
+        }
+
+        /* Art & Journey Info Card */
+        .info-card h1 {
+            font-size: 2.8em;
+            margin: 0;
+        }
+
+        .info-card p {
+            font-size: 1.5em;
+            margin: 5px 0;
+        }
+
+        /* Support Card */
+        .support-card {
+            flex-direction: row;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        .support-card .section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .support-card .section:not(:last-child) {
+            border-right: 1px solid var(--border-color);
+        }
+
+        .support-card h2 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+
+        .support-card .handle {
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+
+        .support-card .qr-code {
+            width: 150px;
+            height: 150px;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .support-card .stream-tip-box {
+            width: 90%;
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .support-card .stream-tip-box .qr-code {
+            width: 120px;
+            height: 120px;
+        }
     </style>
 </head>
 <body>
-    <div class="overlay-container">
-        <img class="background-image" src="https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg" alt="Estonian forest road">
-        <div class="content-grid">
-            <div class="panel art-panel">
-                <img class="art-image" src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg" alt="Engraving of a wolf">
-                <img class="art-image" src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg" alt="Engraving of a fox">
-                <img class="art-image" src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg" alt="Engraving of a bear">
+    <div class="card-container">
+        <img class="background-img" src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg" alt="Estonian Art 1">
+        <div class="content art-journey">
+            <div class="section">
+                <h2>The Art</h2>
+                <ul class="social-list">
+                    <li class="social-item">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.784.297-1.457.718-2.123 1.384S.927 3.356.63 4.14C.333 4.905.13 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.26 2.148.558 2.913.297.784.718 1.457 1.384 2.123s1.34 1.087 2.123 1.384c.766.298 1.636.498 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.26 2.913-.558.784-.297 1.457-.718 2.123-1.384s1.087-1.34 1.384-2.123c.298-.766.498-1.636.558-2.913C23.988 15.667 24 15.26 24 12s-.015-3.667-.072-4.947c-.06-1.277-.26-2.148-.558-2.913-.297-.784-.718-1.457-1.384-2.123S20.644.927 19.86.63c-.766-.298-1.636-.498-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.06 1.17-.249 1.805-.413 2.227-.217.562-.477.96-.896 1.381-.42.419-.82-.679-1.38.896-.423.164-1.057-.36-2.227-.413-1.266.057-1.646.07-4.85.07s-3.585-.015-4.85-.074c-1.17-.06-1.805-.249-2.227-.413-.562-.217-.96-.477-1.381-.896-.419-.42-.679-.82-.896-1.38.165-.423-.36-1.057-.413-2.227-.057-1.266-.07-1.646-.07-4.85s.015-3.585.07-4.85c.06-1.17.25-1.805.413-2.227.217-.562.477-.96.896-1.381.42-.419.82-.679 1.38-.896.423-.164 1.057-.36 2.227-.413C8.415 2.175 8.797 2.16 12 2.16zm0 9.09c-2.842 0-5.125 2.283-5.125 5.125S9.158 21.375 12 21.375s5.125-2.283 5.125-5.125S14.842 11.25 12 11.25zm0 8.56c-1.898 0-3.435-1.536-3.435-3.435s1.537-3.435 3.435-3.435 3.435 1.536 3.435 3.435-1.537 3.435-3.435 3.435zm6.405-11.845c-.796 0-1.44-.645-1.44-1.44s.645-1.44 1.44-1.44c.795 0 1.44.645 1.44 1.44s-.645 1.44-1.44 1.44z"/></svg>
+                        <span>@JoosuStudio</span>
+                    </li>
+                    <li class="social-item">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        <span>/JoosuStudio</span>
+                    </li>
+                    <li class="social-item">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        <span>/JoosuStudio</span>
+                    </li>
+                </ul>
             </div>
-            <div class="panel carousel-panel">
-                <div class="info-card follow-card">
-                    <h1>JoosuStudio | GreyFoxJourney</h1>
-                    <div class="social-grid">
-                        <div class="social-column">
-                            <h2>The Art</h2>
-                            <div class="social-list">
-                                <div class="social-item"><span>Instagram:</span><strong>@JoosuStudio</strong></div>
-                                <div class="social-item"><span>Facebook:</span><strong>/JoosuStudio</strong></div>
-                                <div class="social-item"><span>YouTube:</span><strong>JoosuStudio</strong></div>
-                            </div>
-                        </div>
-                        <div class="social-column">
-                            <h2>The Journey</h2>
-                            <div class="social-list">
-                                <div class="social-item"><span>Instagram:</span><strong>@GreyFoxJourney</strong></div>
-                                <div class="social-item"><span>Facebook:</span><strong>/GreyFoxJourney</strong></div>
-                                <div class="social-item"><span>YouTube:</span><strong>GreyFoxJourney</strong></div>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="social-item">
-                        <svg viewBox="0 0 24 24"><path d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6ZM20 6L12 11L4 6H20ZM20 18H4V8L12 13L20 8V18Z"></path></svg>
-                        <strong>joosustudio@gmail.com</strong>
-                    </div>
-                </div>
-                <div class="info-card support-card">
-                    <div class="qr-grid">
-                        <div class="qr-code-item">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://paypal.me/JanekJoosu" alt="PayPal QR Code">
-                            <p>PayPal</p>
-                            <span>paypal.me/JanekJoosu</span>
-                        </div>
-                        <div class="qr-code-item">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://streamlabs.com/joosustudio/tip" alt="Streamlabs Tip Page QR Code">
-                            <p>On-Stream Tip</p>
-                            <span>Tips appear live!</span>
-                        </div>
-                    </div>
+            <div class="section">
+                <h2>The Journey</h2>
+                <ul class="social-list">
+                    <li class="social-item">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.784.297-1.457.718-2.123 1.384S.927 3.356.63 4.14C.333 4.905.13 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.26 2.148.558 2.913.297.784.718 1.457 1.384 2.123s1.34 1.087 2.123 1.384c.766.298 1.636.498 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.26 2.913-.558.784-.297 1.457-.718 2.123-1.384s1.087-1.34 1.384-2.123c.298-.766.498-1.636.558-2.913C23.988 15.667 24 15.26 24 12s-.015-3.667-.072-4.947c-.06-1.277-.26-2.148-.558-2.913-.297-.784-.718-1.457-1.384-2.123S20.644.927 19.86.63c-.766-.298-1.636-.498-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.06 1.17-.249 1.805-.413 2.227-.217.562-.477.96-.896 1.381-.42.419-.82-.679-1.38.896-.423.164-1.057-.36-2.227-.413-1.266.057-1.646.07-4.85.07s-3.585-.015-4.85-.074c-1.17-.06-1.805-.249-2.227-.413-.562-.217-.96-.477-1.381-.896-.419-.42-.679-.82-.896-1.38.165-.423-.36-1.057-.413-2.227-.057-1.266-.07-1.646-.07-4.85s.015-3.585.07-4.85c.06-1.17.25-1.805.413-2.227.217-.562.477-.96.896-1.381.42-.419.82-.679 1.38-.896.423-.164 1.057-.36 2.227-.413C8.415 2.175 8.797 2.16 12 2.16zm0 9.09c-2.842 0-5.125 2.283-5.125 5.125S9.158 21.375 12 21.375s5.125-2.283 5.125-5.125S14.842 11.25 12 11.25zm0 8.56c-1.898 0-3.435-1.536-3.435-3.435s1.537-3.435 3.435-3.435 3.435 1.536 3.435 3.435-1.537 3.435-3.435 3.435zm6.405-11.845c-.796 0-1.44-.645-1.44-1.44s.645-1.44 1.44-1.44c.795 0 1.44.645 1.44 1.44s-.645 1.44-1.44 1.44z"/></svg>
+                        <span>@GreyFoxJourney</span>
+                    </li>
+                    <li class="social-item">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        <span>/GreyFoxJourney</span>
+                    </li>
+                    <li class="social-item">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        <span>/GreyFoxJourney</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <img class="background-img" src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg" alt="Estonian Art 2">
+        <div class="content info-card">
+            <h1>Glass Engraving, Art & Journey</h1>
+            <p>Commissions Open - Janek Joosu, Estonia</p>
+            <p>Glass Artist Since 2009</p>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <img class="background-img" src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg" alt="Estonian Art 3">
+        <div class="content support-card">
+            <div class="section">
+                <h2>PayPal</h2>
+                <span class="handle">paypal.me/JanekJoosu</span>
+                <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://paypal.me/JanekJoosu" alt="PayPal QR Code">
+            </div>
+            <div class="section">
+                <h2>Wise</h2>
+                <span class="handle">@janekj6</span>
+                <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wise.com/pay/me/janekj6" alt="Wise QR Code">
+            </div>
+            <div class="section">
+                <h2>On-Stream</h2>
+                <div class="stream-tip-box">
+                    <span class="handle">Tips seen on stream!</span>
+                    <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://streamlabs.com/joosustudio/tip" alt="Streamlabs Tip Page QR Code">
                 </div>
             </div>
         </div>
