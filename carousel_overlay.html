@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hybrid Stream Overlay - Final</title>
+
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg">
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg">
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg">
+    <link rel="preload" as="image" href="https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --card-display-time: 15s;
+            --bg-panel: rgba(10, 20, 30, 0.75);
+            --border-color: rgba(255, 196, 10, 0.4);
+            --accent-gold: #FFC40A;
+            --accent-green: #77dd77;
+            --text-light: #F0F0F0;
+            --text-muted: #A0A0B0;
+        }
+
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Poppins', sans-serif; background-color: transparent; overflow: hidden; }
+
+        .overlay-container { position: relative; width: 870px; height: 358px; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37); }
+        .background-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(2px) brightness(0.6); transform: scale(1.05); }
+        
+        .content-grid {
+            position: relative; z-index: 2;
+            width: 100%; height: 100%;
+            display: grid;
+            grid-template-columns: 260px 1fr; /* Art Panel | Carousel Panel */
+        }
+
+        .panel { background-color: var(--bg-panel); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+
+        /* --- 1. Persistent Art Panel (Left) --- */
+        .art-panel {
+            padding: 0;
+            position: relative;
+            border-right: 1px solid var(--border-color);
+        }
+        .art-panel .art-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: artFade 18s linear infinite; }
+        .art-panel .art-image:nth-child(1) { animation-delay: 0s; }
+        .art-panel .art-image:nth-child(2) { animation-delay: 6s; }
+        .art-panel .art-image:nth-child(3) { animation-delay: 12s; }
+        @keyframes artFade { 0% { opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; } }
+
+        /* --- 2. Carousel Panel (Right) --- */
+        .carousel-panel { position: relative; overflow: hidden; }
+        .info-card {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+            animation-duration: calc(2 * var(--card-display-time)); /* Total cycle time (30s) */
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+        }
+        
+        .follow-card { animation-name: show-follow-card; }
+        .support-card { animation-name: show-support-card; }
+        @keyframes show-follow-card {
+            0% { opacity: 0; } 5% { opacity: 1; } 45% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 0; }
+        }
+        @keyframes show-support-card {
+            0% { opacity: 0; } 50% { opacity: 0; } 55% { opacity: 1; } 95% { opacity: 1; } 100% { opacity: 0; }
+        }
+        
+        /* --- Card Specific Styles --- */
+        .follow-card, .support-card { display: flex; flex-direction: column; padding: 20px; box-sizing: border-box; align-items: center; justify-content: space-evenly; }
+        
+        /* Follow Card Styles */
+        .follow-card h1 { font-family: 'Montserrat', sans-serif; font-size: 2.2em; color: var(--accent-gold); text-align: center; margin: 0; line-height: 1.2; }
+        .follow-card .social-grid { display: flex; width: 100%; justify-content: space-evenly; }
+        .follow-card .social-column h2 { font-size: 1.5em; margin-bottom: 15px; color: var(--text-light); }
+        .follow-card .social-list { display: flex; flex-direction: column; gap: 18px; align-items: flex-start; }
+        .follow-card .social-item { display: flex; align-items: center; gap: 12px; font-size: 1.3em; color: var(--text-muted); } /* FONT SIZE INCREASED */
+        .follow-card .social-item strong { color: var(--text-light); }
+        .follow-card .social-item svg { width: 28px; height: 28px; fill: var(--text-muted); }
+
+        /* Support Card Styles */
+        .support-card .qr-grid { display: flex; width: 100%; justify-content: space-evenly; align-items: flex-start; padding-top: 20px;}
+        .support-card .qr-code-item { text-align: center; }
+        .support-card .qr-code-item img { width: 160px; height: 160px; border-radius: 12px; border: 3px solid var(--accent-green); }
+        .support-card .qr-code-item p { margin: 10px 0 0 0; font-size: 1.2em; font-weight: 600; color: var(--accent-green); }
+        .support-card .qr-code-item span { font-size: 1.1em; color: var(--text-muted); } /* FONT SIZE INCREASED */
+    </style>
+</head>
+<body>
+    <div class="overlay-container">
+        <img class="background-image" src="https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg" alt="Estonian forest road">
+        <div class="content-grid">
+            <div class="panel art-panel">
+                <img class="art-image" src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg" alt="Engraving of a wolf">
+                <img class="art-image" src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg" alt="Engraving of a fox">
+                <img class="art-image" src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg" alt="Engraving of a bear">
+            </div>
+            <div class="panel carousel-panel">
+                <div class="info-card follow-card">
+                    <h1>JoosuStudio | GreyFoxJourney</h1>
+                    <div class="social-grid">
+                        <div class="social-column">
+                            <h2>The Art</h2>
+                            <div class="social-list">
+                                <div class="social-item"><span>Instagram:</span><strong>@JoosuStudio</strong></div>
+                                <div class="social-item"><span>Facebook:</span><strong>/JoosuStudio</strong></div>
+                                <div class="social-item"><span>YouTube:</span><strong>JoosuStudio</strong></div>
+                            </div>
+                        </div>
+                        <div class="social-column">
+                            <h2>The Journey</h2>
+                            <div class="social-list">
+                                <div class="social-item"><span>Instagram:</span><strong>@GreyFoxJourney</strong></div>
+                                <div class="social-item"><span>Facebook:</span><strong>/GreyFoxJourney</strong></div>
+                                <div class="social-item"><span>YouTube:</span><strong>GreyFoxJourney</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="social-item">
+                        <svg viewBox="0 0 24 24"><path d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6ZM20 6L12 11L4 6H20ZM20 18H4V8L12 13L20 8V18Z"></path></svg>
+                        <strong>joosustudio@gmail.com</strong>
+                    </div>
+                </div>
+                <div class="info-card support-card">
+                    <div class="qr-grid">
+                        <div class="qr-code-item">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://paypal.me/JanekJoosu" alt="PayPal QR Code">
+                            <p>PayPal</p>
+                            <span>paypal.me/JanekJoosu</span>
+                        </div>
+                        <div class="qr-code-item">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://streamlabs.com/joosustudio/tip" alt="Streamlabs Tip Page QR Code">
+                            <p>On-Stream Tip</p>
+                            <span>Tips appear live!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
