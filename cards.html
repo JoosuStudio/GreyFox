@@ -3,88 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support the Mission Card</title>
-    
+    <title>Complete Stream Carousel</title>
+
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg">
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg">
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg">
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656784568.jpg">
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656718038.jpg">
     <link rel="preload" as="image" href="https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg">
     <link rel="preload" as="image" href="https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg">
     <link rel="preload" as="image" href="https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg">
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
         :root {
+            /* --- TIMING CONTROL --- */
+            --card-display-time: 15s; /* How long each card is visible */
+            
+            /* --- Global Styles --- */
             --bg-color: rgba(20, 20, 30, 0.9);
             --text-color: #EFEFEF;
-            --accent-color: #77dd77;
-            --border-color: rgba(119, 221, 119, 0.5);
         }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Poppins', sans-serif; background-color: transparent; overflow: hidden; }
-        .card-container { position: absolute; top: 0; left: 0; width: 870px; height: 358px; background-color: var(--bg-color); border: 2px solid var(--border-color); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); display: flex; }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: transparent; overflow: hidden;
+        }
+
+        /* --- CAROUSEL ENGINE --- */
+        .carousel-container {
+            position: relative;
+            width: 870px; height: 358px;
+        }
+        
+        .card {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            animation-name: carouselFade;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            /* Total duration = 3 cards * var(--card-display-time) */
+            animation-duration: calc(3 * var(--card-display-time));
+        }
+
+        /* Stagger the card animations */
+        .card:nth-child(1) { animation-delay: calc(0 * var(--card-display-time)); }
+        .card:nth-child(2) { animation-delay: calc(1 * var(--card-display-time)); }
+        .card:nth-child(3) { animation-delay: calc(2 * var(--card-display-time)); }
+
+        @keyframes carouselFade {
+            0%   { opacity: 0; visibility: hidden; }
+            10%  { opacity: 1; visibility: visible; } /* 1.5s Fade In */
+            90%  { opacity: 1; visibility: visible; } /* 12s Hold */
+            100% { opacity: 0; visibility: hidden; } /* 1.5s Fade Out */
+        }
+
+
+        /* --- SHARED CARD STYLES --- */
+        .card-container-inner {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            display: flex;
+        }
+
         .background-gallery { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
         .background-gallery img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: backgroundFade 21s linear infinite; }
         .background-gallery img:nth-child(1) { animation-delay: 0s; }
         .background-gallery img:nth-child(2) { animation-delay: 7s; }
         .background-gallery img:nth-child(3) { animation-delay: 14s; }
         @keyframes backgroundFade { 0% { opacity: 0; } 20% { opacity: 0.15; } 80% { opacity: 0.15; } 100% { opacity: 0; } }
+
         .foreground-content { position: relative; z-index: 2; display: flex; width: 100%; height: 100%; color: var(--text-color); }
         .column { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; padding: 20px 15px; text-align: center; }
         .column:not(:last-child) { border-right: 1px solid var(--border-color); }
-        .column h2 { font-size: 1.8em; margin: 0; text-shadow: 2px 2px 5px rgba(0,0,0,0.7); color: var(--accent-color); }
-        .logo-group { display: flex; flex-direction: column; align-items: center; }
-        .logo-group .handle { font-size: 1.1em; font-weight: 600; margin-bottom: 15px; }
-        .qr-code { width: 150px; height: 150px; border-radius: 10px; border: 3px solid var(--accent-color); }
-        
-        /* Styles for the Streamlabs Box */
-        .stream-tip-box {
-            width: 95%;
-            height: 250px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-evenly;
-            border: 2px dashed rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            padding: 15px;
-            box-sizing: border-box;
-        }
-        .stream-tip-box .qr-code { width: 120px; height: 120px; }
 
+        /* --- CARD 1: ART GALLERY --- */
+        .art-card { --accent-color: #AACCFF; --border-color: rgba(170, 204, 255, 0.5); }
+        .art-card .card-container-inner { overflow: visible; } /* Allows pointer to show */
+        .art-card .card-container-inner::after {
+            content: ''; position: absolute; bottom: -16px; left: 50%;
+            transform: translateX(-50%); width: 0; height: 0;
+            border-left: 16px solid transparent; border-right: 16px solid transparent;
+            border-top: 16px solid var(--border-color);
+        }
+        .art-card .image-gallery { border-radius: 13px; overflow: hidden; }
+        .art-card .image-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; overflow: hidden; animation-name: finalFade; animation-timing-function: linear; animation-iteration-count: infinite; animation-duration: 45s; }
+        .art-card .image-wrapper img { width: 100%; height: 100%; object-fit: cover; animation: kenburns-1 12s ease-in-out infinite alternate; }
+        .art-card .image-gallery .image-wrapper:nth-child(1) { animation-delay: 0s; }
+        .art-card .image-gallery .image-wrapper:nth-child(2) { animation-delay: 9s; }
+        .art-card .image-gallery .image-wrapper:nth-child(3) { animation-delay: 18s; }
+        .art-card .image-gallery .image-wrapper:nth-child(4) { animation-delay: 27s; }
+        .art-card .image-gallery .image-wrapper:nth-child(5) { animation-delay: 36s; }
+        .art-card .image-gallery .image-wrapper:nth-child(even) img { animation-name: kenburns-2; }
+        @keyframes finalFade { 0% { opacity: 0.35; } 6.67% { opacity: 0.35; } 20% { opacity: 0; } 86.67% { opacity: 0; } 100% { opacity: 0.35; } }
+        @keyframes kenburns-1 { from { transform: scale(1.0); } to { transform: scale(1.15) translate(2%, -3%); } }
+        @keyframes kenburns-2 { from { transform: scale(1.0); } to { transform: scale(1.15) translate(-2%, 2%); } }
+        .art-card .text-content { text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8); }
+        .art-card .card-title { font-size: 3.5em; font-weight: 700; color: var(--text-color); margin: 0; }
+        .art-card .card-subtitle { font-size: 1.4em; font-weight: 400; color: var(--accent-color); margin: 0; border: 1px solid var(--accent-color); padding: 10px 25px; border-radius: 30px; }
+
+        /* --- CARD 2: FOLLOW ME --- */
+        .follow-card { --accent-color: #AACCFF; --border-color: rgba(170, 204, 255, 0.5); }
+        .follow-card .column { gap: 30px; }
+        .follow-card h2 { font-size: 2.5em; margin: 0; text-shadow: 2px 2px 5px rgba(0,0,0,0.7); }
+        .follow-card .social-list { display: flex; flex-direction: column; gap: 25px; align-items: flex-start; }
+        .follow-card .social-item { display: flex; align-items: center; gap: 15px; font-size: 1.5em; }
+        .follow-card .social-item svg { width: 35px; height: 35px; fill: var(--text-color); flex-shrink: 0; }
+        
+        /* --- CARD 3: SUPPORT MISSION --- */
+        .support-card { --accent-color: #77dd77; --border-color: rgba(119, 221, 119, 0.5); }
+        .support-card h2 { font-size: 1.8em; margin: 0; text-shadow: 2px 2px 5px rgba(0,0,0,0.7); color: var(--accent-color); }
+        .support-card .logo-group { display: flex; flex-direction: column; align-items: center; }
+        .support-card .logo-group .handle { font-size: 1.1em; font-weight: 600; margin-bottom: 15px; }
+        .support-card .qr-code { width: 150px; height: 150px; border-radius: 10px; border: 3px solid var(--accent-color); }
+        .support-card .stream-tip-box { width: 95%; height: 250px; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; border: 2px dashed rgba(255, 255, 255, 0.2); border-radius: 10px; padding: 15px; box-sizing: border-box; }
+        .support-card .stream-tip-box .qr-code { width: 120px; height: 120px; }
     </style>
 </head>
 <body>
-    <div class="card-container">
-        <div class="background-gallery">
-            <img src="https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg" alt="Road at sunset">
-            <img src="https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg" alt="Mountain valley">
-            <img src="https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg" alt="Starry night sky">
+
+    <div class="carousel-container">
+
+        <div class="card art-card">
+            <div class="card-container-inner">
+                <div class="image-gallery">
+                    <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg" alt="Art 1"></div>
+                    <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg" alt="Art 2"></div>
+                    <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg" alt="Art 3"></div>
+                    <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656784568.jpg" alt="Art 4"></div>
+                    <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656718038.jpg" alt="Art 5"></div>
+                </div>
+                <div class="foreground-content text-content">
+                    <h1 class="card-title">Glass Engraving, Art & Journey</h1>
+                    <p class="card-subtitle">Commissions Open</p>
+                </div>
+            </div>
         </div>
 
-        <div class="foreground-content">
-            <div class="column">
-                <h2>PayPal</h2>
-                <div class="logo-group">
-                    <span class="handle">paypal.me/JanekJoosu</span>
+        <div class="card follow-card">
+            <div class="card-container-inner">
+                <div class="background-gallery">
+                    <img src="https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg" alt="Road at sunset">
+                    <img src="https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg" alt="Mountain valley">
+                    <img src="https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg" alt="Starry night sky">
                 </div>
-                <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://paypal.me/JanekJoosu" alt="PayPal QR Code">
-            </div>
-
-            <div class="column">
-                <h2>Wise</h2>
-                <div class="logo-group">
-                    <span class="handle">@janekj6</span>
-                </div>
-                <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wise.com/pay/me/janekj6" alt="Wise QR Code">
-            </div>
-
-            <div class="column">
-                <h2>On-Stream</h2>
-                <div class="stream-tip-box">
-                    <div class="logo-group">
-                        <span class="handle">Tips seen on stream!</span>
+                <div class="foreground-content">
+                    <div class="column art-column">
+                        <h2>The Art</h2>
+                        <div class="social-list">
+                            <div class="social-item"><svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.784.297-1.457.718-2.123 1.384S.927 3.356.63 4.14C.333 4.905.13 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.26 2.148.558 2.913.297.784.718 1.457 1.384 2.123s1.34 1.087 2.123 1.384c.766.298 1.636.498 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.26 2.913-.558.784-.297 1.457-.718 2.123-1.384s1.087-1.34 1.384-2.123c.298-.766.498-1.636.558-2.913C23.988 15.667 24 15.26 24 12s-.015-3.667-.072-4.947c-.06-1.277-.26-2.148-.558-2.913-.297-.784-.718-1.457-1.384-2.123S20.644.927 19.86.63c-.766-.298-1.636-.498-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.06 1.17-.249 1.805-.413 2.227-.217.562-.477.96-.896 1.381-.42.419-.82-.679-1.38.896-.423.164-1.057-.36-2.227-.413-1.266.057-1.646.07-4.85.07s-3.585-.015-4.85-.074c-1.17-.06-1.805-.249-2.227-.413-.562-.217-.96-.477-1.381-.896-.419-.42-.679-.82-.896-1.38.165-.423-.36-1.057-.413-2.227-.057-1.266-.07-1.646-.07-4.85s.015-3.585.07-4.85c.06-1.17.25-1.805.413-2.227.217-.562.477-.96.896-1.381.42-.419.82-.679 1.38-.896.423-.164 1.057-.36 2.227-.413C8.415 2.175 8.797 2.16 12 2.16zm0 9.09c-2.842 0-5.125 2.283-5.125 5.125S9.158 21.375 12 21.375s5.125-2.283 5.125-5.125S14.842 11.25 12 11.25zm0 8.56c-1.898 0-3.435-1.536-3.435-3.435s1.537-3.435 3.435-3.435 3.435 1.536 3.435 3.435-1.537 3.435-3.435 3.435zm6.405-11.845c-.796 0-1.44-.645-1.44-1.44s.645-1.44 1.44-1.44c.795 0 1.44.645 1.44 1.44s-.645 1.44-1.44 1.44z"/></svg><span>@JoosuStudio</span></div>
+                            <div class="social-item"><svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg><span>/JoosuStudio</span></div>
+                            <div class="social-item"><svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg><span>/JoosuStudio</span></div>
+                        </div>
                     </div>
-                    <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://streamlabs.com/joosustudio/tip" alt="Streamlabs Tip Page QR Code">
+                    <div class="column journey-column">
+                        <h2>The Journey</h2>
+                        <div class="social-list">
+                            <div class="social-item"><svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.784.297-1.457.718-2.123 1.384S.927 3.356.63 4.14C.333 4.905.13 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.26 2.148.558 2.913.297.784.718 1.457 1.384 2.123s1.34 1.087 2.123 1.384c.766.298 1.636.498 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.26 2.913-.558.784-.297 1.457-.718 2.123-1.384s1.087-1.34 1.384-2.123c.298-.766.498-1.636.558-2.913C23.988 15.667 24 15.26 24 12s-.015-3.667-.072-4.947c-.06-1.277-.26-2.148-.558-2.913-.297-.784-.718-1.457-1.384-2.123S20.644.927 19.86.63c-.766-.298-1.636-.498-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.06 1.17-.249 1.805-.413 2.227-.217.562-.477.96-.896 1.381-.42.419-.82-.679-1.38.896-.423.164-1.057-.36-2.227-.413-1.266.057-1.646.07-4.85.07s-3.585-.015-4.85-.074c-1.17-.06-1.805-.249-2.227-.413-.562-.217-.96-.477-1.381-.896-.419-.42-.679-.82-.896-1.38.165-.423-.36-1.057-.413-2.227-.057-1.266-.07-1.646-.07-4.85s.015-3.585.07-4.85c.06-1.17.25-1.805.413-2.227.217-.562.477-.96.896-1.381.42-.419.82-.679 1.38-.896.423-.164 1.057-.36 2.227-.413C8.415 2.175 8.797 2.16 12 2.16zm0 9.09c-2.842 0-5.125 2.283-5.125 5.125S9.158 21.375 12 21.375s5.125-2.283 5.125-5.125S14.842 11.25 12 11.25zm0 8.56c-1.898 0-3.435-1.536-3.435-3.435s1.537-3.435 3.435-3.435 3.435 1.536 3.435 3.435-1.537 3.435-3.435 3.435zm6.405-11.845c-.796 0-1.44-.645-1.44-1.44s.645-1.44 1.44-1.44c.795 0 1.44.645 1.44 1.44s-.645 1.44-1.44 1.44z"/></svg><span>@GreyFoxJourney</span></div>
+                            <div class="social-item"><svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg><span>/GreyFoxJourney</span></div>
+                            <div class="social-item"><svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg><span>/GreyFoxJourney</span></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="card support-card">
+            <div class="card-container-inner">
+                <div class="background-gallery">
+                    <img src="https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg" alt="Road at sunset">
+                    <img src="https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg" alt="Mountain valley">
+                    <img src="https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg" alt="Starry night sky">
+                </div>
+                <div class="foreground-content">
+                    <div class="column">
+                        <h2>PayPal</h2>
+                        <div class="logo-group">
+                            <span class="handle">paypal.me/JanekJoosu</span>
+                        </div>
+                        <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://paypal.me/JanekJoosu" alt="PayPal QR Code">
+                    </div>
+                    <div class="column">
+                        <h2>Wise</h2>
+                        <div class="logo-group">
+                            <span class="handle">@janekj6</span>
+                        </div>
+                        <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wise.com/pay/me/janekj6" alt="Wise QR Code">
+                    </div>
+                    <div class="column">
+                        <h2>On-Stream</h2>
+                        <div class="stream-tip-box">
+                            <div class="logo-group">
+                                <span class="handle">Tips seen on stream!</span>
+                            </div>
+                            <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://streamlabs.com/joosustudio/tip" alt="Streamlabs Tip Page QR Code">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
+
 </body>
 </html>
