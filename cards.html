@@ -10,9 +10,6 @@
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg">
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656784568.jpg">
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656718038.jpg">
-    <link rel="preload" as="image" href="https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg">
-    <link rel="preload" as="image" href="https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg">
-    <link rel="preload" as="image" href="https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg">
     <link rel="preload" as="image" href="https://raw.githubusercontent.com/JoosuStudio/GreyFox/main/Screenshot_2025-07-29-17-12-44-347_com.android.chrome~2.jpg">
     <link rel="preload" as="image" href="https://raw.githubusercontent.com/JoosuStudio/GreyFox/main/Screenshot_2025-07-29-17-12-44-347_com.android.chrome.jpg">
     <link rel="preload" as="image" href="https://raw.githubusercontent.com/JoosuStudio/GreyFox/main/Screenshot_2025-07-29-16-54-12-240_com.android.chrome~2.jpg">
@@ -32,19 +29,15 @@
         .card:nth-child(3) { animation-delay: calc(2 * var(--card-display-time)); }
         @keyframes carouselFade { 0% { opacity: 0; visibility: hidden; } 10% { opacity: 1; visibility: visible; } 90% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
         .card-container-inner { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); border: 2px solid var(--border-color); border-radius: 15px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); display: flex; }
-        .background-gallery { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
-        .background-gallery img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: backgroundFade 21s linear infinite; }
-        .background-gallery img:nth-child(1) { animation-delay: 0s; }
-        .background-gallery img:nth-child(2) { animation-delay: 7s; }
-        .background-gallery img:nth-child(3) { animation-delay: 14s; }
-        @keyframes backgroundFade { 0% { opacity: 0; } 20% { opacity: 0.15; } 80% { opacity: 0.15; } 100% { opacity: 0; } }
         .foreground-content { position: relative; z-index: 2; display: flex; width: 100%; height: 100%; color: var(--text-color); }
         .column { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; padding: 20px 15px; text-align: center; }
         .column:not(:last-child) { border-right: 1px solid var(--border-color); }
+        
+        /* --- CARD 1: ART GALLERY --- */
         .art-card { --accent-color: #AACCFF; --border-color: rgba(170, 204, 255, 0.5); }
         .art-card .card-container-inner { overflow: visible; }
         .art-card .card-container-inner::after { content: ''; position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 16px solid transparent; border-right: 16px solid transparent; border-top: 16px solid var(--border-color); }
-        .art-card .image-gallery { border-radius: 13px; overflow: hidden; }
+        .art-card .image-gallery { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; border-radius: 13px; overflow: hidden; }
         .art-card .image-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; overflow: hidden; animation: finalFade 45s linear infinite; }
         .art-card .image-wrapper img { width: 100%; height: 100%; object-fit: cover; animation: kenburns-1 12s ease-in-out infinite alternate; }
         .art-card .image-gallery .image-wrapper:nth-child(1) { animation-delay: 0s; }
@@ -59,12 +52,16 @@
         .art-card .text-content { flex-direction: column; justify-content: center; align-items: center; gap: 20px; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8); }
         .art-card .card-title { font-size: 3.2em; text-align: center; }
         .art-card .card-subtitle { font-size: 1.4em; color: var(--accent-color); border: 1px solid var(--accent-color); padding: 10px 25px; border-radius: 30px; white-space: nowrap; }
+        
+        /* --- CARD 2: FOLLOW ME --- */
         .follow-card { --accent-color: #AACCFF; --border-color: rgba(170, 204, 255, 0.5); }
         .follow-card .column { gap: 30px; }
         .follow-card h2 { font-size: 2.5em; margin: 0; text-shadow: 2px 2px 5px rgba(0,0,0,0.7); }
         .follow-card .social-list { display: flex; flex-direction: column; gap: 25px; align-items: flex-start; }
         .follow-card .social-item { display: flex; align-items: center; gap: 15px; font-size: 1.5em; }
         .follow-card .social-item svg { width: 35px; height: 35px; fill: var(--text-color); flex-shrink: 0; }
+        
+        /* --- CARD 3: SUPPORT MISSION --- */
         .support-card { --accent-color: #77dd77; --border-color: rgba(119, 221, 119, 0.5); }
         .support-card h2 { font-size: 1.8em; margin: 0; text-shadow: 2px 2px 5px rgba(0,0,0,0.7); color: var(--accent-color); }
         .support-card .logo-group { display: flex; flex-direction: column; align-items: center; }
@@ -93,11 +90,6 @@
         </div>
         <div class="card follow-card">
             <div class="card-container-inner">
-                <div class="background-gallery">
-                    <img src="https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg" alt="Road at sunset">
-                    <img src="https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg" alt="Mountain valley">
-                    <img src="https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg" alt="Starry night sky">
-                </div>
                 <div class="foreground-content">
                     <div class="column art-column">
                         <h2>The Art</h2>
@@ -120,11 +112,6 @@
         </div>
         <div class="card support-card">
             <div class="card-container-inner">
-                <div class="background-gallery">
-                    <img src="https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg" alt="Road at sunset">
-                    <img src="https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg" alt="Mountain valley">
-                    <img src="https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg" alt="Starry night sky">
-                </div>
                 <div class="foreground-content">
                     <div class="column">
                         <h2>PayPal</h2>
