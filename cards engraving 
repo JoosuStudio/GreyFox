@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Gallery Card - Ken Burns</title>
+
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg">
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg">
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg">
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656784568.jpg">
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656718038.jpg">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: rgba(20, 20, 30, 0.85);
+            --text-color: #EFEFEF;
+            --accent-color: #AACCFF;
+            --border-color: rgba(170, 204, 255, 0.5);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: transparent;
+            overflow: hidden;
+        }
+
+        .card-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 870px;
+            height: 358px;
+            background-color: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .image-gallery {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* NEW: The wrapper handles the fade animation and positioning */
+        .image-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            overflow: hidden; /* Crucial for clipping the scaled image */
+            animation-name: finalFade;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-duration: 45s; /* 5 images * 9s slot */
+        }
+        
+        /* The image inside the wrapper now handles the Ken Burns animation */
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* The image itself is now animated with a pan/zoom effect */
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            animation-duration: 12s; /* A slow, steady pan over 12 seconds */
+            animation-direction: alternate; /* Zooms in, then zooms out */
+        }
+
+        /* Stagger the FADE animations on the WRAPPERS */
+        .image-gallery .image-wrapper:nth-child(1) { animation-delay: 0s; }
+        .image-gallery .image-wrapper:nth-child(2) { animation-delay: 9s; }
+        .image-gallery .image-wrapper:nth-child(3) { animation-delay: 18s; }
+        .image-gallery .image-wrapper:nth-child(4) { animation-delay: 27s; }
+        .image-gallery .image-wrapper:nth-child(5) { animation-delay: 36s; }
+        
+        /* Apply different Ken Burns effects to alternating images for variety */
+        .image-gallery .image-wrapper:nth-child(odd) img {
+            animation-name: kenburns-1;
+        }
+        .image-gallery .image-wrapper:nth-child(even) img {
+            animation-name: kenburns-2;
+        }
+
+        @keyframes finalFade {
+            0%      { opacity: 0.35; }
+            6.67%   { opacity: 0.35; }
+            20%     { opacity: 0; }
+            86.67%  { opacity: 0; }
+            100%    { opacity: 0.35; }
+        }
+        
+        /* --- NEW: KEN BURNS ANIMATIONS --- */
+        @keyframes kenburns-1 {
+            from { transform: scale(1.0) translate(0, 0); }
+            to { transform: scale(1.15) translate(2%, -3%); }
+        }
+
+        @keyframes kenburns-2 {
+            from { transform: scale(1.0) translate(0, 0); }
+            to { transform: scale(1.15) translate(-2%, 2%); }
+        }
+
+        .text-content {
+            position: relative; z-index: 2; display: flex; flex-direction: row;
+            justify-content: space-around; align-items: center; width: 100%;
+            height: 100%; padding: 20px; box-sizing: border-box;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+        
+        .card-title {
+            font-size: 3.5em; font-weight: 700; color: var(--text-color); margin: 0;
+        }
+
+        .card-subtitle {
+            font-size: 1.4em; font-weight: 400; color: var(--accent-color);
+            margin: 0; border: 1px solid var(--accent-color);
+            padding: 10px 25px; border-radius: 30px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="image-gallery">
+            <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg" alt="Art 1"></div>
+            <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg" alt="Art 2"></div>
+            <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg" alt="Art 3"></div>
+            <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656784568.jpg" alt="Art 4"></div>
+            <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656718038.jpg" alt="Art 5"></div>
+        </div>
+        <div class="text-content">
+            <h1 class="card-title">Glass Engraving, Art & Journey</h1>
+            <p class="card-subtitle">Commissions Open</p>
+        </div>
+    </div>
+</body>
+</html>
