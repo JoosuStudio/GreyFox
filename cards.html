@@ -3,83 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Art Gallery Card - with Goal Pointer</title>
-
-    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg">
-    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg">
-    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg">
-    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656784568.jpg">
-    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1753656718038.jpg">
+    <title>Support the Mission Card</title>
+    
+    <link rel="preload" as="image" href="https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg">
+    <link rel="preload" as="image" href="https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg">
+    <link rel="preload" as="image" href="https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         :root {
             --bg-color: rgba(20, 20, 30, 0.9);
             --text-color: #EFEFEF;
-            --accent-color: #AACCFF;
-            --border-color: rgba(170, 204, 255, 0.5);
+            --accent-color: #77dd77;
+            --border-color: rgba(119, 221, 119, 0.5);
         }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Poppins', sans-serif; background-color: transparent; overflow: hidden; }
-
-        .card-container {
-            position: absolute;
-            top: 0; left: 0;
-            width: 870px; height: 358px;
-            background-color: var(--bg-color);
-            border: 2px solid var(--border-color);
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            /* --- CHANGES FOR POINTER --- */
-            position: relative; /* Needed for positioning the pointer */
-            overflow: visible;  /* Allows the pointer to be visible outside the container */
-        }
-
-        /* --- NEW: The CSS for the downward-pointing notch --- */
-        .card-container::after {
-            content: '';
-            position: absolute;
-            bottom: -16px; /* Positions the pointer just below the bottom border */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 16px solid transparent;
-            border-right: 16px solid transparent;
-            border-top: 16px solid var(--border-color); /* Matches the border color */
-        }
-
-        .image-gallery { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; border-radius: 13px; overflow: hidden; }
-        .image-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; animation-name: finalFade; animation-timing-function: linear; animation-iteration-count: infinite; animation-duration: 45s; }
-        .image-wrapper img { width: 100%; height: 100%; object-fit: cover; animation-timing-function: ease-in-out; animation-iteration-count: infinite; animation-duration: 12s; animation-direction: alternate; }
-        .image-gallery .image-wrapper:nth-child(1) { animation-delay: 0s; }
-        .image-gallery .image-wrapper:nth-child(2) { animation-delay: 9s; }
-        .image-gallery .image-wrapper:nth-child(3) { animation-delay: 18s; }
-        .image-gallery .image-wrapper:nth-child(4) { animation-delay: 27s; }
-        .image-gallery .image-wrapper:nth-child(5) { animation-delay: 36s; }
-        .image-gallery .image-wrapper:nth-child(odd) img { animation-name: kenburns-1; }
-        .image-gallery .image-wrapper:nth-child(even) img { animation-name: kenburns-2; }
+        .card-container { position: absolute; top: 0; left: 0; width: 870px; height: 358px; background-color: var(--bg-color); border: 2px solid var(--border-color); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); display: flex; }
+        .background-gallery { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        .background-gallery img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: backgroundFade 21s linear infinite; }
+        .background-gallery img:nth-child(1) { animation-delay: 0s; }
+        .background-gallery img:nth-child(2) { animation-delay: 7s; }
+        .background-gallery img:nth-child(3) { animation-delay: 14s; }
+        @keyframes backgroundFade { 0% { opacity: 0; } 20% { opacity: 0.15; } 80% { opacity: 0.15; } 100% { opacity: 0; } }
+        .foreground-content { position: relative; z-index: 2; display: flex; width: 100%; height: 100%; color: var(--text-color); }
         
-        @keyframes finalFade { 0% { opacity: 0.35; } 6.67% { opacity: 0.35; } 20% { opacity: 0; } 86.67% { opacity: 0; } 100% { opacity: 0.35; } }
-        @keyframes kenburns-1 { from { transform: scale(1.0) translate(0, 0); } to { transform: scale(1.15) translate(2%, -3%); } }
-        @keyframes kenburns-2 { from { transform: scale(1.0) translate(0, 0); } to { transform: scale(1.15) translate(-2%, 2%); } }
+        /* --- CSS CORRECTION IS HERE --- */
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly; /* CHANGED: This provides more balanced spacing. */
+            padding: 20px 15px; /* UPDATED: Added more vertical padding. */
+            text-align: center;
+        }
 
-        .text-content { position: relative; z-index: 2; display: flex; flex-direction: row; justify-content: space-around; align-items: center; width: 100%; height: 100%; padding: 20px; box-sizing: border-box; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8); }
-        .card-title { font-size: 3.5em; font-weight: 700; color: var(--text-color); margin: 0; }
-        .card-subtitle { font-size: 1.4em; font-weight: 400; color: var(--accent-color); margin: 0; border: 1px solid var(--accent-color); padding: 10px 25px; border-radius: 30px; }
+        .column:not(:last-child) { border-right: 1px solid var(--border-color); }
+        .column h2 { font-size: 1.8em; margin: 0; text-shadow: 2px 2px 5px rgba(0,0,0,0.7); color: var(--accent-color); }
+        .logo-group { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .logo-group svg { width: 35px; height: 35px; fill: var(--text-color); }
+        .logo-group .handle { font-size: 1.1em; font-weight: 600; }
+        .qr-code { width: 150px; height: 150px; border-radius: 10px; border: 3px solid var(--accent-color); }
+        .widget-placeholder { width: 95%; height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed rgba(255, 255, 255, 0.2); border-radius: 10px; font-size: 0.9em; color: rgba(255, 255, 255, 0.5); padding: 10px; box-sizing: border-box; }
+        .tip-text { font-size: 1.1em; font-weight: 600; }
     </style>
 </head>
 <body>
     <div class="card-container">
-        <div class="image-gallery">
-            <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg" alt="Art 1"></div>
-            <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813006339.jpg" alt="Art 2"></div>
-            <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656835376.jpg" alt="Art 3"></div>
-            <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656784568.jpg" alt="Art 4"></div>
-            <div class="image-wrapper"><img src="https://joosustudio.github.io/GreyFox/FB_IMG_1753656718038.jpg" alt="Art 5"></div>
+        <div class="background-gallery">
+            <img src="https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg" alt="Road at sunset">
+            <img src="https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg" alt="Mountain valley">
+            <img src="https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg" alt="Starry night sky">
         </div>
-        <div class="text-content">
-            <h1 class="card-title">Glass Engraving, Art & Journey</h1>
-            <p class="card-subtitle">Commissions Open</p>
+
+        <div class="foreground-content">
+            <div class="column">
+                <h2>PayPal</h2>
+                <div class="logo-group">
+                    <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7.064 2.935H16.94c.91.01 1.742.56 2.115 1.402.373.842.228 1.83-.375 2.52l-3.336 4.318c-.14.207-.12.492.052.665.172.173.457.194.664.053l3.337-4.318c.602-.69.747-1.677.374-2.52C21.368.618 19.348-.15 17.51.02a4.94 4.94 0 00-.57-.02H7.065c-2.73 0-4.943 2.126-4.943 4.748 0 2.22 1.638 4.103 3.868 4.615l.133.03.424.11c.214.057.39.167.518.315l.002.002.004.004c.14.208.12.493-.052.666-.173.173-.458.194-.665.053l-1.02-.34c-3.15-1.05-5.238-3.9-5.238-7.14C0 2.825 2.944.015 6.49.015h.574zM13.436 8.52l-3.336 4.318c-.14.207-.12.492.052.665.172.173.457.194.664.053l3.337-4.318c.602-.69.747-1.677.374-2.52-.373-.842-1.205-1.403-2.115-1.402h-2.11l3.337 4.318c.14.207.12.492-.052.665-.172.173-.457.194-.664.053l-3.337-4.318c-.602-.69-.747-1.677-.374-2.52C9.618 4.138 11.632 3.57 13.47 3.6a4.94 4.94 0 00.57-.02h2.11c2.73 0 4.943 2.125 4.943 4.747 0 2.22-1.638 4.104-3.868 4.615l-3.873 1.29c-.214.072-.45.02-.612-.132l-2.76-2.553c-.32-.296-.44-.73-.31-1.145l.91-2.887.135-.427c.108-.34.39-.59.74-.633l.11-.01zM10.1 20.573l-3.336 4.318c-.602.69-.747 1.677-.374 2.52.373.842 1.205 1.403 2.115 1.402h.575c.91-.01 1.742-.56 2.115-1.402.373-.842.228-1.83-.375-2.52l-3.337-4.318c-.14-.207-.12-.492.052.665.172-.173.457.194.664.053l3.337 4.318c1.353 1.55 3.84 2.08 5.86 1.15 2.02-.93 3.32-2.98 3.32-5.18 0-.31-.03-.62-.09-.92l-.1-.53c-.07-.33-.29-.6-.6-.73l-.11-.05-3.873-1.29c-.214-.072-.45-.02-.612-.132L12.86 13.04c-.32-.296-.44-.73-.31-1.145l.91-2.887.135-.427c.108-.34.39-.59.74-.633l.11-.01h1.334l-3.336 4.318c-.14.207-.12.492.052.665.172.173.457.194.664.053l3.337-4.318c.602-.69.747-1.677.374-2.52-.373-.842-1.205-1.403-2.115-1.402H13.47a4.944 4.944 0 00-.57-.02H7.064c-2.73 0-4.943 2.125-4.943 4.747 0 2.553 1.94 4.695 4.457 4.912l.425.037z"/></svg>
+                    <span class="handle">paypal.me/JanekJoosu</span>
+                </div>
+                <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://paypal.me/JanekJoosu" alt="PayPal QR Code">
+            </div>
+
+            <div class="column">
+                <h2>Wise</h2>
+                <div class="logo-group">
+                    <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10.875 0h- üretim.5L0 12l10.875 12h.5l1.625-2.813L4.125 12l8.375-9.187zm2.25 0L2.25 12l10.875 12h.5l10.875-12z"/></svg>
+                    <span class="handle">@janekj6</span>
+                </div>
+                <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wise.com/pay/me/janekj6" alt="Wise QR Code">
+            </div>
+
+            <div class="column">
+                <h2>On-Stream</h2>
+                <div class="logo-group">
+                    <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.64 24a12.23 12.23 0 0 1-8.03-3.33.64.64 0 0 1-.1-1l.1-.11a.75.75 0 0 1 .53-.21h.5a.69.69 0 0 1 .46.25 10.74 10.74 0 0 0 14.15 0 .69.69 0 0 1 .46-.25h.5a.75.75 0 0 1 .53.21l.1.11a.64.64 0 0 1-.1 1A12.23 12.23 0 0 1 12.36 24Z M5.14 17.22a.75.75 0 0 1-.53.21.69.69 0 0 1-.46-.25.75.75 0 0 1 0-1.06l4-4a.
+75.75 0 0 1 1.06 0 .75.75 0 0 1 0 1.06Zm8.86 0-4-4a.75.75 0 0 1 0-1.06.75.75 0 0 1 1.06 0l4 4a.75.75 0 0 1 0 1.06.69.69 0 0 1-.46.25.75.75 0 0 1-.6-.25Z M4 9.17a.75.75 0 0 1-.53-.22.75.75 0 0 1 0-1.06L7.53 3.82a.75.75 0 0 1 1.06 0 .75.75 0 0 1 0 1.06L4.53 8.95a.75.75 0 0 1-.53.22Zm16 0a.75.75 0 0 1-.53-.22L15.4 4.88a.75.75 0 0 1 0-1.06.75.75 0 0 1 1.06 0l4.07 4.07a.75.75 0 0 1 0 1.06.75.75 0 0 1-.53.22Zm-8.38-4.74a3.53 3.53 0 1 1-3.53-3.53 3.53 3.53 0 0 1 3.53 3.53Z"/></svg>
+                    <span class="handle">Tip Page</span>
+                </div>
+                 <span class="tip-text">Tip via QR or link below!</span>
+                 <div class="widget-placeholder">
+                    <p>Place your Donation Goal widget from Streamlabs here.</p>
+                </div>
+            </div>
         </div>
     </div>
 </body>
