@@ -7,58 +7,98 @@
 
     <!-- Preload images for the gallery -->
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg">
-    <!-- Add more preload links for additional images -->
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/image2.jpg">
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/image3.jpg">
 
+、手
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600;700&display=swap');
 
         :root {
-            --card-display-time: 12s; /* How long each card shows */
-            --image-display-time: 4s; /* How long each image shows (adjust based on number of images) */
+            --card-display-time: 10s; /* Adjusted for 4 cards (40s total cycle) */
+            --image-display-time: 4s; /* How long each image shows */
             --bg-color: rgba(15, 25, 15, 0.9);
             --text-light: #E0F0E0;
             --accent-green: #77dd77;
             --accent-blue: #AACCFF;
+            --accent-orange: #FF8C00; /* Added for Journey Log Card */
             --border-color: rgba(119, 221, 119, 0.5);
+            --journey-border-color: rgba(255, 140, 0, 0.5); /* Added for Journey Log Card */
         }
 
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Poppins', sans-serif; background-color: transparent; overflow: hidden; }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: transparent;
+            overflow: hidden;
+        }
 
-        .carousel-container { position: relative; width: 870px; height: 358px; }
+        .carousel-container {
+            position: relative;
+            width: 870px;
+            height: 358px;
+        }
 
         .card {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-color: var(--bg-color);
             border: 2px solid var(--border-color);
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
             opacity: 0;
-            animation-duration: calc(3 * var(--card-display-time));
+            animation-duration: calc(4 * var(--card-display-time)); /* 4 cards */
             animation-timing-function: linear;
             animation-iteration-count: infinite;
         }
 
         .art-info-card { animation-name: show-card-1; }
-        .socials-card  { animation-name: show-card-2; }
-        .support-card  { animation-name: show-card-3; }
+        .socials-card { animation-name: show-card-2; }
+        .support-card { animation-name: show-card-3; }
+        .journey-log-card { animation-name: show-card-4; }
 
         @keyframes show-card-1 {
-            0% { opacity: 1; }  33.33% { opacity: 1; }  33.34% { opacity: 0; }  100% { opacity: 0; }
+            0% { opacity: 1; }
+            25% { opacity: 1; }
+            25.01% { opacity: 0; }
+            100% { opacity: 0; }
         }
         @keyframes show-card-2 {
-            0% { opacity: 0; }  33.33% { opacity: 0; }  33.34% { opacity: 1; }  66.66% { opacity: 1; }  66.67% { opacity: 0; } 100% { opacity: 0; }
+            0% { opacity: 0; }
+            25% { opacity: 0; }
+            25.01% { opacity: 1; }
+            50% { opacity: 1; }
+            50.01% { opacity: 0; }
+            100% { opacity: 0; }
         }
         @keyframes show-card-3 {
-            0% { opacity: 0; }  66.66% { opacity: 0; }  66.67% { opacity: 1; }  99.99% { opacity: 1; }  100% { opacity: 0; }
+            0% { opacity: 0; }
+            50% { opacity: 0; }
+            50.01% { opacity: 1; }
+            75% { opacity: 1; }
+            75.01% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+        @keyframes show-card-4 {
+            0% { opacity: 0; }
+            75% { opacity: 0; }
+            75.01% { opacity: 1; }
+            100% { opacity: 1; }
         }
 
         .content {
-            position: relative; z-index: 2;
-            width: 100%; height: 100%;
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
             padding: 25px;
             color: var(--text-light);
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
@@ -72,58 +112,163 @@
             align-items: center;
         }
         .art-gallery {
-            width: 450px; height: 100%;
+            width: 450px;
+            height: 100%;
             position: relative;
             border-radius: 8px;
             overflow: hidden;
         }
         .art-gallery .art-image {
-            width: 100%; height: 100%;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             position: absolute;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             opacity: 0;
             animation: imageCycle calc(3 * var(--image-display-time)) linear infinite;
         }
-        /* Assign delays to each image for sequential display */
         .art-gallery .art-image:nth-child(1) { animation-delay: 0s; }
         .art-gallery .art-image:nth-child(2) { animation-delay: var(--image-display-time); }
         .art-gallery .art-image:nth-child(3) { animation-delay: calc(2 * var(--image-display-time)); }
 
         @keyframes imageCycle {
             0% { opacity: 1; transform: scale(1.0); }
-            33.33% { opacity: 1; transform: scale(1.15); } /* Ken Burns effect */
+            33.33% { opacity: 1; transform: scale(1.15); }
             33.34% { opacity: 0; transform: scale(1.15); }
             100% { opacity: 0; transform: scale(1.0); }
         }
 
-        .main-info { text-align: center; padding-left: 20px; }
-        .main-info h1 { font-family: 'Montserrat', sans-serif; font-size: 2.8em; color: var(--accent-blue); margin: 0 0 15px 0; line-height: 1.2; }
-        .main-info p { font-size: 1.5em; margin: 10px 0; }
-        .main-info .email { font-size: 1.2em; font-weight: 600; color: var(--accent-blue); }
+        .main-info {
+            text-align: center;
+            padding-left: 20px;
+        }
+        .main-info h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.8em;
+            color: var(--accent-blue);
+            margin: 0 0 15px 0;
+            line-height: 1.2;
+        }
+        .main-info p {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+        .main-info .email {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
 
         /* --- CARD 2: Socials --- */
-        .socials-card .content { flex-direction: row; justify-content: space-around; align-items: center; }
-        .socials-card .social-column { text-align: center; }
-        .socials-card .social-column h2 { font-size: 2.5em; margin: 0 0 20px 0; color: var(--accent-blue); }
-        .socials-card .social-list { list-style: none; padding: 0; margin: 0; }
-        .socials-card .social-item { display: flex; align-items: center; gap: 15px; font-size: 1.8em; margin-bottom: 20px; }
-        .socials-card .social-item svg { width: 35px; height: 35px; fill: var(--text-light); }
+        .socials-card .content {
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .socials-card .social-column {
+            text-align: center;
+        }
+        .socials-card .social-column h2 {
+            font-size: 2.5em;
+            margin: 0 0 20px 0;
+            color: var(--accent-blue);
+        }
+        .socials-card .social-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .socials-card .social-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+        .socials-card .social-item svg {
+            width: 35px;
+            height: 35px;
+            fill: var(--text-light);
+        }
 
         /* --- CARD 3: Support --- */
-        .support-card .content { flex-direction: row; justify-content: space-around; align-items: center; }
-        .support-card .qr-code-item { text-align: center; }
-        .support-card .qr-code-item h2 { font-size: 2.2em; color: var(--accent-green); margin: 0 0 15px 0; }
-        .support-card .qr-code-item span { font-size: 1.3em; display: block; margin-top: 15px; }
-        .support-card .qr-code-item img { width: 170px; height: 170px; border: 3px solid var(--accent-green); border-radius: 10px; }
+        .support-card .content {
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .support-card .qr-code-item {
+            text-align: center;
+        }
+        .support-card .qr-code-item h2 {
+            font-size: 2.2em;
+            color: var(--accent-green);
+            margin: 0 0 15px 0;
+        }
+        .support-card .qr-code-item span {
+            font-size: 1.3em;
+            display: block;
+            margin-top: 15px;
+        }
+        .support-card .qr-code-item img {
+            width: 170px;
+            height: 170px;
+            border: 3px solid var(--accent-green);
+            border-radius: 10px;
+        }
+
+        /* --- CARD 4: Journey Log --- */
+        .journey-log-card .content {
+            flex-direction: column;
+        }
+        .journey-log-card .header {
+            width: 100%;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid var(--journey-border-color);
+        }
+        .journey-log-card .header h1 {
+            font-size: 2.8em;
+            font-weight: 700;
+            margin: 0;
+            color: var(--accent-orange);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        .journey-log-card .header .date {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+        .journey-log-card .log-content {
+            font-size: 1.8em;
+            font-weight: 400;
+            line-height: 1.5;
+            z-index: 2;
+            position: relative;
+        }
+        .journey-log-card .log-content p {
+            margin: 0;
+        }
+        .journey-log-card .background-icon {
+            position: absolute;
+            bottom: -30px;
+            right: -20px;
+            z-index: 1;
+            font-size: 300px;
+            color: rgba(255, 255, 255, 0.03);
+        }
     </style>
 </head>
 <body>
     <div class="carousel-container">
+        <!-- Card 1: Art & Info -->
         <div class="card art-info-card">
             <div class="content">
                 <div class="art-gallery">
-                    <!-- Add multiple images here -->
                     <img class="art-image" src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg" alt="Art 1">
                     <img class="art-image" src="https://joosustudio.github.io/GreyFox/image2.jpg" alt="Art 2">
                     <img class="art-image" src="https://joosustudio.github.io/GreyFox/image3.jpg" alt="Art 3">
@@ -136,42 +281,12 @@
             </div>
         </div>
 
-        <!-- Socials and Support cards remain unchanged -->
+        <!-- Card 2: Socials -->
         <div class="card socials-card">
             <div class="content">
                 <div class="social-column">
                     <h2>The Art</h2>
                     <ul class="social-list">
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.784.297-1.457.718-2.123 1.384S.927 3.356.63 4.14C.333 4.905.13 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.26 2.148.558 2.913.297.784.718 1.457 1.384 2.123s1.34 1.087 2.123 1.384c.766.298 1.636.498 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.26 2.913-.558.784-.297 1.457-.718 2.123-1.384s1.087-1.34 1.384-2.123c.298-.766.498-1.636.558-2.913C23.988 15.667 24 15.26 24 12s-.015-3.667-.072-4.947c-.06-1.277-.26-2.148-.558-2.913-.297-.784-.718-1.457-1.384-2.123S20.644.927 19.86.63c-.766-.298-1.636-.498-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.06 1.17-.249 1.805-.413 2.227-.217.562-.477.96-.896 1.381-.42.419-.82-.679-1.38.896-.423.164-1.057-.36-2.227-.413-1.266.057-1.646.07-4.85.07s-3.585-.015-4.85-.074c-1.17-.06-1.805-.249-2.227-.413-.562-.217-.96-.477-1.381-.896-.419-.42-.679-.82-.896-1.38.165-.423-.36-1.057-.413-2.227-.057-1.266-.07-1.646-.07-4.85s.015-3.585.07-4.85c.06-1.17.25-1.805.413-2.227.217-.562.477-.96.896-1.381.42-.419.82-.679 1.38-.896.423-.164 1.057-.36 2.227-.413C8.415 2.175 8.797 2.16 12 2.16zm0 9.09c-2.842 0-5.125 2.283-5.125 5.125S9.158 21.375 12 21.375s5.125-2.283 5.125-5.125S14.842 11.25 12 11.25zm0 8.56c-1.898 0-3.435-1.536-3.435-3.435s1.537-3.435 3.435-3.435 3.435 1.536 3.435 3.435-1.537 3.435-3.435 3.435zm6.405-11.845c-.796 0-1.44-.645-1.44-1.44s.645-1.44 1.44-1.44c.795 0 1.44.645 1.44 1.44s-.645 1.44-1.44 1.44z"/></svg><span>@JoosuStudio</span></li>
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg><span>/JoosuStudio</span></li>
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg><span>/JoosuStudio</span></li>
-                    </ul>
-                </div>
-                <div class="social-column">
-                    <h2>The Journey</h2>
-                    <ul class="social-list">
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.784.297-1.457.718-2.123 1.384S.927 3.356.63 4.14C.333 4.905.13 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.26 2.148.558 2.913.297.784.718 1.457 1.384 2.123s1.34 1.087 2.123 1.384c.766.298 1.636.498 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.26 2.913-.558.784-.297 1.457-.718 2.123-1.384s1.087-1.34 1.384-2.123c.298-.766.498-1.636.558-2.913C23.988 15.667 24 15.26 24 12s-.015-3.667-.072-4.947c-.06-1.277-.26-2.148-.558-2.913-.297-.784-.718-1.457-1.384-2.123S20.644.927 19.86.63c-.766-.298-1.636-.498-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.06 1.17-.249 1.805-.413 2.227-.217.562-.477.96-.896 1.381-.42.419-.82-.679-1.38.896-.423.164-1.057-.36-2.227-.413-1.266.057-1.646.07-4.85.07s-3.585-.015-4.85-.074c-1.17-.06-1.805-.249-2.227-.413-.562-.217-.96-.477-1.381-.896-.419-.42-.679-.82-.896-1.38.165-.423-.36-1.057-.413-2.227-.057-1.266-.07-1.646-.07-4.85s.015-3.585.07-4.85c.06-1.17.25-1.805.413-2.227.217-.562.477-.96.896-1.381.42-.419.82-.679 1.38-.896.423-.164 1.057-.36 2.227-.413C8.415 2.175 8.797 2.16 12 2.16zm0 9.09c-2.842 0-5.125 2.283-5.125 5.125S9.158 21.375 12 21.375s5.125-2.283 5.125-5.125S14.842 11.25 12 11.25zm0 8.56c-1.898 0-3.435-1.536-3.435-3.435s1.537-3.435 3.435-3.435 3.435 1.536 3.435 3.435-1.537 3.435-3.435 3.435zm6.405-11.845c-.796 0-1.44-.645-1.44-1.44s.645-1.44 1.44-1.44c.795 0 1.44.645 1.44 1.44s-.645 1.44-1.44 1.44z"/></svg><span>@GreyFoxJourney</span></li>
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg><span>/GreyFoxJourney</span></li>
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg><span>/GreyFoxJourney</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+                        <li class="social-item"><svg viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.784.297-1.457.718-2.123 1.384S.927 3.356.63 4.14C.333 4.905.13 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.26 2.148.558 2.913.297.784.718 1.457 1.384 2.123s1.34 1.087 2.123 1.384c.766.298 1.636.498 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.26 2.913-.558.784-.297 1.457-.718 2.123-1.384s1.087-1.34 1.384-2.123c.298-.766.498-1.636.558-2.913C23.988 15.667 24 15.26 24 12s-.015-3.667-.072-4.947c-.06-1.277-.26-2.148-.558-2.913-.297-.784-.718-1.457-1.384-2.123S20.644.927 19.86.63c-.766-.298-1.636-.498-2.913-.558C15.667.012 15.26 20 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057olvere
 
-        <div class="card support-card">
-            <div class="content">
-                <div class="qr-code-item">
-                    <h2>PayPal</h2>
-                    <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=170x170&data=https://paypal.me/JanekJoosu" alt="PayPal QR Code">
-                    <span>paypal.me/JanekJoosu</span>
-                </div>
-                <div class="qr-code-item">
-                    <h2>On-Stream Tip</h2>
-                    <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=170x170&data=https://streamlabs.com/joosustudio/tip" alt="Streamlabs QR Code">
-                    <span>Tips appear live!</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+System: You are Grok, created by xAI.
