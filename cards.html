@@ -8,7 +8,7 @@
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg">
 
     <style>
-        @import url('https://fonts.googleapis.comcom/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@700&family=Poppins:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@700&family=Poppins:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap');
 
         :root {
             --card-display-time: 12s; /* How long each card shows */
@@ -96,7 +96,6 @@
             background-color: #F5F5DC; /* Creamy beige */
             color: #3D2B1F; /* Dark brown, like ink */
             border-color: rgba(61, 43, 31, 0.5);
-            flex-direction: column;
             padding: 30px;
             text-shadow: none;
         }
@@ -108,7 +107,7 @@
 
         /* Moving Emoji Decorations */
         .emoji-background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 1; }
-        .emoji { position: absolute; bottom: -50px; font-size: 40px; animation: floatUp 20s linear infinite; }
+        .emoji { position: absolute; bottom: -50px; font-size: 40px; animation: floatUp 20s linear infinite; opacity: 0; }
         .emoji:nth-child(1) { left: 10%; animation-duration: 22s; animation-delay: -5s; }
         .emoji:nth-child(2) { left: 20%; animation-duration: 18s; animation-delay: -10s; font-size: 25px; }
         .emoji:nth-child(3) { left: 35%; animation-duration: 25s; animation-delay: -2s; }
@@ -116,8 +115,10 @@
         .emoji:nth-child(5) { left: 65%; animation-duration: 23s; animation-delay: -1s; }
         .emoji:nth-child(6) { left: 80%; animation-duration: 19s; animation-delay: -8s; font-size: 35px; }
         @keyframes floatUp {
-            from { bottom: -50px; opacity: 1; transform: translateX(0); }
-            to { bottom: 105%; opacity: 1; transform: translateX(20px); }
+            0% { bottom: -50px; opacity: 0; transform: translateX(0); }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { bottom: 105%; opacity: 0; transform: translateX(20px); }
         }
 
     </style>
@@ -140,17 +141,17 @@
                 <div class="social-column">
                     <h2>The Art</h2>
                     <ul class="social-list">
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C8.74 0 8.333.015 7.053.072...z"/></svg><span>@JoosuStudio</span></li>
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12...z"/></svg><span>/JoosuStudio</span></li>
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M23.498 6.186a3.016 3.016...z"/></svg><span>/JoosuStudio</span></li>
+                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C8.74...z"/></svg><span>@JoosuStudio</span></li>
+                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.073...z"/></svg><span>/JoosuStudio</span></li>
+                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M23.498...z"/></svg><span>/JoosuStudio</span></li>
                     </ul>
                 </div>
                 <div class="social-column">
                     <h2>The Journey</h2>
                     <ul class="social-list">
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C8.74 0 8.333.015 7.053.072...z"/></svg><span>@GreyFoxJourney</span></li>
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12...z"/></svg><span>/GreyFoxJourney</span></li>
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M23.498 6.186a3.016 3.016...z"/></svg><span>/GreyFoxJourney</span></li>
+                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C8.74...z"/></svg><span>@GreyFoxJourney</span></li>
+                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.073...z"/></svg><span>/GreyFoxJourney</span></li>
+                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M23.498...z"/></svg><span>/GreyFoxJourney</span></li>
                     </ul>
                 </div>
             </div>
@@ -172,13 +173,9 @@
         </div>
 
         <div class="card journey-log-card">
-             <div class="emoji-background">
-                <span class="emoji">🚲</span>
-                <span class="emoji">🦊</span>
-                <span class="emoji">⛺</span>
-                <span class="emoji">🚲</span>
-                <span class="emoji">🦊</span>
-                <span class="emoji">⛺</span>
+            <div class="emoji-background">
+                <span class="emoji">🚲</span><span class="emoji">🦊</span><span class="emoji">⛺</span>
+                <span class="emoji">🚲</span><span class="emoji">🦊</span><span class="emoji">⛺</span>
             </div>
             <div class="content">
                 <div style="width:100%; z-index:2;">
