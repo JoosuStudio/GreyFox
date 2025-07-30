@@ -37,24 +37,16 @@
             animation-iteration-count: infinite;
         }
 
-        .art-info-card { animation-name: show-card-1; }
-        .socials-card  { animation-name: show-card-2; }
-        .support-card  { animation-name: show-card-3; }
+        .art-info-card    { animation-name: show-card-1; }
+        .socials-card     { animation-name: show-card-2; }
+        .support-card     { animation-name: show-card-3; }
         .journey-log-card { animation-name: show-card-4; }
 
         /* Updated keyframes for 4 cards */
-        @keyframes show-card-1 {
-            0% { opacity: 1; }  25% { opacity: 1; }  25.01% { opacity: 0; } 100% { opacity: 0; }
-        }
-        @keyframes show-card-2 {
-            0% { opacity: 0; }  25% { opacity: 0; }  25.01% { opacity: 1; }  50% { opacity: 1; } 50.01% { opacity: 0; } 100% { opacity: 0; }
-        }
-        @keyframes show-card-3 {
-            0% { opacity: 0; }  50% { opacity: 0; }  50.01% { opacity: 1; }  75% { opacity: 1; } 75.01% { opacity: 0; } 100% { opacity: 0; }
-        }
-        @keyframes show-card-4 {
-            0% { opacity: 0; }  75% { opacity: 0; }  75.01% { opacity: 1; }  100% { opacity: 1; }
-        }
+        @keyframes show-card-1 { 0% { opacity: 1; }  25% { opacity: 1; }  25.01% { opacity: 0; } 100% { opacity: 0; } }
+        @keyframes show-card-2 { 0% { opacity: 0; }  25% { opacity: 0; }  25.01% { opacity: 1; }  50% { opacity: 1; } 50.01% { opacity: 0; } 100% { opacity: 0; } }
+        @keyframes show-card-3 { 0% { opacity: 0; }  50% { opacity: 0; }  50.01% { opacity: 1; }  75% { opacity: 1; } 75.01% { opacity: 0; } 100% { opacity: 0; } }
+        @keyframes show-card-4 { 0% { opacity: 0; }  75% { opacity: 0; }  75.01% { opacity: 1; }  100% { opacity: 1; } }
         
         .content {
             position: relative; z-index: 2;
@@ -96,16 +88,15 @@
             background-color: #F5F5DC; /* Creamy beige */
             color: #3D2B1F; /* Dark brown, like ink */
             border-color: rgba(61, 43, 31, 0.5);
-            padding: 30px;
+            padding: 30px 40px;
             text-shadow: none;
+            box-sizing: border-box;
         }
         .journey-log-card .header { width: 100%; border-bottom: 2px solid rgba(61, 43, 31, 0.5); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .journey-log-card .header h1 { font-family: 'Playfair Display', serif; font-size: 3em; margin: 0; }
+        .journey-log-card .header h1 { font-family: 'Playfair Display', serif; font-size: 3em; margin: 0; color: #3D2B1F; }
         .journey-log-card .header .date { font-family: 'Roboto Mono', monospace; font-size: 1.2em; font-weight: 500; color: #B22222; }
-        .journey-log-card .log-content { font-family: 'Roboto Mono', monospace; font-size: 1.6em; line-height: 1.6; z-index: 2; position: relative; }
+        .journey-log-card .log-content { font-family: 'Roboto Mono', monospace; font-size: 1.8em; line-height: 1.6; z-index: 2; position: relative; }
         .journey-log-card .log-content p { margin: 0; }
-
-        /* Moving Emoji Decorations */
         .emoji-background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 1; }
         .emoji { position: absolute; bottom: -50px; font-size: 40px; animation: floatUp 20s linear infinite; opacity: 0; }
         .emoji:nth-child(1) { left: 10%; animation-duration: 22s; animation-delay: -5s; }
@@ -116,8 +107,8 @@
         .emoji:nth-child(6) { left: 80%; animation-duration: 19s; animation-delay: -8s; font-size: 35px; }
         @keyframes floatUp {
             0% { bottom: -50px; opacity: 0; transform: translateX(0); }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
+            20% { opacity: 0.1; }
+            80% { opacity: 0.1; }
             100% { bottom: 105%; opacity: 0; transform: translateX(20px); }
         }
 
@@ -141,17 +132,17 @@
                 <div class="social-column">
                     <h2>The Art</h2>
                     <ul class="social-list">
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C8.74...z"/></svg><span>@JoosuStudio</span></li>
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.073...z"/></svg><span>/JoosuStudio</span></li>
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M23.498...z"/></svg><span>/JoosuStudio</span></li>
+                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C8.74 0 8.333.015 7.053.072...z"/></svg><span>@JoosuStudio</span></li>
+                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.073c0-6.627...z"/></svg><span>/JoosuStudio</span></li>
+                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M23.498 6.186a3.016...z"/></svg><span>/JoosuStudio</span></li>
                     </ul>
                 </div>
                 <div class="social-column">
                     <h2>The Journey</h2>
                     <ul class="social-list">
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C8.74...z"/></svg><span>@GreyFoxJourney</span></li>
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.073...z"/></svg><span>/GreyFoxJourney</span></li>
-                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M23.498...z"/></svg><span>/GreyFoxJourney</span></li>
+                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C8.74 0 8.333.015 7.053.072...z"/></svg><span>@GreyFoxJourney</span></li>
+                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.073c0-6.627...z"/></svg><span>/GreyFoxJourney</span></li>
+                        <li class="social-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M23.498 6.186a3.016...z"/></svg><span>/GreyFoxJourney</span></li>
                     </ul>
                 </div>
             </div>
@@ -185,7 +176,7 @@
                     </div>
                     <div class="log-content">
                         <p>
-                            Today's goal: Cycling 80km to Tartu! Hoping to finally see the famous 'Kissing Students' statue.
+                            Last night's camp was beautiful but chilly! A huge thanks to **DonorName** for the 'warm soup' donation!
                         </p>
                     </div>
                 </div>
