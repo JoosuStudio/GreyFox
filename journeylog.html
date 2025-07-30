@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journey Log Card</title>
+
+    <style>
+        /* Using a different, more classic font pairing for this card */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto+Mono:wght@400;500&display=swap');
+
+        :root {
+            /* A new, warmer, "parchment paper" color scheme */
+            --paper-bg: #F5F5DC; /* Creamy beige */
+            --text-dark: #3D2B1F; /* Dark brown, like ink */
+            --accent-red: #B22222; /* A touch of firebrick red for the date */
+            --border-color: rgba(61, 43, 31, 0.5);
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: transparent; overflow: hidden;
+        }
+
+        .card-container {
+            position: absolute; top: 0; left: 0;
+            width: 870px; height: 358px;
+            background-color: var(--paper-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-dark);
+        }
+        
+        /* Optional: A subtle texture for the paper background */
+        .card-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+        }
+
+        .header {
+            width: 100%;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            margin: 0;
+        }
+
+        .header .date {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.2em;
+            font-weight: 500;
+            color: var(--accent-red);
+        }
+
+        .log-content {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.5em; /* Large and clear for readability */
+            line-height: 1.6;
+            flex-grow: 1; /* Takes up the remaining space */
+        }
+        
+        /* Decorative compass in the corner */
+        .compass-rose {
+            position: absolute;
+            bottom: 20px;
+            right: 25px;
+            width: 80px;
+            height: 80px;
+            opacity: 0.15;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="card-container">
+        <div class="header">
+            <h1>Journey Log</h1>
+            <span class="date">30 July, 2025</span>
+        </div>
+
+        <div class="log-content">
+            <p>
+                Today's goal: Cycling 80km to Tartu! Hoping to finally see the famous 'Kissing Students' statue. The weather looks perfect for a long ride.
+            </p>
+        </div>
+        
+        <svg class="compass-rose" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 0 L40 40 L50 100 L60 40 Z" fill="currentColor"/>
+            <path d="M0 50 L40 40 L100 50 L40 60 Z" fill="currentColor"/>
+            <circle cx="50" cy="50" r="10" fill="currentColor"/>
+        </svg>
+
+    </div>
+
+</body>
+</html>
