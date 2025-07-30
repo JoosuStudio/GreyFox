@@ -5,13 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Final Stream Overlay</title>
 
+    <!-- Preload images for the gallery -->
     <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg">
+    <!-- Add more preload links for additional images -->
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/image2.jpg">
+    <link rel="preload" as="image" href="https://joosustudio.github.io/GreyFox/image3.jpg">
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap');
 
         :root {
             --card-display-time: 12s; /* How long each card shows */
+            --image-display-time: 4s; /* How long each image shows (adjust based on number of images) */
             --bg-color: rgba(15, 25, 15, 0.9);
             --text-light: #E0F0E0;
             --accent-green: #77dd77;
@@ -31,8 +36,8 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
-            opacity: 0; /* All cards start hidden */
-            animation-duration: calc(3 * var(--card-display-time)); /* Total cycle time */
+            opacity: 0;
+            animation-duration: calc(3 * var(--card-display-time));
             animation-timing-function: linear;
             animation-iteration-count: infinite;
         }
@@ -50,7 +55,7 @@
         @keyframes show-card-3 {
             0% { opacity: 0; }  66.66% { opacity: 0; }  66.67% { opacity: 1; }  99.99% { opacity: 1; }  100% { opacity: 0; }
         }
-        
+
         .content {
             position: relative; z-index: 2;
             width: 100%; height: 100%;
@@ -72,16 +77,24 @@
             border-radius: 8px;
             overflow: hidden;
         }
-        /* UPDATED: Single image with Ken Burns effect */
         .art-gallery .art-image {
             width: 100%; height: 100%;
             object-fit: cover;
-            opacity: 1;
-            animation: kenburns 25s ease-in-out infinite alternate;
+            position: absolute;
+            top: 0; left: 0;
+            opacity: 0;
+            animation: imageCycle calc(3 * var(--image-display-time)) linear infinite;
         }
-        @keyframes kenburns {
-            from { transform: scale(1.0); }
-            to { transform: scale(1.15); }
+        /* Assign delays to each image for sequential display */
+        .art-gallery .art-image:nth-child(1) { animation-delay: 0s; }
+        .art-gallery .art-image:nth-child(2) { animation-delay: var(--image-display-time); }
+        .art-gallery .art-image:nth-child(3) { animation-delay: calc(2 * var(--image-display-time)); }
+
+        @keyframes imageCycle {
+            0% { opacity: 1; transform: scale(1.0); }
+            33.33% { opacity: 1; transform: scale(1.15); } /* Ken Burns effect */
+            33.34% { opacity: 0; transform: scale(1.15); }
+            100% { opacity: 0; transform: scale(1.0); }
         }
 
         .main-info { text-align: center; padding-left: 20px; }
@@ -110,7 +123,10 @@
         <div class="card art-info-card">
             <div class="content">
                 <div class="art-gallery">
+                    <!-- Add multiple images here -->
                     <img class="art-image" src="https://joosustudio.github.io/GreyFox/FB_IMG_1746813081204.jpg" alt="Art 1">
+                    <img class="art-image" src="https://joosustudio.github.io/GreyFox/image2.jpg" alt="Art 2">
+                    <img class="art-image" src="https://joosustudio.github.io/GreyFox/image3.jpg" alt="Art 3">
                 </div>
                 <div class="main-info">
                     <h1>JoosuStudio | GreyFoxJourney</h1>
@@ -120,6 +136,7 @@
             </div>
         </div>
 
+        <!-- Socials and Support cards remain unchanged -->
         <div class="card socials-card">
             <div class="content">
                 <div class="social-column">
