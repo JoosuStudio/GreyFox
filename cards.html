@@ -95,6 +95,35 @@
         .support-card .qr-code-item span { font-size: 1.3em; display: block; margin-top: 15px; }
         .support-card .qr-code-item img { width: 170px; height: 170px; border: 3px solid var(--accent-green); border-radius: 10px; }
         
+        /* NEW STYLES for the birthday promo */
+        .birthday-promo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--text-light);
+            padding: 0 20px;
+        }
+        .birthday-promo .icons {
+            font-size: 3.5em;
+            line-height: 1;
+            margin-bottom: 15px;
+        }
+        .birthday-promo p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--accent-orange);
+            margin: 0;
+            line-height: 1.2;
+        }
+        .birthday-promo span {
+            font-size: 1.1em;
+            margin-top: 5px;
+            color: var(--accent-blue);
+        }
+
         /* --- CARD 4: Journey Log --- */
         .journey-log-card { background-color: rgba(20, 20, 30, 0.9); border-color: var(--border-color-alt); }
         .journey-log-card .content { flex-direction: column; padding: 25px 35px; }
@@ -115,7 +144,7 @@
     <script>
         const journeyLogData = {
             date: "02 August, 2025",
-            message: "It's my 39th birthday week, with the big day on August 4, 2025!I’m celebrating with a 100 km weekend bike ride plus daily 50 km commute livestreams. Be my guest to join my ride! 😊🦊🚴⛺🎂"
+            message: "Just finished packing the bike! It's heavier than I expected, but every piece of gear is essential. The adventure feels real now. Next stop: the open road!"
         };
     </script>
     <!-- =================================================================== -->
@@ -171,6 +200,14 @@
                     <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=170x170&data=https://paypal.me/JanekJoosu" alt="PayPal QR Code">
                     <span>paypal.me/JanekJoosu</span>
                 </div>
+                
+                <!-- UPDATED: Birthday Promo Section -->
+                <div class="birthday-promo">
+                    <div class="icons">🦊🎂</div>
+                    <p>39th B-Day Journey!</p>
+                    <span>Help celebrate!</span>
+                </div>
+
                 <div class="qr-code-item">
                     <h2>On-Stream Tip</h2>
                     <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=170x170&data=https://streamlabs.com/joosustudio/tip" alt="Streamlabs QR Code">
