@@ -1,0 +1,75 @@
+<!-- 
+  Instructions for Streamlabs/OBS:
+  1. Create a new "Browser Source".
+  2. Set the URL to about:blank.
+  3. Copy the entire code below and paste it into the "Custom CSS" text box of the Browser Source properties.
+     (Yes, paste all of it - HTML included - into the CSS box. Most streaming software will render it correctly).
+-->
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Poppins:wght@500;700&display=swap');
+
+    :root {
+        --bg-color: rgba(20, 25, 35, 0.95);
+        --text-light: #F0F8FF;
+        --accent-gold: #FFD700;
+        --accent-blue: #AACCFF;
+        --border-color: rgba(255, 215, 0, 0.6);
+    }
+
+    /* Basic setup for the browser source body */
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        background-color: transparent;
+        overflow: hidden;
+    }
+
+    /* The main container for your overlay element */
+    .overlay-container {
+        /* This ensures the box is positioned at the top-left corner of the source */
+        position: absolute;
+        top: 10px; /* Optional: adds a little space from the edge */
+        left: 10px; /* Optional: adds a little space from the edge */
+
+        width: max-content; /* The box will size to its content */
+        background-color: var(--bg-color);
+        border: 2px solid var(--border-color);
+        border-radius: 15px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
+        padding: 15px 30px;
+        box-sizing: border-box;
+        color: var(--text-light);
+    }
+    
+    /* --- Header Text Styling --- */
+    .header {
+        text-align: center;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: 2.5em; /* You can adjust the size here */
+        color: var(--accent-gold);
+        text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        line-height: 1.1;
+        margin: 0;
+    }
+
+    /* Subtitle text styling */
+    .header span {
+        font-size: 0.6em;
+        color: var(--accent-blue);
+        font-weight: 700;
+        display: block; /* Makes the subtitle appear on a new line */
+    }
+</style>
+
+<!-- HTML content for the overlay -->
+<div class="overlay-container">
+    <div class="header">
+        MY 39th BIRTHDAY RIDE!
+        <span>⛺🚴🎂Võsu Weekend Special 100km.
+Exact birthday August 4th🎂🚴⛺</span>
+    </div>
+</div>
+
