@@ -1,166 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday Ride Special Overlay</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Poppins:wght@500;700&family=Roboto+Mono&display=swap');
+<!-- 
+  Instructions for Streamlabs/OBS:
+  1. Create a new "Browser Source".
+  2. Set the URL to about:blank.
+  3. Copy the entire code below and paste it into the "Custom CSS" text box of the Browser Source properties.
+     (Yes, paste all of it - HTML included - into the CSS box. Most streaming software will render it correctly).
+-->
 
-        :root {
-            --bg-color: rgba(20, 25, 35, 0.95);
-            --text-light: #F0F8FF;
-            --accent-gold: #FFD700;
-            --accent-orange: #FF8C00;
-            --accent-blue: #AACCFF;
-            --accent-green: #77dd77;
-            --border-color: rgba(255, 215, 0, 0.6);
-        }
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Poppins:wght@500;700&display=swap');
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Poppins', sans-serif;
-            background-color: transparent;
-            overflow: hidden;
-        }
+    :root {
+        --bg-color: rgba(20, 25, 35, 0.95);
+        --text-light: #F0F8FF;
+        --accent-gold: #FFD700;
+        --accent-blue: #AACCFF;
+        --border-color: rgba(255, 215, 0, 0.6);
+    }
 
-        .overlay-container {
-            position: relative;
-            width: 870px;
-            height: 270px;
-            background-color: var(--bg-color);
-            border: 2px solid var(--border-color);
-            border-radius: 15px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
-            padding: 20px 25px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            color: var(--text-light);
-            overflow: hidden; /* For confetti */
-        }
-        
-        /* --- Header --- */
-        .header {
-            text-align: center;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-size: 2.5em;
-            color: var(--accent-gold);
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-            line-height: 1.1;
-            margin-bottom: 15px;
-        }
-        .header span {
-            font-size: 0.6em;
-            color: var(--accent-blue);
-            font-weight: 700;
-        }
+    /* Basic setup for the browser source body */
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        background-color: transparent;
+        overflow: hidden;
+    }
 
-        /* --- Interactive Goals --- */
-        .interactive-goals {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 15px;
-        }
-        .goal-item {
-            text-align: center;
-            width: 30%;
-        }
-        .goal-item .price {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.8em;
-            font-weight: 700;
-            color: var(--accent-green);
-        }
-        .goal-item .icon {
-            font-size: 2.2em;
-            margin: 0;
-        }
-        .goal-item .description {
-            font-size: 0.9em;
-            line-height: 1.2;
-            max-width: 180px;
-            margin: 0 auto;
-        }
-        
-        /* --- Ride Info Footer --- */
-        .ride-info {
-            text-align: center;
-            font-size: 0.8em; /* UPDATED: Reduced font size to prevent overflow */
-            font-family: 'Roboto Mono', monospace;
-            opacity: 0.8;
-            white-space: nowrap; /* Ensures the text stays on a single line */
-        }
+    /* The main container for your overlay element */
+    .overlay-container {
+        /* This ensures the box is positioned at the top-left corner of the source */
+        position: absolute;
+        top: 10px; /* Optional: adds a little space from the edge */
+        left: 10px; /* Optional: adds a little space from the edge */
 
-        /* --- Confetti Animation --- */
-        .confetti {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-gold);
-            border-radius: 50%;
-            opacity: 0;
-            animation: fall 5s linear infinite;
-        }
-        .confetti:nth-child(2) { background-color: var(--accent-blue); animation-delay: -2s; left: 20%; }
-        .confetti:nth-child(3) { background-color: var(--accent-orange); animation-delay: -3s; left: 40%; }
-        .confetti:nth-child(4) { background-color: var(--accent-green); animation-delay: -1.5s; left: 60%; }
-        .confetti:nth-child(5) { background-color: #fff; animation-delay: -4s; left: 80%; }
-        .confetti:nth-child(6) { background-color: var(--accent-gold); animation-delay: -2.5s; left: 90%; }
-        @keyframes fall {
-            0% { top: -20px; opacity: 1; transform: translateX(0) rotate(0deg); }
-            100% { top: 105%; opacity: 1; transform: translateX(20px) rotate(360deg); }
-        }
+        width: max-content; /* The box will size to its content */
+        background-color: var(--bg-color);
+        border: 2px solid var(--border-color);
+        border-radius: 15px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
+        padding: 15px 30px;
+        box-sizing: border-box;
+        color: var(--text-light);
+    }
+    
+    /* --- Header Text Styling --- */
+    .header {
+        text-align: center;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: 2.5em; /* You can adjust the size here */
+        color: var(--accent-gold);
+        text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        line-height: 1.1;
+        margin: 0;
+    }
 
-    </style>
-</head>
-<body>
+    /* Subtitle text styling */
+    .header span {
+        font-size: 0.6em;
+        color: var(--accent-blue);
+        font-weight: 700;
+        display: block; /* Makes the subtitle appear on a new line */
+    }
+</style>
 
-    <div class="overlay-container">
-        <!-- Confetti elements -->
-        <div class="confetti" style="left: 10%;"></div>
-        <div class="confetti" style="left: 30%;"></div>
-        <div class="confetti" style="left: 50%;"></div>
-        <div class="confetti" style="left: 70%;"></div>
-        <div class="confetti" style="left: 85%;"></div>
-        <div class="confetti" style="left: 5%;"></div>
-        
-        <div class="header">
-            39th BIRTHDAY RIDE! <span>Võsu Weekend Special</span>
-        </div>
-
-        <div class="interactive-goals">
-            <div class="goal-item">
-                <div class="price">5€</div>
-                <div class="icon">📣</div>
-                <div class="description">A special on-stream shout-out for you!</div>
-            </div>
-            <div class="goal-item">
-                <div class="price">10€</div>
-                <div class="icon">💎</div>
-                <div class="description">I'll engrave your message on a stone & leave it here!</div>
-            </div>
-            <div class="goal-item">
-                <div class="price">15€</div>
-                <div class="icon">🎵</div>
-                <div class="description">You get to pick the next song on my ride playlist!</div>
-            </div>
-        </div>
-
-        <div class="ride-info">
-            This Week: 100km Võsu Ride + 250km Work Commutes = 350 Birthday Kilometers!
-        </div>
+<!-- HTML content for the overlay -->
+<div class="overlay-container">
+    <div class="header">
+        39th BIRTHDAY RIDE!
+        <span>Võsu Weekend Special</span>
     </div>
-
-</body>
-</html>
+</div>
 
