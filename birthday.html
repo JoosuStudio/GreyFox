@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Birthday Ride Special Overlay</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Poppins:wght@500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Poppins:wght@500;700&family=Roboto+Mono&display=swap');
 
         :root {
             --bg-color: rgba(20, 25, 35, 0.95);
@@ -48,8 +48,8 @@
         .header {
             text-align: center;
             font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 2.3em;
+            font-weight: 900;
+            font-size: 2.5em;
             color: var(--accent-gold);
             text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
             line-height: 1.1;
@@ -95,9 +95,10 @@
         /* --- Ride Info Footer --- */
         .ride-info {
             text-align: center;
-            font-size: 0.9em;
+            font-size: 0.8em; /* UPDATED: Reduced font size to prevent overflow */
             font-family: 'Roboto Mono', monospace;
             opacity: 0.8;
+            white-space: nowrap; /* Ensures the text stays on a single line */
         }
 
         /* --- Confetti Animation --- */
