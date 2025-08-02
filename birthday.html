@@ -30,16 +30,16 @@
         .overlay-container {
             position: relative;
             width: 870px;
-            height: 358px;
+            height: 270px;
             background-color: var(--bg-color);
             border: 2px solid var(--border-color);
             border-radius: 15px;
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
-            padding: 15px 25px; /* UPDATED: Reduced vertical padding */
+            padding: 20px 25px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Helps distribute space */
+            justify-content: space-between;
             color: var(--text-light);
             overflow: hidden; /* For confetti */
         }
@@ -49,28 +49,16 @@
             text-align: center;
             font-family: 'Montserrat', sans-serif;
             font-weight: 900;
-            font-size: 2.5em; /* UPDATED: Reduced font size */
+            font-size: 2.5em;
             color: var(--accent-gold);
             text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
             line-height: 1.1;
-            margin-bottom: 8px; /* UPDATED: Reduced margin */
+            margin-bottom: 15px;
         }
         .header span {
             font-size: 0.6em;
             color: var(--accent-blue);
             font-weight: 700;
-        }
-
-        /* --- Streamlabs Goal Bar Container --- */
-        .streamlabs-goal-container {
-            width: 100%;
-            height: 80px; /* Standard height for Streamlabs goal widget */
-            margin-bottom: 8px; /* UPDATED: Reduced margin */
-        }
-        .streamlabs-goal-container iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
         }
 
         /* --- Interactive Goals --- */
@@ -80,25 +68,25 @@
             align-items: center;
             background: rgba(0,0,0,0.2);
             border-radius: 10px;
-            padding: 10px; /* UPDATED: Reduced padding */
-            margin-bottom: 8px; /* UPDATED: Reduced margin */
+            padding: 10px;
+            margin-bottom: 15px;
         }
         .goal-item {
             text-align: center;
-            width: 30%; /* Give items defined width */
+            width: 30%;
         }
         .goal-item .price {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.8em; /* UPDATED: Reduced font size */
+            font-size: 1.8em;
             font-weight: 700;
             color: var(--accent-green);
         }
         .goal-item .icon {
-            font-size: 2.2em; /* UPDATED: Reduced font size */
+            font-size: 2.2em;
             margin: 0;
         }
         .goal-item .description {
-            font-size: 0.9em; /* UPDATED: Reduced font size */
+            font-size: 0.9em;
             line-height: 1.2;
             max-width: 180px;
             margin: 0 auto;
@@ -149,20 +137,11 @@
             39th BIRTHDAY RIDE! <span>Võsu Weekend Special</span>
         </div>
 
-        <!-- Streamlabs Donation Goal Widget -->
-        <div class="streamlabs-goal-container">
-            <iframe 
-                src="https://streamlabs.com/widgets/donation-goal?token=81E66FA67DFCFF571C1C074CFF3510D494005D1BC90DD3A4D92A8AB5FD09E34A473BE3EDC1A83A5D375E3CA48F7570CAD8D032A17F88B9EE42635A6416415F190E13FC2DE63CDC992C49444070DFE4E664313AB22CBBC8F44409E072D3A356A517C74C2FA7304E75A4A3E8A021C6A744FABD885C2B0D9B174EDE40EFC2" 
-                frameborder="0" 
-                scrolling="no">
-            </iframe>
-        </div>
-
         <div class="interactive-goals">
             <div class="goal-item">
                 <div class="price">5€</div>
-                <div class="icon">🎤</div>
-                <div class="description">I will sing a song of your choice!</div>
+                <div class="icon">📣</div>
+                <div class="description">A special on-stream shout-out for you!</div>
             </div>
             <div class="goal-item">
                 <div class="price">10€</div>
@@ -171,13 +150,13 @@
             </div>
             <div class="goal-item">
                 <div class="price">15€</div>
-                <div class="icon">🗺️</div>
-                <div class="description">I'll take a detour to a cool spot you suggest!</div>
+                <div class="icon">🎵</div>
+                <div class="description">You get to pick the next song on my ride playlist!</div>
             </div>
         </div>
 
         <div class="ride-info">
-            This Week: 100km Võsu Ride + 250km Work Commutes = 450km Birthday Kilometers!
+            This Week: 100km Võsu Ride + 250km Work Commutes = 350 Birthday Kilometers!
         </div>
     </div>
 
