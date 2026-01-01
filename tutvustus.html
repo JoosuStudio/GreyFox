@@ -5,177 +5,171 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Janek Joosu Journey</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Using the new Roboto font */
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: transparent;
-        }
+        body { margin: 0; padding: 0; background: transparent; font-family: 'Roboto', sans-serif; overflow: hidden; }
+
         .container {
             width: 350px;
             height: 350px;
+            position: relative; /* Vajalik absolute positioning jaoks */
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+            background: #000; /* Must taust, et hajumise ajal ei välguks */
             overflow: hidden;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
+
+        /* --- Slaidide ühine stiil --- */
         .content {
             width: 100%;
             height: 100%;
-            display: none; /* Hidden by default, shown via JavaScript */
-        }
-        .image-container {
-            background: url('https://joosustudio.github.io/GreyFox/IMG_20250708_182531.jpg') no-repeat center;
-            background-size: cover;
-        }
-        .info-container, .countdown-container {
-            padding: 20px;
-            box-sizing: border-box;
-            background: linear-gradient(135deg, rgba(10, 80, 40, 0.9), rgba(20, 110, 50, 0.9));
-            color: #fff;
-            text-align: center; 
+            position: absolute; /* Kõik slaidid üksteise peal */
+            top: 0;
+            left: 0;
+            opacity: 0; /* Vaikimisi peidetud */
+            transition: opacity 1.5s ease-in-out; /* SUJUV HAJUMINE */
             display: flex;
             flex-direction: column;
             justify-content: center;
-        }
-        .info-container p {
-            margin: 12px 0;
-            font-size: 24px;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-        }
-        .label {
-            font-weight: 500;
-            font-size: 18px;
-            color: #FFFFFF;
-            opacity: 0.7;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-right: 10px;
-        }
-        .value {
-            font-weight: 700;
-            color: #ffffff;
-        }
-        .countdown-title {
-            font-size: 22px;
-            font-weight: 700;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-        }
-        #countdownClock {
-            font-size: 48px;
-            font-weight: 700;
-            margin: 15px 0;
-            color: #ffc107; /* A nice gold color */
-            text-shadow: 0 0 10px #ffc107, 0 0 20px rgba(0,0,0,0.7);
-            animation: pulse 2s infinite; /* Pulsing animation */
-        }
-        .countdown-description {
-            font-size: 18px;
-            opacity: 0.9;
-            padding: 0 10px;
-            line-height: 1.4;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .countdown-wrapper {
-            display: flex;
-            justify-content: center;
             align-items: center;
-            gap: 15px; 
-        }
-        .spinning-emoji {
-            font-size: 30px; 
-            animation: spin 6s linear infinite;
+            text-align: center;
+            background-size: cover !important;
+            background-position: center !important;
+            box-sizing: border-box;
         }
 
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        /* See klass muudab slaidi nähtavaks */
+        .content.active {
+            opacity: 1;
+            z-index: 2;
         }
+
+        /* --- Teksti taustad (Overlay) --- */
+        .overlay-bg {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,60,30,0.9));
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* --- Tüpograafia --- */
+        h2 { margin: 0 0 10px 0; font-size: 26px; color: #ffc107; text-transform: uppercase; text-shadow: 2px 2px 4px #000; }
+        p { color: white; margin: 5px 0; font-size: 18px; text-shadow: 1px 1px 3px #000; line-height: 1.4; }
+        .big-text { font-size: 32px; font-weight: 900; margin: 10px 0; }
+        .sub-text { opacity: 0.8; font-size: 14px; }
+
+        /* --- Countdown Spetsiifika --- */
+        #countdownClock {
+            font-size: 42px;
+            font-weight: 700;
+            color: #fff;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 2px solid #ffc107;
+            box-shadow: 0 0 15px rgba(255, 193, 7, 0.3);
+        }
+
+        /* --- Piltide URL-id (Muuda neid vajadusel) --- */
+        #slide1 { background: url('https://joosustudio.github.io/GreyFox/IMG_20250708_182531.jpg'); } /* Sinu pilt */
+        #slide2 { background: linear-gradient(135deg, #1a4a2e, #0d2b1a); } /* Info */
+        #slide3 { background: url('https://upload.wikimedia.org/wikipedia/commons/e/e3/Glass_engraving_example.jpg'); } /* PORTFOLIO - Pane siia oma klaasi pildi URL! */
+        #slide4 { background: linear-gradient(135deg, #2b1a1a, #4a1a1a); } /* Countdown */
+
     </style>
 </head>
 <body>
+
     <div class="container">
-        <div class="content image-container" id="imageContent"></div>
-
-        <div class="content info-container" id="infoContent">
-            <p><span class="label">Name:</span><span class="value">Janek Joosu</span></p>
-            <p><span class="label">Age:</span><span class="value">39</span></p>
-            <p><span class="label">From:</span><span class="value">Estonia 🇪🇪</span></p>
-            <p><span class="label">Profession:</span><span class="value">Glass Engraving Artist</span></p>
-            <p style="font-size: 16px; opacity: 0.8; text-align: center;">(As a hobby since 2009)</p>
-        </div>
-
-        <div class="content countdown-container" id="countdownContent">
-            <p class="countdown-title">🚴 My Journey Begins 🚴</p>
-            <div class="countdown-wrapper">
-                <span class="spinning-emoji" id="emoji-left">🦊</span>
-                <div id="countdownClock">--:--:--:--</div>
-                <span class="spinning-emoji" id="emoji-right">🚴</span>
+        
+        <div class="content active" id="slide1" data-time="5000">
+            <div class="overlay-bg" style="justify-content: flex-end; padding-bottom: 40px;">
+                <h2>The Dream 🇪🇪 ➡️ 🇪🇸</h2>
+                <p>5000km Solo Journey</p>
             </div>
-            <p class="countdown-description">Making art and bike touring from Estonia to Spain while livestreaming.</p>
         </div>
+
+        <div class="content" id="slide2" data-time="8000">
+             <div class="overlay-bg">
+                <img src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" width="60" style="margin-bottom:10px;">
+                <p style="font-size:14px; text-transform:uppercase; letter-spacing:2px;">Operator</p>
+                <div class="big-text">Janek Joosu</div>
+                <p>Glass Artist from Estonia</p>
+                <p class="sub-text">Hobbyist since 2009</p>
+            </div>
+        </div>
+
+        <div class="content" id="slide3" data-time="6000">
+            <div class="overlay-bg" style="background: rgba(0,0,0,0.6);">
+                <h2>Hand Engraved</h2>
+                <p>Precision Glass Art</p>
+                <p class="sub-text" style="color:#ffc107; margin-top:10px;">Goal: Sell 100 Minis to fund the trip!</p>
+            </div>
+        </div>
+
+        <div class="content" id="slide4" data-time="10000">
+            <div class="overlay-bg">
+                <p>Adventure Starts In:</p>
+                <div id="countdownClock">--:--:--</div>
+                <p style="font-size: 16px;">May 1st, 2026</p>
+                <div style="font-size: 30px; margin-top: 10px;">🦊 🚴 🏕️</div>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // --- DOM ELEMENTS ---
-        const contents = [
-            document.getElementById('imageContent'),
-            document.getElementById('infoContent'),
-            document.getElementById('countdownContent')
-        ];
-        const countdownClockEl = document.getElementById('countdownClock');
-        
-        let currentContentIndex = 0;
+        const slides = document.querySelectorAll('.content');
+        let currentSlide = 0;
+        const countdownEl = document.getElementById('countdownClock');
 
-        // --- Countdown Clock Logic ---
-        function updateCountdown() {
-            const targetDate = new Date('2026-05-01T12:00:00');
+        // --- Countdown Logic ---
+        function updateTimer() {
+            const target = new Date('2026-05-01T12:00:00');
             const now = new Date();
-            const difference = targetDate - now;
+            const diff = target - now;
 
-            if (difference < 0) {
-                countdownClockEl.innerHTML = "Journey Started!";
+            if (diff < 0) {
+                countdownEl.innerHTML = "GO!";
                 return;
             }
 
-            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            //const s = Math.floor((diff % (1000 * 60)) / 1000); // Sekundeid ei kuva ruumi säästmiseks, või lisa tagasi
 
-            // Add leading zeros
-            const h = hours < 10 ? '0' + hours : hours;
-            const m = minutes < 10 ? '0' + minutes : minutes;
-            const s = seconds < 10 ? '0' + seconds : seconds;
+            countdownEl.innerHTML = `${d}d ${h}h ${m}m`;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
 
-            countdownClockEl.innerHTML = `${days}d ${h}:${m}:${s}`;
+        // --- Nutikas Slaidivahetus ---
+        function nextSlide() {
+            // Eemalda eelmiselt klass 'active'
+            slides[currentSlide].classList.remove('active');
+
+            // Arvuta järgmine
+            currentSlide = (currentSlide + 1) % slides.length;
+
+            // Lisa järgmisele klass 'active'
+            slides[currentSlide].classList.add('active');
+
+            // Loe HTML-ist, kui kaua seda slaidi näidata (data-time atribuut)
+            const displayTime = slides[currentSlide].getAttribute('data-time') || 5000;
+
+            // Käivita järgmine vahetus vastava aja pärast
+            setTimeout(nextSlide, displayTime);
         }
 
+        // Käivita esimene tsükkel
+        setTimeout(nextSlide, 5000);
 
-        // --- MAIN LOGIC ---
-        function toggleContent() {
-            contents[currentContentIndex].style.display = 'none';
-            currentContentIndex = (currentContentIndex + 1) % contents.length;
-            contents[currentContentIndex].style.display = 'block';
-        }
-
-        // --- INITIALIZATION ---
-        contents[0].style.display = 'block';
-        
-        // Start the countdown immediately and update it every second
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-
-        // Set interval for toggling panels every 5 seconds
-        setInterval(toggleContent, 5000);
     </script>
 </body>
 </html>
