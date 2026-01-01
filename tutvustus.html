@@ -40,7 +40,6 @@
             display: none; 
         }
 
-        /* --- SIIN ON MUUDATUS: UUS PILDI LINK (RAW FORMAADIS) --- */
         .image-container {
             background: url('https://raw.githubusercontent.com/JoosuStudio/GreyFox/main/1766426483389~4.jpg') no-repeat center;
             background-size: cover;
@@ -98,6 +97,7 @@
             text-shadow: 0.5vmin 0.5vmin 1.5vmin rgba(0,0,0,0.7);
             margin: 0 0 2vmin 0;
             text-align: center;
+            line-height: 1.2;
         }
 
         #countdownClock {
@@ -113,11 +113,12 @@
 
         .countdown-description {
             font-size: 4.5vmin;
-            opacity: 0.9;
-            line-height: 1.3;
+            opacity: 0.95; /* Tõstsin veidi nähtavust */
+            line-height: 1.4;
             margin-top: 3vmin;
             text-align: center;
             max-width: 95%;
+            font-weight: 500; /* Veidi paksem tekst, et oleks loetavam */
         }
 
         @keyframes pulse {
@@ -173,7 +174,7 @@
 
         <div class="content countdown-container" id="countdownContent">
             <div class="text-wrapper">
-                <p class="countdown-title">🚴 My Journey Begins 🚴</p>
+                <p class="countdown-title">🚴 5000km Epic Ride 🚴</p>
                 
                 <div class="countdown-wrapper">
                     <span class="spinning-emoji" id="emoji-left">🦊</span>
@@ -181,7 +182,10 @@
                     <span class="spinning-emoji" id="emoji-right">🚴</span>
                 </div>
                 
-                <p class="countdown-description">Making art and bike touring from Estonia to Spain while livestreaming.</p>
+                <p class="countdown-description">
+                    From Estonia 🇪🇪 to Spain 🇪🇸<br>
+                    Live cycling, art & wild camping!
+                </p>
             </div>
         </div>
     </div>
