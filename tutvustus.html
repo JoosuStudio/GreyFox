@@ -84,40 +84,29 @@
             100% { transform: scale(1); }
         }
         
-        /* --- CHANGED: Switched to Flexbox for responsive layout --- */
         .countdown-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px; /* Adjust the space between emojis and clock here */
+            gap: 15px; 
         }
         .spinning-emoji {
-            /* No longer needs position: absolute */
             font-size: 30px; 
             animation: spin 6s linear infinite;
         }
-        /* No longer need #emoji-left or #emoji-right */
 
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
         
-        .map-container {
-            width: 100%;
-            height: 100%;
-            background-color: #333; /* Dark background for map loading */
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+        /* Removed map-container CSS styles */
     </style>
 </head>
 <body>
     <div class="container">
         <div class="content image-container" id="imageContent"></div>
+
         <div class="content info-container" id="infoContent">
             <p><span class="label">Name:</span><span class="value">Janek Joosu</span></p>
             <p><span class="label">Age:</span><span class="value">39</span></p>
@@ -125,6 +114,7 @@
             <p><span class="label">Profession:</span><span class="value">Glass Engraving Artist</span></p>
             <p style="font-size: 16px; opacity: 0.8; text-align: center;">(As a hobby since 2009)</p>
         </div>
+
         <div class="content countdown-container" id="countdownContent">
             <p class="countdown-title">🚴 My Journey Begins 🚴</p>
             <div class="countdown-wrapper">
@@ -134,20 +124,16 @@
             </div>
             <p class="countdown-description">Making art and bike touring from Estonia to Spain while livestreaming.</p>
         </div>
-        <div class="content map-container" id="mapContent">
-            <iframe name="fmeeframe" style="width: 600px; height: 400px" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" 
-src="https://www.followmee.com/maps.aspx?key=0a946d7feb2ad4f22f0893522d5e7856&username=greyfoxyourney&type=2&deviceid=12846319&function=currentfordevice&z=10">
-</iframe>
+        
         </div>
-    </div>
 
     <script>
         // --- DOM ELEMENTS ---
         const contents = [
             document.getElementById('imageContent'),
             document.getElementById('infoContent'),
-            document.getElementById('countdownContent'),
-            document.getElementById('mapContent')
+            document.getElementById('countdownContent')
+            // Removed mapContent from array
         ];
         const countdownClockEl = document.getElementById('countdownClock');
         
