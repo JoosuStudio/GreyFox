@@ -46,10 +46,9 @@
             background-size: cover;
         }
 
-        /* --- 2. UUS INFO CONTENT STYLE (MÜSTILINE REBANE) --- */
+        /* --- 2. INFO CONTENT STYLE --- */
         .info-container {
             box-sizing: border-box;
-            /* Sügavam, müstilisem metsa gradient */
             background: radial-gradient(circle at center, rgba(30, 90, 50, 0.95), rgba(5, 35, 20, 0.98));
             color: #fff;
             display: flex;
@@ -70,24 +69,23 @@
             gap: 1.5vmin;
         }
 
-        /* Ruudustik info jaoks */
         .info-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Kaks veergu */
+            grid-template-columns: 1fr 1fr;
             gap: 2.5vmin;
             width: 100%;
             margin-bottom: 3vmin;
         }
 
         .info-box {
-            background: rgba(255, 255, 255, 0.1); /* Kerge läbipaistev taust */
+            background: rgba(255, 255, 255, 0.1);
             padding: 1.5vmin;
             border-radius: 2vmin;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            backdrop-filter: blur(2px); /* Klaasi efekt */
+            backdrop-filter: blur(2px);
             border: 1px solid rgba(255,255,255,0.15);
         }
 
@@ -109,12 +107,11 @@
             line-height: 1.2;
         }
         
-        /* GreyFoxJourney Brändi kast all */
         .journey-brand-box {
             background: rgba(0, 0, 0, 0.3);
             padding: 1.5vmin 3vmin;
             border-radius: 5vmin;
-            border: 0.3vmin solid rgba(255, 193, 7, 0.5); /* Kuldne äär */
+            border: 0.3vmin solid rgba(255, 193, 7, 0.5);
             text-align: center;
             width: 90%;
         }
@@ -377,7 +374,9 @@
         contents[0].style.display = 'flex';
         updateCountdown();
         setInterval(updateCountdown, 1000);
-        setInterval(toggleContent, 5000);
+        
+        // --- MUUDETUD: 15 sekundit lehe vaatamiseks ---
+        setInterval(toggleContent, 15000); 
     </script>
 </body>
 </html>
