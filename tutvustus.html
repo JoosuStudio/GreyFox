@@ -14,25 +14,40 @@
             margin: 0;
             padding: 0;
             background: transparent;
-        }
-        .container {
-            width: 350px;
-            height: 350px;
+            /* See hoiab kasti alati ekraani keskel */
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             overflow: hidden;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
+
+        .container {
+            /* SIIN ON PEAMINE MUUDATUS:
+               vmin = viewport minimum. 
+               See tähendab, et kasti suurus on alati suhe ekraani suurusega.
+            */
+            width: 95vmin;
+            height: 95vmin;
+            overflow: hidden;
+            border-radius: 4vmin; /* Ka nurgad on nüüd skaleeruvad */
+            box-shadow: 0 1vmin 4vmin rgba(0,0,0,0.5);
+        }
+
         .content {
             width: 100%;
             height: 100%;
             display: none; /* Hidden by default, shown via JavaScript */
         }
+
         .image-container {
             background: url('https://joosustudio.github.io/GreyFox/IMG_20250708_182531.jpg') no-repeat center;
             background-size: cover;
         }
+
         .info-container, .countdown-container {
-            padding: 20px;
+            padding: 5vmin; /* Padding muutub vastavalt ekraani suurusele */
             box-sizing: border-box;
             background: linear-gradient(135deg, rgba(10, 80, 40, 0.9), rgba(20, 110, 50, 0.9));
             color: #fff;
@@ -41,43 +56,52 @@
             flex-direction: column;
             justify-content: center;
         }
+
         .info-container p {
-            margin: 12px 0;
-            font-size: 24px;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+            margin: 3vmin 0;
+            font-size: 6.5vmin; /* Teksti suurus on nüüd suhteline */
+            text-shadow: 0.5vmin 0.5vmin 1.5vmin rgba(0,0,0,0.7);
+            line-height: 1.2;
         }
+
         .label {
             font-weight: 500;
-            font-size: 18px;
+            font-size: 4.5vmin;
             color: #FFFFFF;
             opacity: 0.7;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-right: 10px;
+            letter-spacing: 0.2vmin;
+            margin-right: 2vmin;
         }
+
         .value {
             font-weight: 700;
             color: #ffffff;
         }
+
         .countdown-title {
-            font-size: 22px;
+            font-size: 6vmin;
             font-weight: 700;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+            text-shadow: 0.5vmin 0.5vmin 1.5vmin rgba(0,0,0,0.7);
+            margin-bottom: 2vmin;
         }
+
         #countdownClock {
-            font-size: 48px;
+            font-size: 13vmin; /* Kell on hästi suur ja skaleeruv */
             font-weight: 700;
-            margin: 15px 0;
-            color: #ffc107; /* A nice gold color */
-            text-shadow: 0 0 10px #ffc107, 0 0 20px rgba(0,0,0,0.7);
-            animation: pulse 2s infinite; /* Pulsing animation */
+            margin: 4vmin 0;
+            color: #ffc107; 
+            text-shadow: 0 0 2vmin #ffc107, 0 0 4vmin rgba(0,0,0,0.7);
+            animation: pulse 2s infinite; 
         }
+
         .countdown-description {
-            font-size: 18px;
+            font-size: 4.5vmin;
             opacity: 0.9;
-            padding: 0 10px;
+            padding: 0 2vmin;
             line-height: 1.4;
         }
+
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -88,10 +112,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px; 
+            gap: 4vmin; /* Vahe emoji ja kella vahel */
         }
+
         .spinning-emoji {
-            font-size: 30px; 
+            font-size: 8vmin; /* Emojid skaleeruvad */
             animation: spin 6s linear infinite;
         }
 
@@ -110,7 +135,7 @@
             <p><span class="label">Age:</span><span class="value">39</span></p>
             <p><span class="label">From:</span><span class="value">Estonia 🇪🇪</span></p>
             <p><span class="label">Profession:</span><span class="value">Glass Engraving Artist</span></p>
-            <p style="font-size: 16px; opacity: 0.8; text-align: center;">(As a hobby since 2009)</p>
+            <p style="font-size: 4vmin; opacity: 0.8; text-align: center;">(As a hobby since 2009)</p>
         </div>
 
         <div class="content countdown-container" id="countdownContent">
@@ -151,14 +176,12 @@
             const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-            // Add leading zeros
             const h = hours < 10 ? '0' + hours : hours;
             const m = minutes < 10 ? '0' + minutes : minutes;
             const s = seconds < 10 ? '0' + seconds : seconds;
 
             countdownClockEl.innerHTML = `${days}d ${h}:${m}:${s}`;
         }
-
 
         // --- MAIN LOGIC ---
         function toggleContent() {
@@ -170,11 +193,10 @@
         // --- INITIALIZATION ---
         contents[0].style.display = 'block';
         
-        // Start the countdown immediately and update it every second
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
-        // Set interval for toggling panels every 5 seconds
+        // Slide changes every 5 seconds
         setInterval(toggleContent, 5000);
     </script>
 </body>
