@@ -5,218 +5,177 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Janek Joosu Journey</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- SKALEERUVUSE MAAGIA --- */
-        body { 
-            margin: 0; 
-            padding: 0; 
-            background: transparent; 
-            font-family: 'Roboto', sans-serif; 
-            overflow: hidden;
-            /* See tsentreerib kaardi ekraani keskele */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100vw;
+        /* Using the new Roboto font */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: transparent;
         }
-
         .container {
-            /* SIIN ON VÕTI: 'vmin' tähendab % väiksemast küljest.
-               95vmin tähendab, et kaart täidab alati 95% ekraanist,
-               ükskõik kui suureks või väikeseks sa akna venitad.
-            */
-            width: 95vmin; 
-            height: 95vmin;
-            position: relative;
-            border-radius: 5vmin; /* Ümarad nurgad skaleeruvad ka */
-            box-shadow: 0 1vmin 3vmin rgba(0,0,0,0.6);
-            background: #000;
+            width: 350px;
+            height: 350px;
             overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-
         .content {
             width: 100%;
             height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
+            display: none; /* Hidden by default, shown via JavaScript */
+        }
+        .image-container {
+            background: url('https://joosustudio.github.io/GreyFox/IMG_20250708_182531.jpg') no-repeat center;
+            background-size: cover;
+        }
+        .info-container, .countdown-container {
+            padding: 20px;
+            box-sizing: border-box;
+            background: linear-gradient(135deg, rgba(10, 80, 40, 0.9), rgba(20, 110, 50, 0.9));
+            color: #fff;
+            text-align: center; 
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            text-align: center;
-            background-size: cover !important;
-            background-position: center !important;
-            box-sizing: border-box;
         }
-
-        .content.active { opacity: 1; z-index: 2; }
-
-        .overlay-bg {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,50,25,0.95));
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end; /* Surub teksti alla serva */
-            padding: 4vmin; /* Padding skaleerub */
-            box-sizing: border-box;
-            padding-bottom: 6vmin;
+        .info-container p {
+            margin: 12px 0;
+            font-size: 24px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
         }
-
-        /* --- SUURED PAKSUD FONDID (Kõik on vmin ühikutes) --- */
-        
-        /* Pealkirjad (nt THE DREAM) */
-        h2 { 
-            margin: 0 0 1vmin 0; 
-            font-size: 8vmin; /* SUUR! */
-            font-weight: 900;
-            color: #ffc107; 
-            text-transform: uppercase; 
-            text-shadow: 0.5vmin 0.5vmin 1vmin #000; 
-            line-height: 1;
+        .label {
+            font-weight: 500;
+            font-size: 18px;
+            color: #FFFFFF;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-right: 10px;
         }
-
-        /* Tavaline tekst */
-        p { 
-            color: white; 
-            margin: 0.5vmin 0; 
-            font-size: 5vmin; /* Loetav suurus */
+        .value {
             font-weight: 700;
-            text-shadow: 0.2vmin 0.2vmin 0.5vmin #000; 
-            line-height: 1.2;
+            color: #ffffff;
         }
-
-        /* Suur nimi (Janek Joosu) */
-        .big-text { 
-            font-size: 9vmin; 
-            font-weight: 900; 
-            margin: 1vmin 0; 
-            line-height: 1;
+        .countdown-title {
+            font-size: 22px;
+            font-weight: 700;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
         }
-
-        .sub-text { 
-            opacity: 0.9; 
-            font-size: 4vmin; 
-            font-weight: 400;
-        }
-
-        /* Ikoonid (Pildid tekstis) */
-        .icon-img {
-            width: 15vmin;
-            height: 15vmin;
-            margin-bottom: 2vmin;
-            filter: drop-shadow(0 0 1vmin rgba(0,0,0,0.8));
-        }
-
-        /* --- TAIMERI STIIL --- */
         #countdownClock {
-            font-size: 9vmin; /* VÄGA SUUR NUMBER */
+            font-size: 48px;
             font-weight: 700;
-            color: #fff;
-            background: rgba(0,0,0,0.6);
-            padding: 2vmin;
-            border-radius: 2vmin;
-            margin: 2vmin 0;
-            border: 0.5vmin solid #ffc107;
-            box-shadow: 0 0 3vmin rgba(255, 193, 7, 0.3);
-            font-variant-numeric: tabular-nums;
-            line-height: 1;
+            margin: 15px 0;
+            color: #ffc107; /* A nice gold color */
+            text-shadow: 0 0 10px #ffc107, 0 0 20px rgba(0,0,0,0.7);
+            animation: pulse 2s infinite; /* Pulsing animation */
+        }
+        .countdown-description {
+            font-size: 18px;
+            opacity: 0.9;
+            padding: 0 10px;
+            line-height: 1.4;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .countdown-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px; 
+        }
+        .spinning-emoji {
+            font-size: 30px; 
+            animation: spin 6s linear infinite;
         }
 
-        /* Taustad */
-        #slide1 { background: url('https://joosustudio.github.io/GreyFox/IMG_20250708_182531.jpg'); } 
-        #slide2 { background: linear-gradient(135deg, #1a4a2e, #0d2b1a); }
-        #slide3 { background: url('https://upload.wikimedia.org/wikipedia/commons/e/e3/Glass_engraving_example.jpg'); } 
-        #slide4 { background: linear-gradient(135deg, #2b1a1a, #4a1a1a); } 
-
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
-
     <div class="container">
-        
-        <div class="content active" id="slide1" data-time="5000">
-            <div class="overlay-bg">
-                <h2>The Dream</h2>
-                <div style="font-size: 6vmin;">🇪🇪 ➡️ 🇪🇸</div>
-                <p>5000km Solo Journey</p>
-            </div>
+        <div class="content image-container" id="imageContent"></div>
+
+        <div class="content info-container" id="infoContent">
+            <p><span class="label">Name:</span><span class="value">Janek Joosu</span></p>
+            <p><span class="label">Age:</span><span class="value">39</span></p>
+            <p><span class="label">From:</span><span class="value">Estonia 🇪🇪</span></p>
+            <p><span class="label">Profession:</span><span class="value">Glass Engraving Artist</span></p>
+            <p style="font-size: 16px; opacity: 0.8; text-align: center;">(As a hobby since 2009)</p>
         </div>
 
-        <div class="content" id="slide2" data-time="8000">
-             <div class="overlay-bg" style="justify-content: center;">
-                <img src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" class="icon-img">
-                <p style="font-size:3.5vmin; text-transform:uppercase; letter-spacing:0.5vmin; color:#ffc107;">Operator</p>
-                <div class="big-text">Janek Joosu</div>
-                <p>Glass Engraving Artist</p>
-                <p class="sub-text">From Estonia 🇪🇪</p>
+        <div class="content countdown-container" id="countdownContent">
+            <p class="countdown-title">🚴 My Journey Begins 🚴</p>
+            <div class="countdown-wrapper">
+                <span class="spinning-emoji" id="emoji-left">🦊</span>
+                <div id="countdownClock">--:--:--:--</div>
+                <span class="spinning-emoji" id="emoji-right">🚴</span>
             </div>
+            <p class="countdown-description">Making art and bike touring from Estonia to Spain while livestreaming.</p>
         </div>
-
-        <div class="content" id="slide3" data-time="6000">
-            <div class="overlay-bg" style="background: rgba(0,0,0,0.4); justify-content: center;">
-                <h2 style="color: #fff; border: 1vmin solid #fff; padding: 2vmin; display:inline-block;">Hand<br>Engraved</h2>
-                <p style="margin-top: 2vmin;">Precision Glass Art</p>
-                <p class="sub-text" style="color:#ffc107; font-weight:900; background:rgba(0,0,0,0.8); padding:1vmin; border-radius:1vmin;">Goal: Sell 100 Minis!</p>
-            </div>
-        </div>
-
-        <div class="content" id="slide4" data-time="10000">
-            <div class="overlay-bg" style="justify-content: center;">
-                <p style="font-size: 5vmin;">Adventure Starts In:</p>
-                <div id="countdownClock">--d --:--:--</div>
-                <p style="font-size: 5vmin; color: #ffc107;">May 1st, 2026</p>
-                <div style="font-size: 10vmin; margin-top: 2vmin;">🦊 🚴 🏕️</div>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        const slides = document.querySelectorAll('.content');
-        let currentSlide = 0;
-        const countdownEl = document.getElementById('countdownClock');
+        // --- DOM ELEMENTS ---
+        const contents = [
+            document.getElementById('imageContent'),
+            document.getElementById('infoContent'),
+            document.getElementById('countdownContent')
+        ];
+        const countdownClockEl = document.getElementById('countdownClock');
+        
+        let currentContentIndex = 0;
 
-        function updateTimer() {
-            const target = new Date('2026-05-01T12:00:00');
+        // --- Countdown Clock Logic ---
+        function updateCountdown() {
+            const targetDate = new Date('2026-05-01T12:00:00');
             const now = new Date();
-            const diff = target - now;
+            const difference = targetDate - now;
 
-            if (diff < 0) {
-                countdownEl.innerHTML = "GO!";
+            if (difference < 0) {
+                countdownClockEl.innerHTML = "Journey Started!";
                 return;
             }
 
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-            const hDisplay = h < 10 ? "0" + h : h;
-            const mDisplay = m < 10 ? "0" + m : m;
-            const sDisplay = s < 10 ? "0" + s : s;
+            // Add leading zeros
+            const h = hours < 10 ? '0' + hours : hours;
+            const m = minutes < 10 ? '0' + minutes : minutes;
+            const s = seconds < 10 ? '0' + seconds : seconds;
 
-            // Lihtsustatud vaade ruumi säästmiseks, aga suured numbrid
-            countdownEl.innerHTML = `${d}d ${hDisplay}:${mDisplay}`;
+            countdownClockEl.innerHTML = `${days}d ${h}:${m}:${s}`;
         }
+
+
+        // --- MAIN LOGIC ---
+        function toggleContent() {
+            contents[currentContentIndex].style.display = 'none';
+            currentContentIndex = (currentContentIndex + 1) % contents.length;
+            contents[currentContentIndex].style.display = 'block';
+        }
+
+        // --- INITIALIZATION ---
+        contents[0].style.display = 'block';
         
-        setInterval(updateTimer, 1000);
-        updateTimer();
+        // Start the countdown immediately and update it every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
 
-        function nextSlide() {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-            const displayTime = slides[currentSlide].getAttribute('data-time') || 5000;
-            setTimeout(nextSlide, displayTime);
-        }
-
-        setTimeout(nextSlide, 5000);
+        // Set interval for toggling panels every 5 seconds
+        setInterval(toggleContent, 5000);
     </script>
 </body>
 </html>
