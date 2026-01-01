@@ -99,8 +99,6 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-        
-        /* Removed map-container CSS styles */
     </style>
 </head>
 <body>
@@ -124,8 +122,7 @@
             </div>
             <p class="countdown-description">Making art and bike touring from Estonia to Spain while livestreaming.</p>
         </div>
-        
-        </div>
+    </div>
 
     <script>
         // --- DOM ELEMENTS ---
@@ -133,7 +130,6 @@
             document.getElementById('imageContent'),
             document.getElementById('infoContent'),
             document.getElementById('countdownContent')
-            // Removed mapContent from array
         ];
         const countdownClockEl = document.getElementById('countdownClock');
         
@@ -178,8 +174,8 @@
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
-        // Set interval for toggling panels every 20 seconds
-        setInterval(toggleContent, 20000);
+        // Set interval for toggling panels every 5 seconds
+        setInterval(toggleContent, 5000);
     </script>
 </body>
 </html>
