@@ -7,14 +7,31 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; padding: 0; background: transparent; font-family: 'Roboto', sans-serif; overflow: hidden; }
+        /* --- SKALEERUVUSE MAAGIA --- */
+        body { 
+            margin: 0; 
+            padding: 0; 
+            background: transparent; 
+            font-family: 'Roboto', sans-serif; 
+            overflow: hidden;
+            /* See tsentreerib kaardi ekraani keskele */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
 
         .container {
-            width: 350px;
-            height: 350px;
+            /* SIIN ON VÕTI: 'vmin' tähendab % väiksemast küljest.
+               95vmin tähendab, et kaart täidab alati 95% ekraanist,
+               ükskõik kui suureks või väikeseks sa akna venitad.
+            */
+            width: 95vmin; 
+            height: 95vmin;
             position: relative;
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+            border-radius: 5vmin; /* Ümarad nurgad skaleeruvad ka */
+            box-shadow: 0 1vmin 3vmin rgba(0,0,0,0.6);
             background: #000;
             overflow: hidden;
         }
@@ -37,42 +54,81 @@
             box-sizing: border-box;
         }
 
-        .content.active {
-            opacity: 1;
-            z-index: 2;
-        }
+        .content.active { opacity: 1; z-index: 2; }
 
         .overlay-bg {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,60,30,0.9));
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,50,25,0.95));
             width: 100%;
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            padding: 20px;
+            justify-content: flex-end; /* Surub teksti alla serva */
+            padding: 4vmin; /* Padding skaleerub */
             box-sizing: border-box;
+            padding-bottom: 6vmin;
         }
 
-        h2 { margin: 0 0 10px 0; font-size: 26px; color: #ffc107; text-transform: uppercase; text-shadow: 2px 2px 4px #000; }
-        p { color: white; margin: 5px 0; font-size: 18px; text-shadow: 1px 1px 3px #000; line-height: 1.4; }
-        .big-text { font-size: 32px; font-weight: 900; margin: 10px 0; }
-        .sub-text { opacity: 0.8; font-size: 14px; }
+        /* --- SUURED PAKSUD FONDID (Kõik on vmin ühikutes) --- */
+        
+        /* Pealkirjad (nt THE DREAM) */
+        h2 { 
+            margin: 0 0 1vmin 0; 
+            font-size: 8vmin; /* SUUR! */
+            font-weight: 900;
+            color: #ffc107; 
+            text-transform: uppercase; 
+            text-shadow: 0.5vmin 0.5vmin 1vmin #000; 
+            line-height: 1;
+        }
 
-        /* --- MUUDETUD: Fondi suurus väiksemaks, et sekundid mahuks --- */
+        /* Tavaline tekst */
+        p { 
+            color: white; 
+            margin: 0.5vmin 0; 
+            font-size: 5vmin; /* Loetav suurus */
+            font-weight: 700;
+            text-shadow: 0.2vmin 0.2vmin 0.5vmin #000; 
+            line-height: 1.2;
+        }
+
+        /* Suur nimi (Janek Joosu) */
+        .big-text { 
+            font-size: 9vmin; 
+            font-weight: 900; 
+            margin: 1vmin 0; 
+            line-height: 1;
+        }
+
+        .sub-text { 
+            opacity: 0.9; 
+            font-size: 4vmin; 
+            font-weight: 400;
+        }
+
+        /* Ikoonid (Pildid tekstis) */
+        .icon-img {
+            width: 15vmin;
+            height: 15vmin;
+            margin-bottom: 2vmin;
+            filter: drop-shadow(0 0 1vmin rgba(0,0,0,0.8));
+        }
+
+        /* --- TAIMERI STIIL --- */
         #countdownClock {
-            font-size: 38px; /* Enne oli 42px */
+            font-size: 9vmin; /* VÄGA SUUR NUMBER */
             font-weight: 700;
             color: #fff;
-            background: rgba(0,0,0,0.5);
-            padding: 10px;
-            border-radius: 10px;
-            margin: 10px 0;
-            border: 2px solid #ffc107;
-            box-shadow: 0 0 15px rgba(255, 193, 7, 0.3);
-            font-variant-numeric: tabular-nums; /* Hoiab numbrid paigal, et need ei hüppaks */
+            background: rgba(0,0,0,0.6);
+            padding: 2vmin;
+            border-radius: 2vmin;
+            margin: 2vmin 0;
+            border: 0.5vmin solid #ffc107;
+            box-shadow: 0 0 3vmin rgba(255, 193, 7, 0.3);
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
         }
 
-        /* Piltide URL-id */
+        /* Taustad */
         #slide1 { background: url('https://joosustudio.github.io/GreyFox/IMG_20250708_182531.jpg'); } 
         #slide2 { background: linear-gradient(135deg, #1a4a2e, #0d2b1a); }
         #slide3 { background: url('https://upload.wikimedia.org/wikipedia/commons/e/e3/Glass_engraving_example.jpg'); } 
@@ -85,36 +141,37 @@
     <div class="container">
         
         <div class="content active" id="slide1" data-time="5000">
-            <div class="overlay-bg" style="justify-content: flex-end; padding-bottom: 40px;">
-                <h2>The Dream 🇪🇪 ➡️ 🇪🇸</h2>
+            <div class="overlay-bg">
+                <h2>The Dream</h2>
+                <div style="font-size: 6vmin;">🇪🇪 ➡️ 🇪🇸</div>
                 <p>5000km Solo Journey</p>
             </div>
         </div>
 
         <div class="content" id="slide2" data-time="8000">
-             <div class="overlay-bg">
-                <img src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" width="60" style="margin-bottom:10px;">
-                <p style="font-size:14px; text-transform:uppercase; letter-spacing:2px;">Operator</p>
+             <div class="overlay-bg" style="justify-content: center;">
+                <img src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" class="icon-img">
+                <p style="font-size:3.5vmin; text-transform:uppercase; letter-spacing:0.5vmin; color:#ffc107;">Operator</p>
                 <div class="big-text">Janek Joosu</div>
-                <p>Glass Artist from Estonia</p>
-                <p class="sub-text">Hobbyist since 2009</p>
+                <p>Glass Engraving Artist</p>
+                <p class="sub-text">From Estonia 🇪🇪</p>
             </div>
         </div>
 
         <div class="content" id="slide3" data-time="6000">
-            <div class="overlay-bg" style="background: rgba(0,0,0,0.6);">
-                <h2>Hand Engraved</h2>
-                <p>Precision Glass Art</p>
-                <p class="sub-text" style="color:#ffc107; margin-top:10px;">Goal: Sell 100 Minis to fund the trip!</p>
+            <div class="overlay-bg" style="background: rgba(0,0,0,0.4); justify-content: center;">
+                <h2 style="color: #fff; border: 1vmin solid #fff; padding: 2vmin; display:inline-block;">Hand<br>Engraved</h2>
+                <p style="margin-top: 2vmin;">Precision Glass Art</p>
+                <p class="sub-text" style="color:#ffc107; font-weight:900; background:rgba(0,0,0,0.8); padding:1vmin; border-radius:1vmin;">Goal: Sell 100 Minis!</p>
             </div>
         </div>
 
         <div class="content" id="slide4" data-time="10000">
-            <div class="overlay-bg">
-                <p>Adventure Starts In:</p>
+            <div class="overlay-bg" style="justify-content: center;">
+                <p style="font-size: 5vmin;">Adventure Starts In:</p>
                 <div id="countdownClock">--d --:--:--</div>
-                <p style="font-size: 16px;">May 1st, 2026</p>
-                <div style="font-size: 30px; margin-top: 10px;">🦊 🚴 🏕️</div>
+                <p style="font-size: 5vmin; color: #ffc107;">May 1st, 2026</p>
+                <div style="font-size: 10vmin; margin-top: 2vmin;">🦊 🚴 🏕️</div>
             </div>
         </div>
 
@@ -125,7 +182,6 @@
         let currentSlide = 0;
         const countdownEl = document.getElementById('countdownClock');
 
-        // --- Countdown Logic (Sekundid on tagasi!) ---
         function updateTimer() {
             const target = new Date('2026-05-01T12:00:00');
             const now = new Date();
@@ -139,33 +195,28 @@
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000); // SEKUNDID ARVUTATAKSE SIIN
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-            // Lisame nullid ette, kui number on väiksem kui 10 (nt 09:05:02)
             const hDisplay = h < 10 ? "0" + h : h;
             const mDisplay = m < 10 ? "0" + m : m;
             const sDisplay = s < 10 ? "0" + s : s;
 
-            // Kuvame formaadis: 119d 12:34:56
-            countdownEl.innerHTML = `${d}d ${hDisplay}:${mDisplay}:${sDisplay}`;
+            // Lihtsustatud vaade ruumi säästmiseks, aga suured numbrid
+            countdownEl.innerHTML = `${d}d ${hDisplay}:${mDisplay}`;
         }
         
-        // Käivitame sekundi uuendamise
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // --- Slaidivahetus ---
         function nextSlide() {
             slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].classList.add('active');
-            
             const displayTime = slides[currentSlide].getAttribute('data-time') || 5000;
             setTimeout(nextSlide, displayTime);
         }
 
         setTimeout(nextSlide, 5000);
-
     </script>
 </body>
 </html>
