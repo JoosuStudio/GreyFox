@@ -13,7 +13,6 @@
             margin: 0;
             padding: 0;
             background: transparent;
-            /* Tagame, et terve leht on täiskõrgusega, et keskele joondamine töötaks */
             height: 100vh;
             width: 100vw;
             display: flex;
@@ -23,22 +22,19 @@
         }
 
         .container {
-            /* Kasti suurus (95% väiksemast ekraani servast) */
             width: 95vmin;
             height: 95vmin;
             overflow: hidden;
             border-radius: 4vmin;
             box-shadow: 0 1vmin 4vmin rgba(0,0,0,0.5);
             background: transparent;
-            position: relative; /* Oluline positsioneerimiseks */
+            position: relative;
         }
 
         .content {
-            /* --- SIIN ON VÕTI --- */
-            /* See sunnib sisu võtma enda alla TERVE kasti ruumi */
             width: 100%;
             height: 100%; 
-            position: absolute; /* Tagab, et see katab kindlasti terve kasti */
+            position: absolute;
             top: 0;
             left: 0;
             display: none; 
@@ -49,29 +45,24 @@
             background-size: cover;
         }
 
-        /* --- SIIN ON TSENTREERIMISE REEGLID --- */
         .info-container, .countdown-container {
             box-sizing: border-box;
             background: linear-gradient(135deg, rgba(10, 80, 40, 0.95), rgba(20, 110, 50, 0.95));
             color: #fff;
-            
-            /* Flexbox maagia keskele joondamiseks */
             display: flex;
             flex-direction: column; 
-            justify-content: center; /* See lükkab sisu VERTIKAALSELT keskele */
-            align-items: center;     /* See lükkab sisu HORISONTAALSELT keskele */
-            
+            justify-content: center;
+            align-items: center;
             padding: 2vmin;
-            height: 100%; /* See peab olema 100%, muidu 'center' ei tööta */
+            height: 100%; 
         }
 
-        /* Grupeerime teksti read, et need püsiksid koos keskel */
         .text-wrapper {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 2.5vmin; /* Vahe ridade vahel */
+            gap: 2.5vmin;
             width: 100%;
         }
 
@@ -95,35 +86,35 @@
         .value {
             font-weight: 700;
             color: #ffffff;
-            font-size: 7.5vmin; /* Tegin teksti veidi suuremaks */
+            font-size: 7.5vmin;
             line-height: 1;
             text-align: center;
         }
 
-        /* Countdown stiilid */
         .countdown-title {
             font-size: 6vmin;
             font-weight: 700;
             text-shadow: 0.5vmin 0.5vmin 1.5vmin rgba(0,0,0,0.7);
-            margin: 0 0 2vmin 0; /* Väike vahe pealkirja all */
+            margin: 0 0 2vmin 0;
             text-align: center;
         }
 
         #countdownClock {
-            font-size: 14vmin; /* Kell suuremaks */
+            font-size: 13vmin; /* Veidi väiksem, et "Days" mahuks paremini */
             font-weight: 700;
             color: #ffc107; 
             text-shadow: 0 0 2vmin #ffc107, 0 0 4vmin rgba(0,0,0,0.7);
             animation: pulse 2s infinite; 
             margin: 0; 
-            line-height: 1;
+            line-height: 1.2; /* Suurendasin reavahet, et tekst ei oleks liiga koos */
+            text-align: center;
         }
 
         .countdown-description {
             font-size: 4.5vmin;
             opacity: 0.9;
             line-height: 1.3;
-            margin-top: 3vmin; /* Vahe kella ja teksti vahel */
+            margin-top: 3vmin;
             text-align: center;
             max-width: 95%;
         }
@@ -163,17 +154,14 @@
                     <span class="label">Name</span>
                     <span class="value">Janek Joosu</span>
                 </div>
-
                 <div class="info-row">
                     <span class="label">Age</span>
                     <span class="value">39</span>
                 </div>
-
                 <div class="info-row">
                     <span class="label">From</span>
                     <span class="value">Estonia 🇪🇪</span>
                 </div>
-
                 <div class="info-row">
                     <span class="label">Profession</span>
                     <span class="value" style="font-size: 6vmin;">Glass Engraving Artist</span>
@@ -188,7 +176,7 @@
                 
                 <div class="countdown-wrapper">
                     <span class="spinning-emoji" id="emoji-left">🦊</span>
-                    <div id="countdownClock">--:--:--:--</div>
+                    <div id="countdownClock">-- Days<br>--:--:--</div>
                     <span class="spinning-emoji" id="emoji-right">🚴</span>
                 </div>
                 
@@ -226,16 +214,16 @@
             const m = minutes < 10 ? '0' + minutes : minutes;
             const s = seconds < 10 ? '0' + seconds : seconds;
 
-            countdownClockEl.innerHTML = `${days}d ${h}:${m}:${s}`;
+            // MUUDATUS SIIN: Lisasin "Days" ja <br> reavahetuse
+            countdownClockEl.innerHTML = `${days} Days<br>${h}:${m}:${s}`;
         }
 
         function toggleContent() {
             contents[currentContentIndex].style.display = 'none';
             currentContentIndex = (currentContentIndex + 1) % contents.length;
-            contents[currentContentIndex].style.display = 'flex'; // NB! Muutsin 'block' -> 'flex'
+            contents[currentContentIndex].style.display = 'flex';
         }
 
-        // Initialize: Ensure first slide is flex
         contents[0].style.display = 'flex';
         
         updateCountdown();
