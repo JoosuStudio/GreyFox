@@ -57,6 +57,69 @@
             height: 100%; 
         }
 
+        /* --- UUS TEMPERATUURI LEHE STIIL --- */
+        .temp-container {
+            box-sizing: border-box;
+            /* Jäine sinine taust */
+            background: linear-gradient(135deg, #1e3c72, #2a5298); 
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2vmin;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Lumehelbe animatsioon taustal */
+        .snowflake {
+            position: absolute;
+            top: -10%;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 5vmin;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to { transform: translateY(110vh); }
+        }
+
+        .temp-title {
+            font-size: 5vmin;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 2vmin;
+            z-index: 2;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .temp-display {
+            font-size: 18vmin;
+            font-weight: 700;
+            color: #00e5ff; /* Jäine helesinine */
+            text-shadow: 0 0 20px #00e5ff, 2px 2px 5px rgba(0,0,0,0.8);
+            margin: 1vmin 0;
+            z-index: 2;
+            line-height: 1;
+        }
+
+        .temp-comment {
+            font-size: 5vmin;
+            text-align: center;
+            max-width: 90%;
+            z-index: 2;
+            font-style: italic;
+            opacity: 0.9;
+            margin-top: 2vmin;
+        }
+
+        .fox-icon {
+            font-size: 8vmin;
+            margin-bottom: 1vmin;
+            z-index: 2;
+        }
+
+        /* --- ÜLEJÄÄNUD STIILID --- */
         .text-wrapper {
             display: flex;
             flex-direction: column;
@@ -113,12 +176,12 @@
 
         .countdown-description {
             font-size: 4.5vmin;
-            opacity: 0.95; /* Tõstsin veidi nähtavust */
+            opacity: 0.95; 
             line-height: 1.4;
             margin-top: 3vmin;
             text-align: center;
             max-width: 95%;
-            font-weight: 500; /* Veidi paksem tekst, et oleks loetavam */
+            font-weight: 500; 
         }
 
         @keyframes pulse {
@@ -188,18 +251,58 @@
                 </p>
             </div>
         </div>
+
+        <div class="content temp-container" id="tempContent">
+            <div class="snowflake" style="left: 10%; animation-duration: 5s;">❄</div>
+            <div class="snowflake" style="left: 30%; animation-duration: 7s;">❄</div>
+            <div class="snowflake" style="left: 70%; animation-duration: 6s;">❄</div>
+            <div class="snowflake" style="left: 90%; animation-duration: 8s;">❄</div>
+
+            <div class="fox-icon">🥶🦊🥶</div>
+            <div class="temp-title">Studio ICE Box</div>
+            <div class="temp-display" id="tempValue">--°C</div>
+            <div class="temp-comment" id="tempComment">Thinking...</div>
+        </div>
     </div>
 
     <script>
+        /* =========================================
+           MUUDA STUUDIO TEMPERATUURI SIIT (C°)
+           ========================================= */
+        const STUDIO_TEMP = 10; 
+        /* ========================================= */
+
         const contents = [
             document.getElementById('imageContent'),
             document.getElementById('infoContent'),
-            document.getElementById('countdownContent')
+            document.getElementById('countdownContent'),
+            document.getElementById('tempContent') // Uus leht lisatud massiivi
         ];
         const countdownClockEl = document.getElementById('countdownClock');
+        const tempValueEl = document.getElementById('tempValue');
+        const tempCommentEl = document.getElementById('tempComment');
         
         let currentContentIndex = 0;
 
+        // --- Temperature Logic ---
+        function setStudioTemperature() {
+            tempValueEl.innerHTML = `${STUDIO_TEMP}°C`;
+            
+            // Rebase kommentaarid vastavalt külmale
+            let comment = "";
+            if (STUDIO_TEMP <= 5) {
+                comment = "My paws are freezing! 🧊 Need more fur!";
+            } else if (STUDIO_TEMP <= 10) {
+                comment = "Engraving in the fridge... for art! ❄️";
+            } else if (STUDIO_TEMP <= 15) {
+                comment = "Chilly, but the fox survives! 🧥";
+            } else {
+                comment = "Finally, some warmth in here! 🔥";
+            }
+            tempCommentEl.innerHTML = comment;
+        }
+
+        // --- Countdown Clock Logic ---
         function updateCountdown() {
             const targetDate = new Date('2026-05-01T12:00:00');
             const now = new Date();
@@ -222,17 +325,20 @@
             countdownClockEl.innerHTML = `${days} Days<br>${h}:${m}:${s}`;
         }
 
+        // --- Carousel Logic ---
         function toggleContent() {
             contents[currentContentIndex].style.display = 'none';
             currentContentIndex = (currentContentIndex + 1) % contents.length;
             contents[currentContentIndex].style.display = 'flex';
         }
 
-        contents[0].style.display = 'flex';
+        // --- Initialization ---
+        setStudioTemperature(); // Pane temperatuur paika
+        contents[0].style.display = 'flex'; // Näita esimest slaidi
         
         updateCountdown();
         setInterval(updateCountdown, 1000);
-        setInterval(toggleContent, 5000);
+        setInterval(toggleContent, 5000); // Iga 5 sekundi tagant vahetus
     </script>
 </body>
 </html>
