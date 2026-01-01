@@ -6,7 +6,7 @@
     <title>Janek Joosu Journey</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -40,12 +40,90 @@
             display: none; 
         }
 
+        /* --- 1. IMAGE CONTENT STYLE --- */
         .image-container {
             background: url('https://raw.githubusercontent.com/JoosuStudio/GreyFox/main/1766426483389~4.jpg') no-repeat center;
             background-size: cover;
         }
 
-        .info-container, .countdown-container {
+        /* --- 2. UUS INFO CONTENT STYLE (MÜSTILINE REBANE) --- */
+        .info-container {
+            box-sizing: border-box;
+            /* Sügavam, müstilisem metsa gradient */
+            background: radial-gradient(circle at center, rgba(30, 90, 50, 0.95), rgba(5, 35, 20, 0.98));
+            color: #fff;
+            display: flex;
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;
+            padding: 3vmin;
+            height: 100%; 
+        }
+
+        .info-header {
+            font-size: 5.5vmin;
+            font-weight: 700;
+            margin-bottom: 3vmin;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 1.5vmin;
+        }
+
+        /* Ruudustik info jaoks */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Kaks veergu */
+            gap: 2.5vmin;
+            width: 100%;
+            margin-bottom: 3vmin;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.1); /* Kerge läbipaistev taust */
+            padding: 1.5vmin;
+            border-radius: 2vmin;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            backdrop-filter: blur(2px); /* Klaasi efekt */
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .info-box-icon {
+            font-size: 4vmin;
+            margin-bottom: 0.5vmin;
+        }
+
+        .info-label-small {
+            font-size: 2.5vmin;
+            text-transform: uppercase;
+            opacity: 0.7;
+            letter-spacing: 1px;
+        }
+
+        .info-value-large {
+            font-size: 4.5vmin;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        /* GreyFoxJourney Brändi kast all */
+        .journey-brand-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5vmin 3vmin;
+            border-radius: 5vmin;
+            border: 0.3vmin solid rgba(255, 193, 7, 0.5); /* Kuldne äär */
+            text-align: center;
+            width: 90%;
+        }
+        .brand-label { font-size: 3vmin; opacity: 0.9; }
+        .brand-name { font-size: 5.5vmin; font-weight: 700; color: #ffc107; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+
+
+        /* --- 3. COUNTDOWN STYLES --- */
+        .countdown-container {
             box-sizing: border-box;
             background: linear-gradient(135deg, rgba(10, 80, 40, 0.95), rgba(20, 110, 50, 0.95));
             color: #fff;
@@ -56,70 +134,6 @@
             padding: 2vmin;
             height: 100%; 
         }
-
-        /* --- UUS TEMPERATUURI LEHE STIIL --- */
-        .temp-container {
-            box-sizing: border-box;
-            /* Jäine sinine taust */
-            background: linear-gradient(135deg, #1e3c72, #2a5298); 
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2vmin;
-            height: 100%;
-            position: relative;
-        }
-
-        /* Lumehelbe animatsioon taustal */
-        .snowflake {
-            position: absolute;
-            top: -10%;
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 5vmin;
-            animation: fall linear infinite;
-        }
-        @keyframes fall {
-            to { transform: translateY(110vh); }
-        }
-
-        .temp-title {
-            font-size: 5vmin;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 2vmin;
-            z-index: 2;
-            text-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        .temp-display {
-            font-size: 18vmin;
-            font-weight: 700;
-            color: #00e5ff; /* Jäine helesinine */
-            text-shadow: 0 0 20px #00e5ff, 2px 2px 5px rgba(0,0,0,0.8);
-            margin: 1vmin 0;
-            z-index: 2;
-            line-height: 1;
-        }
-
-        .temp-comment {
-            font-size: 5vmin;
-            text-align: center;
-            max-width: 90%;
-            z-index: 2;
-            font-style: italic;
-            opacity: 0.9;
-            margin-top: 2vmin;
-        }
-
-        .fox-icon {
-            font-size: 8vmin;
-            margin-bottom: 1vmin;
-            z-index: 2;
-        }
-
-        /* --- ÜLEJÄÄNUD STIILID --- */
         .text-wrapper {
             display: flex;
             flex-direction: column;
@@ -128,32 +142,6 @@
             gap: 2.5vmin;
             width: 100%;
         }
-
-        .info-row {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            margin: 0;
-        }
-
-        .label {
-            font-weight: 500;
-            font-size: 3.5vmin;
-            color: #dddddd;
-            text-transform: uppercase;
-            letter-spacing: 0.2vmin;
-            margin-bottom: 0.5vmin;
-        }
-
-        .value {
-            font-weight: 700;
-            color: #ffffff;
-            font-size: 7.5vmin;
-            line-height: 1;
-            text-align: center;
-        }
-
         .countdown-title {
             font-size: 6vmin;
             font-weight: 700;
@@ -162,7 +150,6 @@
             text-align: center;
             line-height: 1.2;
         }
-
         #countdownClock {
             font-size: 13vmin; 
             font-weight: 700;
@@ -173,7 +160,6 @@
             line-height: 1.2; 
             text-align: center;
         }
-
         .countdown-description {
             font-size: 4.5vmin;
             opacity: 0.95; 
@@ -183,13 +169,11 @@
             max-width: 95%;
             font-weight: 500; 
         }
-
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
-        
         .countdown-wrapper {
             display: flex;
             justify-content: center;
@@ -197,15 +181,68 @@
             gap: 3vmin;
             width: 100%;
         }
-
         .spinning-emoji {
             font-size: 8vmin; 
             animation: spin 6s linear infinite;
         }
-
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
+        }
+
+        /* --- 4. TEMP CONTENT STYLES --- */
+        .temp-container {
+            box-sizing: border-box;
+            background: linear-gradient(135deg, #1e3c72, #2a5298); 
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2vmin;
+            height: 100%;
+            position: relative;
+        }
+        .snowflake {
+            position: absolute;
+            top: -10%;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 5vmin;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to { transform: translateY(110vh); }
+        }
+        .temp-title {
+            font-size: 5vmin;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 2vmin;
+            z-index: 2;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .temp-display {
+            font-size: 18vmin;
+            font-weight: 700;
+            color: #00e5ff; 
+            text-shadow: 0 0 20px #00e5ff, 2px 2px 5px rgba(0,0,0,0.8);
+            margin: 1vmin 0;
+            z-index: 2;
+            line-height: 1;
+        }
+        .temp-comment {
+            font-size: 5vmin;
+            text-align: center;
+            max-width: 90%;
+            z-index: 2;
+            font-style: italic;
+            opacity: 0.9;
+            margin-top: 2vmin;
+        }
+        .fox-icon {
+            font-size: 8vmin;
+            margin-bottom: 1vmin;
+            z-index: 2;
         }
     </style>
 </head>
@@ -214,37 +251,47 @@
         <div class="content image-container" id="imageContent"></div>
 
         <div class="content info-container" id="infoContent">
-            <div class="text-wrapper">
-                <div class="info-row">
-                    <span class="label">Name</span>
-                    <span class="value">Janek Joosu</span>
+            <div class="info-header">
+                <span>🦊</span> The Grey Fox Artist
+            </div>
+
+            <div class="info-grid">
+                <div class="info-box">
+                    <span class="info-box-icon">👤</span>
+                    <span class="info-label-small">Name</span>
+                    <span class="info-value-large">Janek Joosu</span>
                 </div>
-                <div class="info-row">
-                    <span class="label">Age</span>
-                    <span class="value">39</span>
+                <div class="info-box">
+                    <span class="info-box-icon">🎂</span>
+                    <span class="info-label-small">Age</span>
+                    <span class="info-value-large">39</span>
                 </div>
-                <div class="info-row">
-                    <span class="label">From</span>
-                    <span class="value">Estonia 🇪🇪</span>
+                <div class="info-box">
+                    <span class="info-box-icon">🇪🇪</span>
+                    <span class="info-label-small">From</span>
+                    <span class="info-value-large">Estonia</span>
                 </div>
-                <div class="info-row">
-                    <span class="label">Profession</span>
-                    <span class="value" style="font-size: 6vmin;">Glass Engraving Artist</span>
-                    <span style="font-size: 3.5vmin; opacity: 0.8; margin-top:0.5vmin;">(Hobby since 2009)</span>
+                <div class="info-box">
+                    <span class="info-box-icon">💎</span>
+                    <span class="info-label-small">Craft</span>
+                    <span class="info-value-large" style="font-size: 4vmin;">Glass Engraver</span>
                 </div>
+            </div>
+
+            <div class="journey-brand-box">
+                <span class="brand-label">Follow the trace:</span><br>
+                <span class="brand-name">@GreyFoxJourney</span>
             </div>
         </div>
 
         <div class="content countdown-container" id="countdownContent">
             <div class="text-wrapper">
                 <p class="countdown-title">🚴 5000km Epic Ride 🚴</p>
-                
                 <div class="countdown-wrapper">
                     <span class="spinning-emoji" id="emoji-left">🦊</span>
                     <div id="countdownClock">-- Days<br>--:--:--</div>
                     <span class="spinning-emoji" id="emoji-right">🚴</span>
                 </div>
-                
                 <p class="countdown-description">
                     From Estonia 🇪🇪 to Spain 🇪🇸<br>
                     Live cycling, art & wild camping!
@@ -257,7 +304,6 @@
             <div class="snowflake" style="left: 30%; animation-duration: 7s;">❄</div>
             <div class="snowflake" style="left: 70%; animation-duration: 6s;">❄</div>
             <div class="snowflake" style="left: 90%; animation-duration: 8s;">❄</div>
-
             <div class="fox-icon">🥶🦊🥶</div>
             <div class="temp-title">Studio ICE Box</div>
             <div class="temp-display" id="tempValue">--°C</div>
@@ -276,7 +322,7 @@
             document.getElementById('imageContent'),
             document.getElementById('infoContent'),
             document.getElementById('countdownContent'),
-            document.getElementById('tempContent') // Uus leht lisatud massiivi
+            document.getElementById('tempContent')
         ];
         const countdownClockEl = document.getElementById('countdownClock');
         const tempValueEl = document.getElementById('tempValue');
@@ -284,11 +330,8 @@
         
         let currentContentIndex = 0;
 
-        // --- Temperature Logic ---
         function setStudioTemperature() {
             tempValueEl.innerHTML = `${STUDIO_TEMP}°C`;
-            
-            // Rebase kommentaarid vastavalt külmale
             let comment = "";
             if (STUDIO_TEMP <= 5) {
                 comment = "My paws are freezing! 🧊 Need more fur!";
@@ -302,7 +345,6 @@
             tempCommentEl.innerHTML = comment;
         }
 
-        // --- Countdown Clock Logic ---
         function updateCountdown() {
             const targetDate = new Date('2026-05-01T12:00:00');
             const now = new Date();
@@ -325,20 +367,17 @@
             countdownClockEl.innerHTML = `${days} Days<br>${h}:${m}:${s}`;
         }
 
-        // --- Carousel Logic ---
         function toggleContent() {
             contents[currentContentIndex].style.display = 'none';
             currentContentIndex = (currentContentIndex + 1) % contents.length;
             contents[currentContentIndex].style.display = 'flex';
         }
 
-        // --- Initialization ---
-        setStudioTemperature(); // Pane temperatuur paika
-        contents[0].style.display = 'flex'; // Näita esimest slaidi
-        
+        setStudioTemperature();
+        contents[0].style.display = 'flex';
         updateCountdown();
         setInterval(updateCountdown, 1000);
-        setInterval(toggleContent, 5000); // Iga 5 sekundi tagant vahetus
+        setInterval(toggleContent, 5000);
     </script>
 </body>
 </html>
