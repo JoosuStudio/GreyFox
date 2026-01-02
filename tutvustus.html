@@ -10,23 +10,44 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            margin: 0; padding: 0; background: transparent;
-            height: 100vh; width: 100vw;
-            display: flex; justify-content: center; align-items: center; overflow: hidden;
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
 
         .container {
-            width: 95vmin; height: 95vmin; overflow: hidden;
-            border-radius: 4vmin; box-shadow: 0 1.5vmin 5vmin rgba(0,0,0,0.6);
-            background: transparent; position: relative;
+            width: 95vmin;
+            height: 95vmin;
+            overflow: hidden;
+            border-radius: 4vmin;
+            box-shadow: 0 1.5vmin 5vmin rgba(0,0,0,0.6);
+            background: transparent;
+            position: relative;
         }
 
         /* --- FADE EFEKT --- */
         .content {
-            width: 100%; height: 100%; position: absolute; top: 0; left: 0;
-            opacity: 0; z-index: 1; transition: opacity 0.8s ease-in-out; display: flex;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            z-index: 1;
+            transition: opacity 0.8s ease-in-out;
+            display: flex;
         }
-        .content.active { opacity: 1; z-index: 10; }
+
+        .content.active {
+            opacity: 1;
+            z-index: 10;
+        }
 
         /* --- 1. IMAGE --- */
         .image-container {
@@ -36,306 +57,187 @@
 
         /* --- 2. INFO --- */
         .info-container {
-            box-sizing: border-box; background: radial-gradient(circle at center, rgba(30, 90, 50, 0.95), rgba(5, 35, 20, 0.98));
-            color: #fff; flex-direction: column; justify-content: center; align-items: center; padding: 3vmin;
+            box-sizing: border-box;
+            background: radial-gradient(circle at center, rgba(30, 90, 50, 0.95), rgba(5, 35, 20, 0.98));
+            color: #fff;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3vmin;
         }
-        .info-header { font-size: 7vmin; font-weight: 900; margin-bottom: 4vmin; text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.6); display: flex; align-items: center; gap: 2vmin; }
+        .info-header {
+            font-size: 7vmin; font-weight: 900; margin-bottom: 4vmin; text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.6);
+            display: flex; align-items: center; gap: 2vmin;
+        }
         .info-header span { font-size: 8vmin; }
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3vmin; width: 100%; margin-bottom: 4vmin; }
-        .info-box { background: rgba(255, 255, 255, 0.1); padding: 2vmin; border-radius: 2.5vmin; display: flex; flex-direction: column; align-items: center; text-align: center; backdrop-filter: blur(3px); border: 0.2vmin solid rgba(255,255,255,0.2); box-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.2); }
+        .info-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 3vmin; width: 100%; margin-bottom: 4vmin;
+        }
+        .info-box {
+            background: rgba(255, 255, 255, 0.1); padding: 2vmin; border-radius: 2.5vmin;
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            backdrop-filter: blur(3px); border: 0.2vmin solid rgba(255,255,255,0.2);
+            box-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.2);
+        }
         .info-box-icon { font-size: 5vmin; margin-bottom: 0.5vmin; }
-        .info-label-small { font-size: 3.2vmin; text-transform: uppercase; opacity: 0.8; font-weight: 500; margin-bottom: 0.5vmin; }
-        .info-value-large { font-size: 5.5vmin; font-weight: 900; line-height: 1.1; }
-        .journey-brand-box { background: rgba(0, 0, 0, 0.4); padding: 2vmin 4vmin; border-radius: 6vmin; border: 0.4vmin solid rgba(255, 193, 7, 0.6); text-align: center; width: 92%; }
-        .brand-name { font-size: 6.5vmin; font-weight: 900; color: #ffc107; margin-top: 0.5vmin; display: block;}
+        .info-label-small { font-size: 3.2vmin; text-transform: uppercase; opacity: 0.8; font-weight: 500; letter-spacing: 0.1vmin; margin-bottom: 0.5vmin; }
+        .info-value-large { font-size: 5.5vmin; font-weight: 900; line-height: 1.1; text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.5); }
+        .journey-brand-box {
+            background: rgba(0, 0, 0, 0.4); padding: 2vmin 4vmin; border-radius: 6vmin;
+            border: 0.4vmin solid rgba(255, 193, 7, 0.6); text-align: center; width: 92%;
+            box-shadow: 0 1vmin 2vmin rgba(0,0,0,0.3);
+        }
+        .brand-label { font-size: 4vmin; opacity: 0.9; font-weight: 500; }
+        .brand-name { font-size: 6.5vmin; font-weight: 900; color: #ffc107; text-shadow: 0 0.3vmin 1vmin rgba(0,0,0,0.7); margin-top: 0.5vmin; display: block;}
 
         /* --- 3. CHALLENGE GRID --- */
         .challenge-container {
-            box-sizing: border-box; background: linear-gradient(135deg, #2b1055, #7597de);
-            color: #fff; flex-direction: column; justify-content: space-evenly; align-items: center; padding: 2vmin;
+            box-sizing: border-box;
+            background: linear-gradient(135deg, #2b1055, #7597de);
+            color: #fff;
+            flex-direction: column;
+            justify-content: space-evenly; 
+            align-items: center;
+            padding: 2vmin;
         }
-        .grid-title { font-size: 6.5vmin; font-weight: 900; text-transform: uppercase; text-align: center; margin: 0; line-height: 1; }
-        .mini-grid-box { display: grid; grid-template-columns: repeat(10, 1fr); gap: 0.6vmin; width: 75%; aspect-ratio: 1 / 1; }
-        .mini-dot { background: rgba(255,255,255,0.15); border-radius: 50%; width: 100%; height: 100%; box-shadow: inset 0 0 0.5vmin rgba(0,0,0,0.2); position: relative; aspect-ratio: 1 / 1; display: flex; justify-content: center; align-items: center; font-size: 2.2vmin; font-weight: 700; color: rgba(255,255,255,0.4); }
-        .mini-dot.engraved { background: #ffc107; box-shadow: 0 0 1vmin #ffc107; color: #000; }
-        .mini-dot.sold { background: #00e676; box-shadow: 0 0 1vmin #00e676; color: #000; }
-        .mini-dot.diamond { background: transparent; box-shadow: none; border: none; font-size: 4vmin; animation: bling-bling 2s infinite alternate; filter: drop-shadow(0 0 1vmin rgba(255, 255, 255, 0.8)); }
-        @keyframes bling-bling { 0% { transform: scale(1); } 100% { transform: scale(1.3); } }
+        .grid-title {
+            font-size: 6.5vmin; font-weight: 900; text-transform: uppercase; text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.5);
+            text-align: center; margin: 0; line-height: 1;
+        }
+        .mini-grid-box {
+            display: grid; grid-template-columns: repeat(10, 1fr); gap: 0.6vmin;
+            width: 75%; aspect-ratio: 1 / 1; 
+        }
+        
+        /* TÄPPIDE ÜLDSTIIL */
+        .mini-dot {
+            background: rgba(255,255,255,0.15); 
+            border-radius: 50%; width: 100%; height: 100%;
+            box-shadow: inset 0 0 0.5vmin rgba(0,0,0,0.2); 
+            position: relative; 
+            aspect-ratio: 1 / 1; 
+            display: flex; justify-content: center; align-items: center; 
+            font-size: 2.2vmin; font-weight: 700; color: rgba(255,255,255,0.6); 
+            user-select: none; line-height: 1;
+            z-index: 1; overflow: hidden; 
+        }
+        
+        /* --- STAATUSED --- */
+        .mini-dot.engraved { background: #ffc107; box-shadow: 0 0 1vmin #ffc107; color: #000; text-shadow: none; border:none; opacity: 1;}
+        .mini-dot.sold { background: #00e676; box-shadow: 0 0 1vmin #00e676; color: #000; text-shadow: none; border:none; opacity: 1;}
+        .mini-dot.diamond {
+            background: transparent; box-shadow: none; border: none; font-size: 4vmin;
+            animation: bling-bling 2s infinite alternate ease-in-out; filter: drop-shadow(0 0 1vmin rgba(255, 255, 255, 0.8));
+        }
+
+        /* --- LIPUD (GHOST EFFECT) --- */
+        .mini-dot.flag-bg { color: #fff; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); }
+        .mini-dot.flag-bg::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; }
+        .flag-est::before { background: linear-gradient(to bottom, #0072ce 33%, #000 33%, #000 66%, #fff 66%); }
+        .flag-lat::before { background: linear-gradient(to bottom, #9E3039 40%, #fff 40%, #fff 60%, #9E3039 60%); }
+        .flag-lit::before { background: linear-gradient(to bottom, #FDB913 33%, #006A44 33%, #006A44 66%, #C1272D 66%); }
+        .flag-pol::before { background: linear-gradient(to bottom, #fff 50%, #DC143C 50%); }
+        .flag-ger::before { background: linear-gradient(to bottom, #000 33%, #DD0000 33%, #DD0000 66%, #FFCE00 66%); }
+        .flag-fra::before { background: linear-gradient(to right, #002395 33%, #fff 33%, #fff 66%, #ED2939 66%); }
+        .flag-esp::before { background: linear-gradient(to bottom, #AA151B 25%, #F1BF00 25%, #F1BF00 75%, #AA151B 75%); }
+
+        @keyframes bling-bling {
+            0% { transform: scale(1); filter: drop-shadow(0 0 0.5vmin rgba(255, 255, 255, 0.5)); }
+            100% { transform: scale(1.3); filter: drop-shadow(0 0 2vmin rgba(255, 255, 255, 1)); }
+        }
         .stats-box { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.5vmin; }
         .stats-row { display: flex; justify-content: space-evenly; width: 95%; font-size: 3.8vmin; font-weight: 700; }
+        .total-row { font-size: 5.5vmin; font-weight: 900; margin-top: 1vmin; color: #fff; text-shadow: 0 0 1vmin rgba(0,0,0,0.5); }
         .highlight-gold { color: #ffc107; } .highlight-green { color: #00e676; } .highlight-diamond { color: #00e5ff; }
 
-        /* --- 4. THE LIFE TREE --- */
+        /* --- 4. THE LIFE BRANCH (INTERACTIVE TREE) --- */
         .tree-container {
-            box-sizing: border-box; background: linear-gradient(135deg, #134E5E, #71B280);
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Cpath d='M-50,250 C50,230 150,280 250,260 C350,240 450,200 550,220 C650,240 750,180 850,200' stroke='%233E2723' stroke-width='10' fill='none' stroke-linecap='round'/%3E%3Cpath d='M250,260 C300,220 350,200 400,210' stroke='%233E2723' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3Cpath d='M550,220 C600,260 650,280 700,270' stroke='%233E2723' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: center; background-size: 110% auto;
-            color: #fff; flex-direction: column; justify-content: flex-start; align-items: center; padding: 3vmin; position: relative;
+            box-sizing: border-box;
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.5)), url('https://raw.githubusercontent.com/JoosuStudio/GreyFox/refs/heads/main/1767345104955%7E2.jpg') no-repeat center center;
+            background-size: cover;
+            color: #fff;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
         }
-        .tree-title { font-size: 6vmin; font-weight: 900; text-transform: uppercase; margin-bottom: 2vmin; text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.6); color: #fff; z-index: 5; background: rgba(0,0,0,0.3); padding: 1vmin 3vmin; border-radius: 3vmin; }
-        .leaves-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
-        .leaf-item { position: absolute; font-size: 8vmin; transform-origin: top center; animation: sway 3s ease-in-out infinite alternate; filter: drop-shadow(0 0.5vmin 0.5vmin rgba(0,0,0,0.5)); }
-        .leaf-gold { color: #FFD700; text-shadow: 0 0 1.5vmin #FFD700; z-index: 10; font-size: 10vmin; }
-        .leaf-silver { color: #E0E0E0; text-shadow: 0 0 1.5vmin #fff; z-index: 9; font-size: 9vmin; }
-        .leaf-green { color: #4CAF50; z-index: 8; }
-        .leaf-small { color: #81C784; font-size: 6vmin; z-index: 7; }
-        @keyframes sway { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
-        .leaf-counter { position: absolute; bottom: 5vmin; background: rgba(0,0,0,0.5); padding: 2vmin; border-radius: 2vmin; font-size: 4vmin; font-weight: 700; display: flex; gap: 3vmin; z-index: 6; }
+        .tree-header { position: absolute; top: 3vmin; width: 100%; text-align: center; z-index: 5; }
+        .tree-title { font-size: 7vmin; font-weight: 900; color: #a8ff78; text-shadow: 0 0 2vmin rgba(0,255,0,0.3); margin: 0; letter-spacing: 0.2vmin; }
+        .tree-subtitle { font-size: 5.5vmin; font-weight: 700; color: #dfe6e9; opacity: 1; margin-top: 0.5vmin; text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.8); }
+        .leaves-wrapper { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 2; }
+        .tree-leaf { position: absolute; font-size: 6vmin; animation: sway 3s infinite ease-in-out alternate; filter: drop-shadow(0 0.5vmin 0.5vmin rgba(0,0,0,0.5)); transition: transform 0.3s; transform-origin: center top; }
+        .leaf-gold { font-size: 9vmin; z-index: 10; filter: drop-shadow(0 0 1.5vmin #ffc107); animation: sway 3s infinite ease-in-out alternate, pulse-gold 2s infinite; }
+        .leaf-silver { font-size: 7vmin; z-index: 9; filter: drop-shadow(0 0 1vmin #dfe6e9); }
+        @keyframes sway { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+        @keyframes pulse-gold { 0% { transform: scale(1) rotate(-8deg); } 50% { transform: scale(1.15) rotate(0deg); } 100% { transform: scale(1) rotate(8deg); } }
+        .tree-footer { position: absolute; bottom: 3vmin; width: 90%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); border-radius: 3vmin; border: 1px solid rgba(255,255,255,0.1); padding: 2vmin; z-index: 5; display: flex; flex-direction: column; gap: 1.5vmin; }
+        .legend-row { display: flex; justify-content: space-around; align-items: center; width: 100%; }
+        .legend-item { display: flex; align-items: center; gap: 1vmin; font-size: 5vmin; font-weight: 900; opacity: 1; text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.8); }
+        .legend-total { text-align: center; font-size: 5vmin; font-weight: 900; color: #ffc107; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1vmin; text-shadow: 0 0 1vmin rgba(255, 193, 7, 0.4); }
 
-        /* --- 5. NEW: QUEST BOARD (MENU & NEWS) --- */
-        .menu-container {
-            box-sizing: border-box; 
-            /* Sügav Oranž/Pruun gradient (Seiklus) */
-            background: linear-gradient(135deg, #3E2723, #D84315);
-            color: #fff; flex-direction: column; justify-content: flex-start; align-items: center; padding: 3vmin;
+        /* --- 5. QUEST BOARD (NEW) --- */
+        .quest-container {
+            box-sizing: border-box;
+            background: linear-gradient(135deg, #4b1d1d, #8c2b1d);
+            color: #fff;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 3vmin;
         }
-        .menu-header {
-            font-size: 6vmin; font-weight: 900; text-transform: uppercase; margin-bottom: 3vmin;
-            text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.5); border-bottom: 0.5vmin solid #ffc107; padding-bottom: 1vmin; width: 80%; text-align: center;
+        .quest-header {
+            font-size: 7vmin; font-weight: 900; color: #fff; 
+            text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.6); 
+            margin: 2vmin 0 3vmin 0; border-bottom: 0.5vmin solid #ffc107; padding-bottom: 1vmin;
         }
-        .option-box {
-            background: rgba(0,0,0,0.3); width: 90%; padding: 2vmin; margin-bottom: 2vmin;
-            border-radius: 3vmin; display: flex; align-items: center; gap: 3vmin;
-            border: 0.2vmin solid rgba(255,255,255,0.1);
+        .quest-cards-wrapper {
+            display: flex; flex-direction: column; gap: 3vmin; width: 100%; flex-grow: 1;
         }
-        .opt-icon { font-size: 8vmin; }
-        .opt-text-group { display: flex; flex-direction: column; align-items: flex-start; }
-        .opt-title { font-size: 4.5vmin; font-weight: 900; color: #ffc107; text-transform: uppercase; }
-        .opt-desc { font-size: 3.2vmin; opacity: 0.9; }
-        .opt-price { font-size: 3.5vmin; font-weight: 700; color: #00e676; margin-top: 0.5vmin; }
+        .quest-card {
+            background: rgba(0,0,0,0.3); border-radius: 3vmin; padding: 2.5vmin;
+            display: flex; align-items: center; gap: 3vmin; border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(3px);
+        }
+        .quest-icon { font-size: 8vmin; }
+        .quest-details { display: flex; flex-direction: column; text-align: left; width: 100%;}
+        .quest-card-title { font-size: 5vmin; font-weight: 900; text-transform: uppercase; color: #ffc107; margin-bottom: 0.5vmin; }
+        .quest-card-desc { font-size: 3.5vmin; opacity: 0.9; font-weight: 500; margin-bottom: 1vmin; }
+        .quest-price-tag { font-size: 4.5vmin; font-weight: 700; }
+        .highlight-blue { color: #00e5ff; }
+        .highlight-green { color: #00e676; }
         
         .contact-box {
-            background: #fff; color: #D84315; width: 90%; padding: 2vmin; border-radius: 2vmin;
-            text-align: center; margin-top: 1vmin; font-weight: 900; font-size: 3.8vmin;
-            box-shadow: 0 1vmin 2vmin rgba(0,0,0,0.4);
+            background: #fff; color: #b71c1c; border-radius: 2vmin; padding: 2vmin 4vmin;
+            font-size: 5vmin; font-weight: 900; text-align: center; width: 90%;
+            margin: 2vmin 0 2vmin 0; box-shadow: 0 1vmin 2vmin rgba(0,0,0,0.4);
+            margin-bottom: 9vmin; /* Ruumi Tickerile */
         }
-        
-        /* Scrolling Ticker */
-        .news-ticker-wrap {
-            position: absolute; bottom: 0; left: 0; width: 100%; overflow: hidden;
-            background: rgba(0,0,0,0.6); height: 7vmin; display: flex; align-items: center;
+        .contact-label { font-size: 3vmin; color: #fff; opacity: 0.8; margin-bottom: 1vmin; text-transform: uppercase; font-weight: 700; }
+
+        /* UUDISTERIBA (TICKER) */
+        .ticker-wrap {
+            position: absolute; bottom: 0; left: 0; width: 100%; overflow: hidden; height: 7vmin;
+            background: rgba(0,0,0,0.8); border-top: 1px solid #ffc107;
+            display: flex; align-items: center;
         }
-        .news-ticker {
-            white-space: nowrap; padding-left: 100%; animation: ticker 15s linear infinite;
-            font-size: 4vmin; font-weight: 700; color: #ffc107;
+        .ticker {
+            display: inline-block; white-space: nowrap;
+            padding-left: 100%; animation: ticker 25s linear infinite;
+            font-size: 4vmin; font-weight: 700; color: #fff;
         }
+        .ticker span { color: #ffc107; margin: 0 2vmin; }
         @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
 
         /* --- 6. COUNTDOWN --- */
         .countdown-container {
-            box-sizing: border-box; background: linear-gradient(135deg, rgba(10, 80, 40, 0.95), rgba(20, 110, 50, 0.95));
-            color: #fff; flex-direction: column; justify-content: center; align-items: center; padding: 3vmin;
+            box-sizing: border-box;
+            background: linear-gradient(135deg, rgba(10, 80, 40, 0.95), rgba(20, 110, 50, 0.95));
+            color: #fff;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3vmin;
         }
-        #countdownClock { font-size: 15vmin; font-weight: 900; color: #ffc107; text-align: center; }
-        .spinning-emoji { font-size: 10vmin; animation: spin 6s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        /* --- 7. TEMP --- */
-        .temp-container {
-            box-sizing: border-box; background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: #fff; flex-direction: column; justify-content: center; align-items: center; padding: 3vmin;
-        }
-        .temp-display { font-size: 25vmin; font-weight: 900; color: #00e5ff; line-height: 0.9; }
-        .snowflake { position: absolute; color: rgba(255, 255, 255, 0.4); font-size: 7vmin; animation: fall linear infinite; }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="content image-container" id="imageContent"></div>
-
-        <div class="content info-container" id="infoContent">
-            <div class="info-header"><span>🦊</span> The Grey Fox Artist</div>
-            <div class="info-grid">
-                <div class="info-box"><span class="info-label-small">Name</span><span class="info-value-large">Janek</span></div>
-                <div class="info-box"><span class="info-label-small">From</span><span class="info-value-large">Estonia</span></div>
-            </div>
-            <div class="journey-brand-box"><span class="brand-name">@GreyFoxJourney</span></div>
-        </div>
-
-        <div class="content challenge-container" id="challengeContent">
-            <div class="grid-title">100 Mini Challenge</div>
-            <div class="mini-grid-box" id="gridBox"></div>
-            <div class="stats-box">
-                <div class="stats-row">
-                    <span>Done: <span id="cntEngraved" class="highlight-gold">0</span></span>
-                    <span>Funded: <span id="cntFunded" class="highlight-green">0</span></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="content menu-container" id="menuContent">
-            <div class="menu-header">📜 Quest Board</div>
-            
-            <div class="option-box">
-                <div class="opt-icon">💎</div>
-                <div class="opt-text-group">
-                    <div class="opt-title">100 Mini Map</div>
-                    <div class="opt-desc">Own 50km + Glass Art</div>
-                    <div class="opt-price">From €80 (Estonia: 5/6 Left)</div>
-                </div>
-            </div>
-
-            <div class="option-box">
-                <div class="opt-icon">🌿</div>
-                <div class="opt-text-group">
-                    <div class="opt-title">Life Branch</div>
-                    <div class="opt-desc">Add a leaf to the tree</div>
-                    <div class="opt-price">€5 / €15 / €25 / €50</div>
-                </div>
-            </div>
-
-            <div style="margin-top:2vmin; font-size:3vmin; opacity:0.8;">To claim your spot:</div>
-            <div class="contact-box">
-                greyfoxjourney@gmail.com
-            </div>
-
-            <div class="news-ticker-wrap">
-                <div class="news-ticker">
-                    🔴 JUST SOLD: Piece #003 "The Guardian" to K. Reinhard! 🛡️ Map section 100-150km CLOSED! 🗺️ Only 5 Estonia spots left! 🔥 Email to claim yours!
-                </div>
-            </div>
-        </div>
-
-        <div class="content tree-container" id="treeContent">
-            <div class="tree-title">🌿 The Life Branch</div>
-            <div class="leaves-wrapper" id="leavesWrapper"></div>
-            <div class="leaf-counter">
-                <span>🌟 <span id="countGold">0</span></span>
-                <span>✨ <span id="countSilver">0</span></span>
-                <span>🍃 <span id="countGreen">0</span></span>
-            </div>
-        </div>
-
-        <div class="content countdown-container" id="countdownContent">
-            <div style="font-size:7vmin; font-weight:900; margin-bottom:2vmin">Start Ride</div>
-            <div id="countdownClock">--:--:--</div>
-        </div>
-
-        <div class="content temp-container" id="tempContent">
-            <div class="snowflake" style="left:20%">❄</div><div class="snowflake" style="left:80%">❄</div>
-            <div class="temp-display" id="tempValue">--°C</div>
-            <div class="temp-comment" id="tempComment">Thinking...</div>
-        </div>
-    </div>
-
-    <script>
-        /* =========================================
-           🎛️  JUHTPULT (EDIT HERE) 🎛️
-           ========================================= */
-        const STUDIO_TEMP = 2;          
-        
-        // --- 1. CHALLENGE GRID ANDMED ---
-        // ENGRAVED: Millised on valmis tehtud
-        const ENGRAVED_LIST = [1, 2, 3, 6, 33]; 
-        // SOLD: Millised on müüdud (Siin on nüüd #3)
-        const SOLD_LIST = [3, 54, 33];
-
-        // --- 2. ELUPUU LEHED ---
-        const DONATION_LEAVES = [
-            'gold', 'gold',           
-            'green', 'green', 'green', 
-            'silver'                  
-        ];
-        /* ========================================= */
-
-        // --- DOM Elements ---
-        const contents = [
-            document.getElementById('imageContent'),
-            document.getElementById('infoContent'),
-            document.getElementById('challengeContent'),
-            document.getElementById('menuContent'), // UUS LEHT
-            document.getElementById('treeContent'), 
-            document.getElementById('countdownContent'),
-            document.getElementById('tempContent')
-        ];
-        if(contents[0]) contents[0].classList.add('active');
-
-        // --- Tree Generation Logic ---
-        const leavesWrapper = document.getElementById('leavesWrapper');
-        const countGold = document.getElementById('countGold');
-        const countSilver = document.getElementById('countSilver');
-        const countGreen = document.getElementById('countGreen');
-
-        function drawTree() {
-            leavesWrapper.innerHTML = '';
-            let g=0, s=0, gr=0;
-
-            DONATION_LEAVES.forEach((type, index) => {
-                const leaf = document.createElement('div');
-                leaf.classList.add('leaf-item');
-                let icon = '🍃';
-                if(type === 'gold') { icon = '🌟'; leaf.classList.add('leaf-gold'); g++; }
-                else if(type === 'silver') { icon = '✨'; leaf.classList.add('leaf-silver'); s++; }
-                else if(type === 'green') { icon = '🍃'; leaf.classList.add('leaf-green'); gr++; }
-                else if(type === 'small') { icon = '🌱'; leaf.classList.add('leaf-small'); gr++; }
-                leaf.innerText = icon;
-                const randomX = 5 + (index * 10) % 90; 
-                const randomY = 40 + (Math.random() * 25);
-                const delay = Math.random() * 2;
-                leaf.style.left = `${randomX}%`;
-                leaf.style.top = `${randomY}%`;
-                leaf.style.animationDelay = `${delay}s`;
-                leavesWrapper.appendChild(leaf);
-            });
-            countGold.innerText = g; countSilver.innerText = s; countGreen.innerText = gr;
-        }
-
-        // --- Grid Logic ---
-        const gridBox = document.getElementById('gridBox');
-        const cntEngravedEl = document.getElementById('cntEngraved');
-        const cntFundedEl = document.getElementById('cntFunded');
-
-        function drawGrid() {
-            gridBox.innerHTML = ''; 
-            for (let i = 1; i <= 100; i++) {
-                const dot = document.createElement('div');
-                dot.classList.add('mini-dot');
-                const isEngraved = ENGRAVED_LIST.includes(i);
-                const isSold = SOLD_LIST.includes(i);
-
-                if (isEngraved && isSold) { dot.classList.add('diamond'); dot.innerText = "💎"; } 
-                else if (isEngraved) { dot.classList.add('engraved'); dot.innerText = i; } 
-                else if (isSold) { dot.classList.add('sold'); dot.innerText = i; } 
-                else { dot.innerText = i; }
-                gridBox.appendChild(dot);
-            }
-            if(cntEngravedEl) cntEngravedEl.innerText = ENGRAVED_LIST.length;
-            if(cntFundedEl) cntFundedEl.innerText = SOLD_LIST.length;
-        }
-
-        // --- Temp & Countdown ---
-        const tempValueEl = document.getElementById('tempValue');
-        const tempCommentEl = document.getElementById('tempComment');
-        function setStudioTemperature() {
-            tempValueEl.innerHTML = `${STUDIO_TEMP}°C`;
-            let c = "";
-            if (STUDIO_TEMP <= 5) c = "Brrr... Freezing! ❄️";
-            else c = "Getting warm! 🔥";
-            tempCommentEl.innerHTML = c;
-        }
-
-        const countdownClockEl = document.getElementById('countdownClock');
-        function updateCountdown() {
-            const diff = new Date('2026-05-01T12:00:00') - new Date();
-            if (diff < 0) { countdownClockEl.innerHTML = "GO!"; return; }
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            countdownClockEl.innerHTML = `${d} Days<br>${h}:${m}`;
-        }
-
-        // --- Loop ---
-        let currentContentIndex = 0;
-        function toggleContent() {
-            contents[currentContentIndex].classList.remove('active');
-            currentContentIndex = (currentContentIndex + 1) % contents.length;
-            setTimeout(() => { contents[currentContentIndex].classList.add('active'); }, 50); 
-        }
-
-        drawTree(); drawGrid(); setStudioTemperature(); updateCountdown();
-        setInterval(updateCountdown, 1000);
-        setInterval(toggleContent, 10000); 
-    </script>
-</body>
-</html>
+        .text-wrapper { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 3vmin; width: 100%; }
