@@ -241,3 +241,361 @@
             padding: 3vmin;
         }
         .text-wrapper { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 3vmin; width: 100%; }
+        .countdown-title { font-size: 7.5vmin; font-weight: 900; text-shadow: 0 0.5vmin 1.5vmin rgba(0,0,0,0.7); margin: 0 0 2vmin 0; text-align: center; line-height: 1.1; }
+        #countdownClock { font-size: 15vmin; font-weight: 900; color: #ffc107; text-shadow: 0 0 3vmin #ffc107, 0 0 5vmin rgba(0,0,0,0.8); animation: pulse 2s infinite; margin: 1vmin 0; line-height: 1.1; text-align: center; }
+        .countdown-description { font-size: 5.5vmin; opacity: 0.95; line-height: 1.4; margin-top: 3vmin; text-align: center; max-width: 98%; font-weight: 700; text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.6); }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
+        .countdown-wrapper { display: flex; justify-content: center; align-items: center; gap: 4vmin; width: 100%; }
+        .spinning-emoji { font-size: 10vmin; animation: spin 6s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* --- 7. TEMP --- */
+        .temp-container {
+            box-sizing: border-box;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3vmin;
+        }
+        .snowflake { position: absolute; top: -15%; color: rgba(255, 255, 255, 0.4); font-size: 7vmin; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        .temp-title { font-size: 6.5vmin; font-weight: 900; text-transform: uppercase; margin-bottom: 2vmin; z-index: 2; text-shadow: 0 0.5vmin 1.5vmin rgba(0,0,0,0.7); letter-spacing: 0.2vmin; }
+        .temp-display { font-size: 25vmin; font-weight: 900; color: #00e5ff; text-shadow: 0 0 4vmin #00e5ff, 0 0.5vmin 2vmin rgba(0,0,0,0.9); margin: 1vmin 0; z-index: 2; line-height: 0.9; }
+        .temp-comment { font-size: 6vmin; text-align: center; max-width: 95%; z-index: 2; font-style: italic; opacity: 1; margin-top: 3vmin; font-weight: 700; text-shadow: 0 0.3vmin 0.8vmin rgba(0,0,0,0.8); line-height: 1.3; }
+        .fox-icon { font-size: 12vmin; margin-bottom: 2vmin; z-index: 2; filter: drop-shadow(0 0.5vmin 1vmin rgba(0,0,0,0.5)); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="content image-container" id="imageContent"></div>
+
+        <div class="content info-container" id="infoContent">
+            <div class="info-header"><span>🦊</span> The Grey Fox Artist</div>
+            <div class="info-grid">
+                <div class="info-box"><span class="info-box-icon">👤</span><span class="info-label-small">Name</span><span class="info-value-large">Janek Joosu</span></div>
+                <div class="info-box"><span class="info-box-icon">🎂</span><span class="info-label-small">Age</span><span class="info-value-large">39</span></div>
+                <div class="info-box"><span class="info-box-icon">🇪🇪</span><span class="info-label-small">From</span><span class="info-value-large">Estonia</span></div>
+                <div class="info-box"><span class="info-box-icon">💎</span><span class="info-label-small">Craft</span><span class="info-value-large" style="font-size:5vmin">Glass Engraver</span></div>
+            </div>
+            <div class="journey-brand-box"><span class="brand-label">Follow the trace:</span><span class="brand-name">@GreyFoxJourney</span></div>
+        </div>
+
+        <div class="content challenge-container" id="challengeContent">
+            <div class="grid-title">100 Mini Challenge</div>
+            <div class="mini-grid-box" id="gridBox"></div>
+            <div class="stats-box">
+                <div class="stats-row">
+                    <span>Engraved: <span id="cntEngraved" class="highlight-gold">0</span></span>
+                    <span>Funded: <span id="cntFunded" class="highlight-green">0</span></span>
+                    <span>Finished: <span id="cntFinished" class="highlight-diamond">0</span></span>
+                </div>
+                <div class="total-row">Total: <span id="totalKm" style="color:#00e676">0</span> / 5000 km</div>
+            </div>
+        </div>
+
+        <div class="content tree-container" id="treeContent">
+            <div class="tree-header">
+                <h2 class="tree-title">🌿 THE LIFE BRANCH</h2>
+                <div class="tree-subtitle">Grow the Journey</div>
+            </div>
+            
+            <div class="leaves-wrapper" id="leavesContainer"></div>
+
+            <div class="tree-footer">
+                <div class="legend-row">
+                    <div class="legend-item">🍃 €5</div>
+                    <div class="legend-item">🍂 €15</div>
+                    <div class="legend-item">✨ €25</div>
+                    <div class="legend-item">🌟 €50</div>
+                </div>
+                <div class="legend-total">
+                    Support: <span id="treeTotalValue">€0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content quest-container" id="questContent">
+            <div class="quest-header">📜 QUEST BOARD</div>
+            
+            <div class="quest-cards-wrapper">
+                <div class="quest-card">
+                    <div class="quest-icon">💎</div>
+                    <div class="quest-details">
+                        <div class="quest-card-title">100 MINI MAP</div>
+                        <div class="quest-card-desc">Own 50km + Glass Art</div>
+                        <div class="quest-price-tag highlight-blue" id="questMapPrice">From €80 (Estonia: 5/6 Left)</div>
+                    </div>
+                </div>
+
+                <div class="quest-card">
+                    <div class="quest-icon">🌿</div>
+                    <div class="quest-details">
+                        <div class="quest-card-title">LIFE BRANCH</div>
+                        <div class="quest-card-desc">Add a leaf to the tree</div>
+                        <div class="quest-price-tag highlight-green">€5 / €15 / €25 / €50</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-label">To claim your spot:</div>
+            <div class="contact-box">greyfoxjourney@gmail.com</div>
+
+            <div class="ticker-wrap">
+                <div class="ticker" id="tickerText">
+                    </div>
+            </div>
+        </div>
+
+        <div class="content countdown-container" id="countdownContent">
+            <div class="text-wrapper">
+                <p class="countdown-title">🚴 5000km Epic Ride 🚴</p>
+                <div class="countdown-wrapper">
+                    <span class="spinning-emoji" id="emoji-left">🦊</span>
+                    <div id="countdownClock">-- Days<br>--:--:--</div>
+                    <span class="spinning-emoji" id="emoji-right">🚴</span>
+                </div>
+                <p class="countdown-description">From Estonia 🇪🇪 to Spain 🇪🇸<br>Live cycling, art & wild camping!</p>
+            </div>
+        </div>
+
+        <div class="content temp-container" id="tempContent">
+            <div class="snowflake" style="left:10%; animation-duration:5s;">❄</div>
+            <div class="snowflake" style="left:30%; animation-duration:7s;">❄</div>
+            <div class="snowflake" style="left:70%; animation-duration:6s;">❄</div>
+            <div class="snowflake" style="left:90%; animation-duration:8s;">❄</div>
+            <div class="fox-icon">🥶🦊🥶</div>
+            <div class="temp-title">Studio ICE Box</div>
+            <div class="temp-display" id="tempValue">--°C</div>
+            <div class="temp-comment" id="tempComment">Thinking...</div>
+        </div>
+    </div>
+
+    <script>
+        /* =========================================
+           🎛️  JUHTPULT (CONTROL PANEL) 🎛️
+           ========================================= */
+        
+        // 1. STUDIO TEMPERATUUR
+        const STUDIO_TEMP = 2;          
+
+        // 2. MINI CHALLENGE ANDMED
+        // Lisa siia numbrid, mis on juba tehtud või müüdud
+        const ENGRAVED_LIST = [1, 2, 6, 33]; // Kollane 🟡 (Graveeritud)
+        const SOLD_LIST = [3, 54, 33];       // Roheline 🟢 (Müüdud)
+
+        // 3. THE LIFE BRANCH - ANNETUSTE JUHTPULT 🌿
+        // Muuda siin numbreid vastavalt annetustele:
+        const COUNT_5_EUR  = 2;   // 🍃 Mitu 5€ toetajat?
+        const COUNT_15_EUR = 10;  // 🍂 Mitu 15€ toetajat?
+        const COUNT_25_EUR = 1;   // ✨ Mitu 25€ toetajat?
+        const COUNT_50_EUR = 1;   // 🌟 Mitu 50€ toetajat?
+
+        // 4. QUEST BOARD & TICKER 📜
+        const QUEST_MAP_PRICE_TEXT = "From €80 (Estonia: 5/6 Left)";
+        // Muuda seda teksti jooksva riba jaoks:
+        const TICKER_TEXT = "🔴 JUST SOLD: Piece #003 'The Guardian' to K. Reinhard! 🛡️ Map section 100-150km CLOSED! 🇪🇪 Estonia: 1/6 SOLD! 🇪🇪 Only 5 spots left in Estonia! 💨";
+
+        /* ========================================= */
+
+        // --- DOM Elements ---
+        const contents = [
+            document.getElementById('imageContent'),
+            document.getElementById('infoContent'),
+            document.getElementById('challengeContent'),
+            document.getElementById('treeContent'),
+            document.getElementById('questContent'), // UUS LEHT!
+            document.getElementById('countdownContent'),
+            document.getElementById('tempContent')
+        ];
+        
+        // Start showing content
+        if(contents[0]) contents[0].classList.add('active');
+
+        /* -------------------------------------------
+           LOGIC: QUEST BOARD SETTINGS
+        ------------------------------------------- */
+        function updateQuestBoard() {
+            const priceEl = document.getElementById('questMapPrice');
+            const tickerEl = document.getElementById('tickerText');
+            
+            if(priceEl) priceEl.innerText = QUEST_MAP_PRICE_TEXT;
+            if(tickerEl) {
+                // Ticker peab olema piisavalt pikk, et joosta sujuvalt, dubleerime teksti
+                tickerEl.innerHTML = `<span>${TICKER_TEXT}</span> <span>${TICKER_TEXT}</span>`; 
+            }
+        }
+
+        /* -------------------------------------------
+           LOGIC: CHALLENGE GRID (LIPPUDEGA)
+        ------------------------------------------- */
+        const gridBox = document.getElementById('gridBox');
+
+        // Funktsioon, mis määrab numbrile riigi lipu
+        function getCountryClass(n) {
+            if (n <= 6) return 'flag-est';        // Eesti 1-6
+            if (n <= 11) return 'flag-lat';       // Läti 7-11 (5tk)
+            if (n <= 16) return 'flag-lit';       // Leedu 12-16 (5tk)
+            if (n <= 32) return 'flag-pol';       // Poola 17-32 (16tk)
+            if (n <= 48) return 'flag-ger';       // Saksamaa 33-48 (16tk)
+            if (n <= 71) return 'flag-fra';       // Prantsusmaa 49-71 (23tk)
+            return 'flag-esp';                    // Hispaania 72-100 (29tk)
+        }
+
+        function drawGrid() {
+            if(!gridBox) return;
+            gridBox.innerHTML = ''; 
+            
+            let countEngraved = ENGRAVED_LIST.length;
+            let countFunded = SOLD_LIST.length;
+            let countFinished = ENGRAVED_LIST.filter(value => SOLD_LIST.includes(value)).length;
+
+            document.getElementById('cntEngraved').innerText = countEngraved;
+            document.getElementById('cntFunded').innerText = countFunded;
+            document.getElementById('cntFinished').innerText = countFinished;
+            document.getElementById('totalKm').innerText = countFunded * 50;
+
+            for (let i = 1; i <= 100; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('mini-dot');
+                
+                const isEngraved = ENGRAVED_LIST.includes(i);
+                const isSold = SOLD_LIST.includes(i);
+
+                if (isEngraved && isSold) {
+                    // TÄIESTI VALMIS (Teemant) - võidab kõik
+                    dot.classList.add('diamond'); 
+                    dot.innerText = "💎"; 
+                } else if (isEngraved) {
+                    // GRAVEERITUD (Kollane)
+                    dot.classList.add('engraved'); 
+                    dot.innerText = i;
+                } else if (isSold) {
+                    // MÜÜDUD (Roheline)
+                    dot.classList.add('sold'); 
+                    dot.innerText = i;
+                } else {
+                    // VABA (Näita riigi lippu)
+                    dot.innerText = i; 
+                    dot.classList.add('flag-bg');       // Üldine lipu stiil
+                    dot.classList.add(getCountryClass(i)); // Konkreetne riik
+                }
+                
+                gridBox.appendChild(dot);
+            }
+        }
+
+        /* -------------------------------------------
+           LOGIC: THE LIFE BRANCH (PUU) 🌿
+        ------------------------------------------- */
+        const leavesContainer = document.getElementById('leavesContainer');
+        const treeTotalValueEl = document.getElementById('treeTotalValue');
+
+        const LEAF_CONFIG = {
+            'small':  { icon: '🍃', price: 5,  cls: '' },
+            'medium': { icon: '🍂', price: 15, cls: '' },
+            'silver': { icon: '✨', price: 25, cls: 'leaf-silver' },
+            'gold':   { icon: '🌟', price: 50, cls: 'leaf-gold' }
+        };
+
+        function generateGardenList() {
+            let garden = [];
+            for(let i=0; i<COUNT_5_EUR; i++)  garden.push('small');
+            for(let i=0; i<COUNT_15_EUR; i++) garden.push('medium');
+            for(let i=0; i<COUNT_25_EUR; i++) garden.push('silver');
+            for(let i=0; i<COUNT_50_EUR; i++) garden.push('gold');
+            return garden;
+        }
+
+        const BRANCH_LOCATIONS = [
+            { left: 15, top: 75 }, { left: 25, top: 68 }, { left: 35, top: 48 }, 
+            { left: 38, top: 62 }, { left: 52, top: 52 }, { left: 60, top: 40 }, 
+            { left: 72, top: 60 }, { left: 80, top: 35 }, { left: 90, top: 45 }, 
+            { left: 45, top: 35 }, { left: 65, top: 68 }
+        ];
+
+        function drawTree() {
+            if(!leavesContainer) return;
+            leavesContainer.innerHTML = ''; 
+
+            let totalEur = 0;
+            const leafGarden = generateGardenList();
+            
+            leafGarden.forEach((type, index) => {
+                const config = LEAF_CONFIG[type];
+                if (!config) return;
+
+                totalEur += config.price;
+
+                const leaf = document.createElement('div');
+                leaf.classList.add('tree-leaf');
+                if(config.cls) leaf.classList.add(config.cls);
+                leaf.innerText = config.icon;
+
+                const spot = BRANCH_LOCATIONS[index % BRANCH_LOCATIONS.length];
+                const noiseX = (Math.random() - 0.5) * 4;
+                const noiseY = (Math.random() - 0.5) * 4;
+
+                leaf.style.left = (spot.left + noiseX) + '%';
+                leaf.style.top = (spot.top + noiseY) + '%';
+                leaf.style.animationDelay = (Math.random() * 2) + 's';
+                leavesContainer.appendChild(leaf);
+            });
+
+            if(treeTotalValueEl) treeTotalValueEl.innerText = '€' + totalEur;
+        }
+
+        /* -------------------------------------------
+           LOGIC: TEMP & COUNTDOWN
+        ------------------------------------------- */
+        function setStudioTemperature() {
+            const el = document.getElementById('tempValue');
+            const comm = document.getElementById('tempComment');
+            if(el) el.innerHTML = `${STUDIO_TEMP}°C`;
+            
+            let c = "";
+            if (STUDIO_TEMP <= 5) c = "My paws are freezing! 🧊 Need more fur!";
+            else if (STUDIO_TEMP <= 10) c = "Engraving in the fridge... for art! ❄️";
+            else if (STUDIO_TEMP <= 15) c = "Chilly, but the fox survives! 🧥";
+            else c = "Finally, some warmth in here! 🔥";
+            if(comm) comm.innerHTML = c;
+        }
+
+        function updateCountdown() {
+            const el = document.getElementById('countdownClock');
+            if(!el) return;
+            const diff = new Date('2026-05-01T12:00:00') - new Date();
+            if (diff < 0) { el.innerHTML = "Journey Started!"; return; }
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            el.innerHTML = `${d} Days<br>${(h<10?'0'+h:h)}:${(m<10?'0'+m:m)}:${(s<10?'0'+s:s)}`;
+        }
+
+        /* -------------------------------------------
+           RUN
+        ------------------------------------------- */
+        drawGrid();
+        drawTree();
+        updateQuestBoard();
+        setStudioTemperature();
+        updateCountdown();
+        
+        setInterval(updateCountdown, 1000);
+        
+        let currentContentIndex = 0;
+        function toggleContent() {
+            contents[currentContentIndex].classList.remove('active');
+            currentContentIndex = (currentContentIndex + 1) % contents.length;
+            setTimeout(() => {
+                contents[currentContentIndex].classList.add('active');
+            }, 50); 
+        }
+        setInterval(toggleContent, 10000); // 10 sekundi tagant slaidivahetus
+
+    </script>
+</body>
+</html>
