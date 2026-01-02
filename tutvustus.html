@@ -65,58 +65,90 @@
         .stats-row { display: flex; justify-content: space-evenly; width: 95%; font-size: 3.8vmin; font-weight: 700; }
         .highlight-gold { color: #ffc107; } .highlight-green { color: #00e676; } .highlight-diamond { color: #00e5ff; }
 
-        /* --- 4. NEW: VISUAL TREE BRANCH (UUS PEENIKE OKS) --- */
+        /* --- 4. TREE CONTAINER (Uus visuaal) --- */
         .tree-container {
             box-sizing: border-box;
-            /* Põhja gradient */
-            background: linear-gradient(135deg, #134E5E, #71B280);
-            /* UUS: SVG taustapilt peenikese oksaga */
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Cpath d='M-50,250 C50,230 150,280 250,260 C350,240 450,200 550,220 C650,240 750,180 850,200' stroke='%233E2723' stroke-width='10' fill='none' stroke-linecap='round'/%3E%3Cpath d='M250,260 C300,220 350,200 400,210' stroke='%233E2723' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3Cpath d='M550,220 C600,260 650,280 700,270' stroke='%233E2723' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 110% auto;
-            
+            /* Taust - jätsin natuke heledama gradienti, et oks välja paistaks */
+            background: radial-gradient(circle at top, #2c3e50, #000000); 
             color: #fff;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding: 3vmin;
+            padding: 0;
             position: relative;
         }
 
+        .tree-header {
+            position: absolute; top: 3vmin; width: 100%; text-align: center; z-index: 5;
+        }
         .tree-title {
-            font-size: 6vmin; font-weight: 900; text-transform: uppercase; margin-bottom: 2vmin;
-            text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.6); color: #fff; z-index: 5;
-            background: rgba(0,0,0,0.3); padding: 1vmin 3vmin; border-radius: 3vmin;
+            font-size: 6vmin; font-weight: 900; text-transform: uppercase;
+            text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.8); color: #fff; 
+            margin: 0; letter-spacing: 0.2vmin;
         }
 
-        /* Lehtede konteiner */
+        /* SVG KIHT */
+        .branch-svg-layer {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; pointer-events: none;
+        }
+        
+        /* Oksa stiil - tume pruun, ümarate otstega */
+        .branch-path {
+            fill: none; 
+            stroke: #3E2723; /* Tume puidupruun */
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 0.3vmin 0.5vmin rgba(0,0,0,0.5));
+        }
+
         .leaves-wrapper {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: 3;
         }
 
-        /* Üksik leht */
         .leaf-item {
-            position: absolute; font-size: 8vmin; transform-origin: top center;
+            position: absolute;
+            font-size: 8vmin;
+            transform-origin: center center;
             animation: sway 3s ease-in-out infinite alternate;
             filter: drop-shadow(0 0.5vmin 0.5vmin rgba(0,0,0,0.5));
         }
 
-        .leaf-gold { color: #FFD700; text-shadow: 0 0 1.5vmin #FFD700; z-index: 10; font-size: 10vmin; }
-        .leaf-silver { color: #E0E0E0; text-shadow: 0 0 1.5vmin #fff; z-index: 9; font-size: 9vmin; }
+        /* Ikoonide eristiilid */
+        .leaf-gold { 
+            color: #FFD700; 
+            font-size: 11vmin; /* Tähed on suuremad */
+            z-index: 10; 
+            animation: pulse-star 2s infinite alternate ease-in-out;
+            text-shadow: 0 0 2vmin rgba(255, 215, 0, 0.8);
+        }
+        .leaf-silver { 
+            color: #E0E0E0; 
+            font-size: 9vmin; 
+            z-index: 9; 
+            text-shadow: 0 0 1.5vmin rgba(255,255,255,0.8);
+            animation: twinkle 3s infinite;
+        }
         .leaf-green { color: #4CAF50; z-index: 8; }
-        .leaf-small { color: #81C784; font-size: 6vmin; z-index: 7; }
-
-        @keyframes sway {
-            0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); }
+        .leaf-small { 
+            font-size: 7vmin; 
+            z-index: 7; 
+            transform: rotate(45deg);
         }
 
-        /* Counter box all nurgas */
+        @keyframes sway { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
+        @keyframes pulse-star { 0% { transform: scale(1) rotate(-5deg); } 100% { transform: scale(1.15) rotate(5deg); } }
+        @keyframes twinkle { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.9); } }
+
+        /* Legend all nurgas */
         .leaf-counter {
             position: absolute; bottom: 5vmin;
-            background: rgba(0,0,0,0.5); padding: 2vmin; border-radius: 2vmin;
-            font-size: 4vmin; font-weight: 700; display: flex; gap: 3vmin; z-index: 6;
+            background: rgba(255,255,255,0.1); padding: 1.5vmin 4vmin; border-radius: 4vmin;
+            font-size: 4.5vmin; font-weight: 700;
+            display: flex; gap: 4vmin; z-index: 6;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 1vmin 2vmin rgba(0,0,0,0.3);
         }
 
         /* --- 5. COUNTDOWN --- */
@@ -125,8 +157,6 @@
             color: #fff; flex-direction: column; justify-content: center; align-items: center; padding: 3vmin;
         }
         #countdownClock { font-size: 15vmin; font-weight: 900; color: #ffc107; text-align: center; }
-        .spinning-emoji { font-size: 10vmin; animation: spin 6s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         /* --- 6. TEMP --- */
         .temp-container {
@@ -163,8 +193,20 @@
         </div>
 
         <div class="content tree-container" id="treeContent">
-            <div class="tree-title">🌿 The Life Branch</div>
+            <div class="tree-header">
+                <h2 class="tree-title">The Life Branch</h2>
+            </div>
             
+            <svg class="branch-svg-layer" viewBox="0 0 400 100" preserveAspectRatio="xMidYMid slice">
+                
+                <path d="M -10,65 C 80,75 160,55 410,25" class="branch-path" stroke-width="6" />
+                
+                <path d="M 110,60 Q 150,30 190,25" class="branch-path" stroke-width="4" />
+                
+                <path d="M 280,42 Q 330,60 370,65" class="branch-path" stroke-width="3" />
+                
+            </svg>
+
             <div class="leaves-wrapper" id="leavesWrapper"></div>
 
             <div class="leaf-counter">
@@ -188,20 +230,20 @@
 
     <script>
         /* =========================================
-           🎛️  JUHTPULT (EDIT HERE) 🎛️
+           🎛️  JUHTPULT 🎛️
            ========================================= */
         const STUDIO_TEMP = 2;          
         
-        // --- 1. CHALLENGE GRID ANDMED ---
         const ENGRAVED_LIST = [1, 2, 6, 33]; 
         const SOLD_LIST = [3, 54, 33];
 
-        // --- 2. ELUPUU LEHED (LISA SIIA KUI KEEGI ANNETAB) ---
-        // Valikud: 'gold', 'silver', 'green', 'small'
+        // --- ELUPUU LEHED ---
+        // 'gold' -> Suur täht 🌟
+        // 'silver' -> Sädelev ✨
+        // 'green' -> Tavaline leht 🍃
+        // 'small' -> Tuulega leht 🍃 (nagu pildil)
         const DONATION_LEAVES = [
-            'gold', 'gold',           
-            'green', 'green', 'green', 
-            'silver'                  
+            'gold', 'small', 'green', 'gold', 'silver', 'small', 'gold', 'silver'
         ];
         /* ========================================= */
 
@@ -233,20 +275,34 @@
                 let icon = '🍃';
                 if(type === 'gold') { icon = '🌟'; leaf.classList.add('leaf-gold'); g++; }
                 else if(type === 'silver') { icon = '✨'; leaf.classList.add('leaf-silver'); s++; }
-                else if(type === 'green') { icon = '🍃'; leaf.classList.add('leaf-green'); gr++; }
-                else if(type === 'small') { icon = '🌱'; leaf.classList.add('leaf-small'); gr++; }
+                else if(type === 'green') { icon = '🌿'; leaf.classList.add('leaf-green'); gr++; }
+                else if(type === 'small') { icon = '🍃'; leaf.classList.add('leaf-small'); gr++; }
                 
                 leaf.innerText = icon;
 
-                // Random asukoht uue peenikese oksa ümber
-                // Oks asub umbes ekraani keskel (50% kõrgusel)
-                const randomX = 5 + (index * 10) % 90; // Jaotame laiusesse
-                const randomY = 40 + (Math.random() * 25); // Kõigub keskkoha ümber
+                // --- PAIGUTUSE LOOGIKA (Et istuks oksa peal) ---
+                // Oks jookseb: Vasakult (Y=65%) -> Paremale (Y=25%)
+                // Valem ligikaudu: Y = 65 - (X * 0.4)
                 
-                const delay = Math.random() * 2;
-                leaf.style.left = `${randomX}%`;
-                leaf.style.top = `${randomY}%`;
-                leaf.style.animationDelay = `${delay}s`;
+                // Jaotame lehed laiusesse (10% kuni 90%)
+                const x = 5 + (index * 11) % 85; 
+                
+                // Arvutame Y koordinaadi vastavalt SVG joonele
+                let baseY = 65 - (x * 0.38); 
+                
+                // Kui leht on vahemikus 25-50 (haru koht), tõstame natuke kõrgemale
+                if (x > 25 && x < 45) { baseY -= 10; } // Haru üles
+                
+                // Kui leht on paremal (haru koht), laseme natuke madalamale
+                if (x > 70) { baseY += 15; } // Haru alla
+
+                // Random nihe, et ei oleks igav
+                const randomY = (Math.random() * 10) - 5; 
+                const randomX = (Math.random() * 4) - 2;
+                
+                leaf.style.left = `${x + randomX}%`;
+                leaf.style.top = `${baseY + randomY}%`;
+                leaf.style.animationDelay = `${Math.random() * 2}s`;
 
                 leavesWrapper.appendChild(leaf);
             });
@@ -300,7 +356,6 @@
             countdownClockEl.innerHTML = `${d} Days<br>${h}:${m}`;
         }
 
-        // --- Loop ---
         let currentContentIndex = 0;
         function toggleContent() {
             contents[currentContentIndex].classList.remove('active');
