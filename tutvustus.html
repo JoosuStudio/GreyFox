@@ -90,24 +90,21 @@
         .brand-label { font-size: 4vmin; opacity: 0.9; font-weight: 500; }
         .brand-name { font-size: 6.5vmin; font-weight: 900; color: #ffc107; text-shadow: 0 0.3vmin 1vmin rgba(0,0,0,0.7); margin-top: 0.5vmin; display: block;}
 
-        /* --- 3. CHALLENGE GRID (KOMPAKTNE) --- */
+        /* --- 3. CHALLENGE GRID --- */
         .challenge-container {
             box-sizing: border-box;
             background: linear-gradient(135deg, #2b1055, #7597de);
             color: #fff;
             flex-direction: column;
-            justify-content: center; /* Tsentreerib sisu paremini */
+            justify-content: space-evenly; 
             align-items: center;
             padding: 2vmin;
-            gap: 2vmin; /* Ühtlane vahe elementide vahel */
         }
         .grid-title {
             font-size: 6.5vmin; font-weight: 900; text-transform: uppercase; text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.5);
             text-align: center; margin: 0; line-height: 1;
         }
         
-        /* Eemaldasin grid-subtitle täielikult ruumi säästmiseks */
-
         .mini-grid-box {
             display: grid; grid-template-columns: repeat(10, 1fr); gap: 0.6vmin;
             width: 75%; aspect-ratio: 1 / 1;
@@ -119,20 +116,38 @@
             width: 100%; height: 100%;
             box-shadow: inset 0 0 0.5vmin rgba(0,0,0,0.2);
             position: relative;
+            
+            /* Tekst täpi sees */
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2.2vmin;
+            font-size: 2.2vmin; 
             font-weight: 700;
-            color: rgba(255,255,255,0.4);
+            color: rgba(255,255,255,0.4); 
             user-select: none;
         }
         
-        .mini-dot.engraved { background: #ffc107; box-shadow: 0 0 1vmin #ffc107; color: #000; }
-        .mini-dot.sold { background: #00e676; box-shadow: 0 0 1vmin #00e676; color: #000; }
+        /* OLEKUD */
+        .mini-dot.engraved {
+            background: #ffc107; 
+            box-shadow: 0 0 1vmin #ffc107;
+            color: #000; 
+        }
+        .mini-dot.sold {
+            background: #00e676; 
+            box-shadow: 0 0 1vmin #00e676;
+            color: #000;
+        }
+        /* Teemant (Mõlemad) */
         .mini-dot.diamond {
-            background: #00e5ff; box-shadow: 0 0 1.5vmin #00e5ff, 0 0 3vmin rgba(255,255,255,0.8);
-            animation: pulse-diamond 2s infinite; color: #000; border: 0.2vmin solid #fff;
+            background: #00e5ff; 
+            box-shadow: 0 0 1.5vmin #00e5ff, 0 0 3vmin rgba(255,255,255,0.8);
+            animation: pulse-diamond 2s infinite;
+            /* Siin muudame fondi suuremaks emojile */
+            font-size: 3vmin; 
+            border: 0.2vmin solid #fff;
+            /* Emojil pole värvi vaja määrata, ta on ise värviline */
+            text-shadow: none; 
         }
 
         @keyframes pulse-diamond {
@@ -141,31 +156,15 @@
             100% { transform: scale(1); box-shadow: 0 0 1vmin #00e5ff; }
         }
 
-        /* Alumine info kast */
         .stats-box {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5vmin;
+            width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.5vmin;
         }
-        
         .stats-row {
-            display: flex;
-            justify-content: space-evenly; /* Jaotab ilusti laiali */
-            width: 95%;
-            font-size: 3.8vmin; /* Veidi väiksem font et mahuks ritta */
-            font-weight: 700;
+            display: flex; justify-content: space-evenly; width: 95%; font-size: 3.8vmin; font-weight: 700;
         }
-        
         .total-row {
-            font-size: 5.5vmin;
-            font-weight: 900;
-            margin-top: 1vmin;
-            color: #fff;
-            text-shadow: 0 0 1vmin rgba(0,0,0,0.5);
+            font-size: 5.5vmin; font-weight: 900; margin-top: 1vmin; color: #fff; text-shadow: 0 0 1vmin rgba(0,0,0,0.5);
         }
-
         .highlight-gold { color: #ffc107; }
         .highlight-green { color: #00e676; }
         .highlight-diamond { color: #00e5ff; }
@@ -308,10 +307,11 @@
            ========================================= */
         const STUDIO_TEMP = 2;          
 
-        // LISA SIIA NUMBRID, MIS ON VALMIS GRAVEERITUD (Kuldne 🟡)
+        // 1. GRAVEERITUD (Kuldne 🟡)
         const ENGRAVED_LIST = [1, 2, 6, 33]; 
 
-        // LISA SIIA NUMBRID, MIS ON MÜÜDUD (Roheline 🟢)
+        // 2. MÜÜDUD (Roheline 🟢)
+        // NB! Kui number on mõlemas listis (nt 33), muutub see TEEMANDIKS 💎
         const SOLD_LIST = [3, 54, 33];
         /* ========================================= */
 
@@ -338,34 +338,34 @@
             
             let countEngraved = ENGRAVED_LIST.length;
             let countFunded = SOLD_LIST.length;
-            
-            // Finished = Need, mis on mõlemas listis
             let countFinished = ENGRAVED_LIST.filter(value => SOLD_LIST.includes(value)).length;
 
             for (let i = 1; i <= 100; i++) {
                 const dot = document.createElement('div');
                 dot.classList.add('mini-dot');
-                dot.innerText = i; 
-
+                
                 const isEngraved = ENGRAVED_LIST.includes(i);
                 const isSold = SOLD_LIST.includes(i);
 
                 if (isEngraved && isSold) {
                     dot.classList.add('diamond');
+                    // SIIN ON MUUDATUS: Asendame numbri teemandiga
+                    dot.innerText = "💎"; 
                 } else if (isEngraved) {
                     dot.classList.add('engraved');
+                    dot.innerText = i;
                 } else if (isSold) {
                     dot.classList.add('sold');
+                    dot.innerText = i;
+                } else {
+                    dot.innerText = i; // Tavalisele hallile jääb ka number alles
                 }
                 gridBox.appendChild(dot);
             }
 
-            // Uuendame tekste
             if(cntEngravedEl) cntEngravedEl.innerText = countEngraved;
             if(cntFundedEl) cntFundedEl.innerText = countFunded;
             if(cntFinishedEl) cntFinishedEl.innerText = countFinished;
-            
-            // Arvutame km: Müüdud (Funded) * 50
             if(totalKmEl) totalKmEl.innerText = countFunded * 50; 
         }
 
