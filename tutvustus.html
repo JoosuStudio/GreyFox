@@ -156,8 +156,10 @@
             position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; pointer-events: none;
         }
         .branch-path {
-            fill: none; stroke: #3e2723; stroke-width: 2vmin; stroke-linecap: round;
-            filter: drop-shadow(0 1vmin 1vmin rgba(0,0,0,0.8));
+            fill: none; stroke: #4e342e; stroke-linecap: round;
+            filter: drop-shadow(0 0.5vmin 0.5vmin rgba(0,0,0,0.8));
+            /* Made the default stroke thinner here (1.5 instead of 2) */
+            stroke-width: 1.5vmin; 
         }
 
         /* Lehtede ala */
@@ -309,9 +311,17 @@
             </div>
             
             <svg class="branch-svg-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path d="M-10,80 Q30,70 50,50 T110,20" class="branch-path" />
-                <path d="M50,50 Q60,60 80,55" class="branch-path" style="stroke-width: 1vmin;" />
-                <path d="M20,75 Q30,55 40,45" class="branch-path" style="stroke-width: 1vmin;" />
+                <path d="M-5,90 Q30,75 50,50 T110,10" class="branch-path" style="stroke-width: 1.3vmin;" />
+                
+                <path d="M50,50 Q60,60 85,55" class="branch-path" style="stroke-width: 0.8vmin;" />
+                <path d="M25,70 Q30,55 45,40" class="branch-path" style="stroke-width: 0.8vmin;" />
+                <path d="M75,30 Q85,20 90,5" class="branch-path" style="stroke-width: 0.8vmin;" />
+
+                <path d="M60,55 Q65,45 60,35" class="branch-path" style="stroke-width: 0.5vmin;" />
+                <path d="M30,65 Q20,60 10,65" class="branch-path" style="stroke-width: 0.5vmin;" />
+                <path d="M40,45 Q50,35 45,25" class="branch-path" style="stroke-width: 0.5vmin;" />
+                <path d="M90,20 Q100,25 105,15" class="branch-path" style="stroke-width: 0.5vmin;" />
+                <path d="M15,80 Q25,75 25,60" class="branch-path" style="stroke-width: 0.4vmin;" />
             </svg>
 
             <div class="leaves-wrapper" id="leavesContainer"></div>
@@ -367,9 +377,8 @@
 
         // 3. THE LIFE BRANCH - LEHTEDE AED 🌿
         // Lisa siia nimekirja stringidena: 'small', 'medium', 'silver', või 'gold'
-        // Iga sõna tekitab puule uue lehe.
         const LEAF_GARDEN = [
-            'gold', 'medium', 'small', 'small', 'silver', 'small', 'gold', 'medium' 
+            'gold', 'medium', 'small', 'small', 'silver', 'small', 'gold', 'medium', 'small', 'small', 'silver', 'medium'
         ];
 
         /* ========================================= */
@@ -455,19 +464,18 @@
 
                 // Random paigutus oksa ümber (visuaalne kaos)
                 // Oks jookseb vasak-all (0,80) -> parem-üles (100,20)
-                // Teeme lihtsustatud matemaatika: x on 10% kuni 90%
-                const x = 10 + (index * 7) % 80; // Levita horisontaalselt
+                // x on 10% kuni 90%
+                const x = 5 + (index * 6) % 90; 
                 
                 // Arvutame y vastavalt ligikaudsele oksa trajektoorile
-                // sirge y = -0.6x + 80 (väga jäme hinnang)
-                const baseY = 80 - (x * 0.6); 
+                const baseY = 80 - (x * 0.7); 
                 
-                // Lisa suvalisus (random offset)
-                const randomY = (Math.random() * 20) - 10; 
-                const randomX = (Math.random() * 10) - 5;
+                // Increased randomization for y/x to reach new sub-branches
+                const randomY = (Math.random() * 30) - 15; 
+                const randomX = (Math.random() * 20) - 10;
 
-                leaf.style.left = (x + randomX) + '%';
-                leaf.style.top = (baseY + randomY) + '%';
+                leaf.style.left = Math.max(0, Math.min(95, x + randomX)) + '%';
+                leaf.style.top = Math.max(0, Math.min(95, baseY + randomY)) + '%';
                 
                 // Animation delay et kõik ei kõiguks korraga
                 leaf.style.animationDelay = (Math.random() * 2) + 's';
