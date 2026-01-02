@@ -41,7 +41,7 @@
             opacity: 0;
             z-index: 1;
             transition: opacity 0.8s ease-in-out;
-            display: flex; /* Alati flex, opacity peidab */
+            display: flex;
         }
 
         .content.active {
@@ -109,13 +109,14 @@
         .brand-label { font-size: 4vmin; opacity: 0.9; font-weight: 500; }
         .brand-name { font-size: 6.5vmin; font-weight: 900; color: #ffc107; text-shadow: 0 0.3vmin 1vmin rgba(0,0,0,0.7); margin-top: 0.5vmin; display: block;}
 
-        /* --- 3. CHALLENGE GRID STYLE (UUS) --- */
+        /* --- 3. CHALLENGE GRID STYLE (PARANDATUD) --- */
         .challenge-container {
             box-sizing: border-box;
-            background: linear-gradient(135deg, #2b1055, #7597de); /* Lilla-Sinine taust */
+            background: linear-gradient(135deg, #2b1055, #7597de);
             color: #fff;
             flex-direction: column;
-            justify-content: center;
+            /* Muutsin selle 'space-evenly', et jaotaks ruumi paremini */
+            justify-content: space-evenly; 
             align-items: center;
             padding: 2vmin;
         }
@@ -123,16 +124,17 @@
             font-size: 6vmin;
             font-weight: 900;
             text-transform: uppercase;
-            margin-bottom: 1vmin;
+            margin-bottom: 0; /* Vähendasin marginaali */
             text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.5);
             text-align: center;
+            line-height: 1.1;
         }
         .grid-subtitle {
             font-size: 4.5vmin;
             background: rgba(0,0,0,0.3);
             padding: 0.5vmin 2vmin;
             border-radius: 2vmin;
-            margin-bottom: 3vmin;
+            margin-bottom: 1vmin; /* Vähendasin vahet */
             color: #ffc107;
             font-weight: 700;
         }
@@ -140,7 +142,8 @@
             display: grid;
             grid-template-columns: repeat(10, 1fr);
             gap: 0.8vmin;
-            width: 90%;
+            /* !!! SIIN OLI VIGA ENNE (90%) - MUUTSIN VÄIKSEMAKS !!! */
+            width: 60%; 
             aspect-ratio: 1 / 1;
         }
         .mini-dot {
@@ -157,10 +160,10 @@
         }
         .progress-text {
             font-size: 5vmin;
-            margin-top: 4vmin;
+            margin-top: 1vmin; /* Vähendasin vahet */
             font-weight: 900;
             text-align: center;
-            line-height: 1.4;
+            line-height: 1.3;
         }
         @keyframes pulse-gold {
             0% { transform: scale(1); box-shadow: 0 0 1vmin #ffc107; }
@@ -331,145 +334,4 @@
             </div>
         </div>
 
-        <div class="content challenge-container" id="challengeContent">
-            <div class="grid-title">100 Mini Challenge</div>
-            <div class="grid-subtitle">1 💎 = 50 km</div>
-            
-            <div class="mini-grid-box" id="gridBox"></div>
-    
-            <div class="progress-text">
-                <span id="completedCount" style="color:#ffc107; font-size:7vmin">0</span> / 100 Done
-                <br>
-                <span style="font-size: 4vmin; opacity: 0.8;">(<span id="fundedKm">0</span> km Funded)</span>
-            </div>
-        </div>
-
-        <div class="content countdown-container" id="countdownContent">
-            <div class="text-wrapper">
-                <p class="countdown-title">🚴 5000km Epic Ride 🚴</p>
-                <div class="countdown-wrapper">
-                    <span class="spinning-emoji" id="emoji-left">🦊</span>
-                    <div id="countdownClock">-- Days<br>--:--:--</div>
-                    <span class="spinning-emoji" id="emoji-right">🚴</span>
-                </div>
-                <p class="countdown-description">
-                    From Estonia 🇪🇪 to Spain 🇪🇸<br>
-                    Live cycling, art & wild camping!
-                </p>
-            </div>
-        </div>
-
-        <div class="content temp-container" id="tempContent">
-            <div class="snowflake" style="left: 10%; animation-duration: 5s; animation-delay: 0s;">❄</div>
-            <div class="snowflake" style="left: 30%; animation-duration: 7s; animation-delay: 1s;">❄</div>
-            <div class="snowflake" style="left: 70%; animation-duration: 6s; animation-delay: 0.5s;">❄</div>
-            <div class="snowflake" style="left: 90%; animation-duration: 8s; animation-delay: 1.5s;">❄</div>
-            <div class="fox-icon">🥶🦊🥶</div>
-            <div class="temp-title">Studio ICE Box</div>
-            <div class="temp-display" id="tempValue">--°C</div>
-            <div class="temp-comment" id="tempComment">Thinking...</div>
-        </div>
-    </div>
-
-    <script>
-        /* =========================================
-           JUHTPULT - MUUDA NEID NUMBREID SIIN:
-           ========================================= */
-        const STUDIO_TEMP = 2;          // Sinu stuudio temperatuur
-        const COMPLETED_MINIS = 2;      // Mitu mini on valmis
-        /* ========================================= */
-
-        // --- 1. CHALLENGE GRID LOGIC ---
-        const gridBox = document.getElementById('gridBox');
-        const completedCountEl = document.getElementById('completedCount');
-        const fundedKmEl = document.getElementById('fundedKm');
-
-        function drawGrid() {
-            gridBox.innerHTML = ''; 
-            for (let i = 0; i < 100; i++) {
-                const dot = document.createElement('div');
-                dot.classList.add('mini-dot');
-                if (i < COMPLETED_MINIS) {
-                    dot.classList.add('done');
-                }
-                gridBox.appendChild(dot);
-            }
-            completedCountEl.innerText = COMPLETED_MINIS;
-            fundedKmEl.innerText = COMPLETED_MINIS * 50; 
-        }
-
-        // --- 2. TEMP LOGIC ---
-        const tempValueEl = document.getElementById('tempValue');
-        const tempCommentEl = document.getElementById('tempComment');
-
-        function setStudioTemperature() {
-            tempValueEl.innerHTML = `${STUDIO_TEMP}°C`;
-            let comment = "";
-            if (STUDIO_TEMP <= 5) {
-                comment = "My paws are freezing! 🧊 Need more fur!";
-            } else if (STUDIO_TEMP <= 10) {
-                comment = "Engraving in the fridge... for art! ❄️";
-            } else if (STUDIO_TEMP <= 15) {
-                comment = "Chilly, but the fox survives! 🧥";
-            } else {
-                comment = "Finally, some warmth in here! 🔥";
-            }
-            tempCommentEl.innerHTML = comment;
-        }
-
-        // --- 3. COUNTDOWN LOGIC ---
-        const countdownClockEl = document.getElementById('countdownClock');
-        function updateCountdown() {
-            const targetDate = new Date('2026-05-01T12:00:00');
-            const now = new Date();
-            const difference = targetDate - now;
-
-            if (difference < 0) {
-                countdownClockEl.innerHTML = "Journey Started!";
-                return;
-            }
-            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-            const h = hours < 10 ? '0' + hours : hours;
-            const m = minutes < 10 ? '0' + minutes : minutes;
-            const s = seconds < 10 ? '0' + seconds : seconds;
-            countdownClockEl.innerHTML = `${days} Days<br>${h}:${m}:${s}`;
-        }
-
-        // --- 4. FADE SLIDESHOW LOGIC ---
-        const contents = [
-            document.getElementById('imageContent'),
-            document.getElementById('infoContent'),
-            document.getElementById('challengeContent'), // Uus leht
-            document.getElementById('countdownContent'),
-            document.getElementById('tempContent')
-        ];
         
-        let currentContentIndex = 0;
-
-        function toggleContent() {
-            // Fade Out
-            contents[currentContentIndex].classList.remove('active');
-            
-            // Järgmine indeks
-            currentContentIndex = (currentContentIndex + 1) % contents.length;
-            
-            // Fade In (väikese viivitusega)
-            setTimeout(() => {
-                contents[currentContentIndex].classList.add('active');
-            }, 50); 
-        }
-
-        // --- INIT ---
-        drawGrid();
-        setStudioTemperature();
-        contents[0].classList.add('active'); // Esimene leht aktiivseks
-        
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-        setInterval(toggleContent, 15000); // 15 sekundit vahetus
-    </script>
-</body>
-</html>
