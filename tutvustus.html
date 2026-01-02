@@ -108,42 +108,55 @@
             display: grid; grid-template-columns: repeat(10, 1fr); gap: 0.6vmin;
             width: 75%; aspect-ratio: 1 / 1; 
         }
+        
+        /* TÄPPIDE ÜLDSTIIL */
         .mini-dot {
-            background: rgba(255,255,255,0.15); border-radius: 50%; width: 100%; height: 100%;
-            box-shadow: inset 0 0 0.5vmin rgba(0,0,0,0.2); position: relative; aspect-ratio: 1 / 1; 
-            display: flex; justify-content: center; align-items: center; font-size: 2.2vmin; 
-            font-weight: 700; color: rgba(255,255,255,0.4); user-select: none; line-height: 1;
+            background: rgba(255,255,255,0.15); 
+            border-radius: 50%; width: 100%; height: 100%;
+            box-shadow: inset 0 0 0.5vmin rgba(0,0,0,0.2); 
+            position: relative; /* Vajalik lipu paigutamiseks */
+            aspect-ratio: 1 / 1; 
+            display: flex; justify-content: center; align-items: center; 
+            font-size: 2.2vmin; font-weight: 700; color: rgba(255,255,255,0.6); 
+            user-select: none; line-height: 1;
+            z-index: 1; overflow: hidden; /* Et lipp püsiks ringi sees */
         }
         
-        /* --- STAATUSED --- */
-        .mini-dot.engraved { background: #ffc107; box-shadow: 0 0 1vmin #ffc107; color: #000; text-shadow: none; border:none;}
-        .mini-dot.sold { background: #00e676; box-shadow: 0 0 1vmin #00e676; color: #000; text-shadow: none; border:none;}
+        /* --- STAATUSED (Need on endiselt kirkad) --- */
+        .mini-dot.engraved { background: #ffc107; box-shadow: 0 0 1vmin #ffc107; color: #000; text-shadow: none; border:none; opacity: 1;}
+        .mini-dot.sold { background: #00e676; box-shadow: 0 0 1vmin #00e676; color: #000; text-shadow: none; border:none; opacity: 1;}
         .mini-dot.diamond {
             background: transparent; box-shadow: none; border: none; font-size: 4vmin;
             animation: bling-bling 2s infinite alternate ease-in-out; filter: drop-shadow(0 0 1vmin rgba(255, 255, 255, 0.8));
         }
 
-        /* --- LIPUD (CSS Gradients) --- */
+        /* --- LIPUD (GHOST EFFECT) --- */
+        /* See klass paneb lipu numbri taha õrnalt */
         .mini-dot.flag-bg {
-            color: #fff;
-            text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.9);
-            border: 1px solid rgba(255,255,255,0.3);
-            box-sizing: border-box;
+            color: #fff; /* Number on valge */
+            background: rgba(255,255,255,0.05); /* Põhja toon hästi tume */
+            border: 1px solid rgba(255,255,255,0.15);
         }
-        /* Eesti: Sinine-Must-Valge (horisontaalne) */
-        .flag-est { background: linear-gradient(to bottom, #0072ce 33%, #000 33%, #000 66%, #fff 66%); }
-        /* Läti: Punane-Valge-Punane (horisontaalne) */
-        .flag-lat { background: linear-gradient(to bottom, #9E3039 40%, #fff 40%, #fff 60%, #9E3039 60%); }
-        /* Leedu: Kollane-Roheline-Punane (horisontaalne) */
-        .flag-lit { background: linear-gradient(to bottom, #FDB913 33%, #006A44 33%, #006A44 66%, #C1272D 66%); }
-        /* Poola: Valge-Punane (horisontaalne). Must tekst parema loetavuse jaoks */
-        .flag-pol { background: linear-gradient(to bottom, #fff 50%, #DC143C 50%); color: #000 !important; text-shadow: none !important; }
-        /* Saksamaa: Must-Punane-Kuldne (horisontaalne) */
-        .flag-ger { background: linear-gradient(to bottom, #000 33%, #DD0000 33%, #DD0000 66%, #FFCE00 66%); }
-        /* Prantsusmaa: Sinine-Valge-Punane (VERTIKAALNE) */
-        .flag-fra { background: linear-gradient(to right, #002395 33%, #fff 33%, #fff 66%, #ED2939 66%); }
-        /* Hispaania: Punane-Kollane-Punane (horisontaalne) */
-        .flag-esp { background: linear-gradient(to bottom, #AA151B 25%, #F1BF00 25%, #F1BF00 75%, #AA151B 75%); }
+
+        /* See on "kiht" numbri taga, kus asub lipp */
+        .mini-dot.flag-bg::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; /* Numbri taga */
+            
+            /* SIIN MUUDA TUGEVUST: 0.1 = 10%, 0.15 = 15% */
+            opacity: 0.15; 
+        }
+
+        /* Määrame lipud ::before kihile, mitte otse elemendile */
+        .flag-est::before { background: linear-gradient(to bottom, #0072ce 33%, #000 33%, #000 66%, #fff 66%); }
+        .flag-lat::before { background: linear-gradient(to bottom, #9E3039 40%, #fff 40%, #fff 60%, #9E3039 60%); }
+        .flag-lit::before { background: linear-gradient(to bottom, #FDB913 33%, #006A44 33%, #006A44 66%, #C1272D 66%); }
+        .flag-pol::before { background: linear-gradient(to bottom, #fff 50%, #DC143C 50%); }
+        .flag-ger::before { background: linear-gradient(to bottom, #000 33%, #DD0000 33%, #DD0000 66%, #FFCE00 66%); }
+        .flag-fra::before { background: linear-gradient(to right, #002395 33%, #fff 33%, #fff 66%, #ED2939 66%); }
+        .flag-esp::before { background: linear-gradient(to bottom, #AA151B 25%, #F1BF00 25%, #F1BF00 75%, #AA151B 75%); }
 
 
         @keyframes bling-bling {
