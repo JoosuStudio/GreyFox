@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grey Fox Thumbnail Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* See on Thumbnaili raam (9:16 suhe) */
+        .thumb-container {
+            width: 540px;  /* Pool 1080p laiusest, et ekraanile mahtuda */
+            height: 960px; /* Pool 1920p kõrgusest */
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            background: #000;
+        }
+
+        /* --- 1. TAUSTAPILT (HERO) --- */
+        .bg-image {
+            width: 100%;
+            height: 100%;
+            /* Siia pane oma foto URL */
+            background-image: url('https://raw.githubusercontent.com/JoosuStudio/GreyFox/main/1766426483389~4.jpg');
+            background-size: cover;
+            background-position: center;
+            /* Zoom efekt, et pilt oleks dünaamiline */
+            transform: scale(1.1);
+        }
+
+        /* --- 2. VARJUTUS (Et tekst loeks) --- */
+        .gradient-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* Ülevalt tume (logo jaoks), alt tume (teksti jaoks), keskelt heledam */
+            background: linear-gradient(
+                to bottom, 
+                rgba(0,0,0,0.8) 0%, 
+                rgba(0,0,0,0.1) 30%, 
+                rgba(0,0,0,0.4) 60%, 
+                rgba(0,0,0,0.95) 100%
+            );
+        }
+
+        /* --- 3. ÜLEMINE BRÄNDING --- */
+        .top-badge {
+            position: absolute;
+            top: 40px;
+            left: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .fox-logo {
+            font-size: 50px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+        }
+        .mission-tag {
+            background: #ffc107;
+            color: #000;
+            font-weight: 900;
+            padding: 8px 15px;
+            font-size: 20px;
+            text-transform: uppercase;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            transform: skew(-10deg); /* Kallutatud stiil */
+        }
+        .mission-text {
+            color: #fff;
+            font-weight: 700;
+            font-size: 20px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 5px rgba(0,0,0,1);
+            margin-left: 10px;
+        }
+
+        /* --- 4. SUUR PEALKIRI (THE HOOK) --- */
+        .title-area {
+            position: absolute;
+            bottom: 140px;
+            left: 30px;
+            width: 90%;
+        }
+        
+        .topic-label {
+            color: #00e676; /* Roheline aktsent */
+            font-size: 24px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 4px #000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .main-title {
+            font-size: 72px; /* Väga suur! */
+            font-weight: 900;
+            color: #fff;
+            line-height: 0.95;
+            text-transform: uppercase;
+            /* Teksti vari, et eristuks igalt taustalt */
+            text-shadow: 
+                0 5px 15px rgba(0,0,0,0.8),
+                -2px -2px 0 #000,  
+                2px -2px 0 #000,
+                -2px 2px 0 #000,
+                2px 2px 0 #000;
+        }
+        
+        .highlight-text {
+            color: #ffc107; /* Kuldne */
+        }
+
+        /* --- 5. PROGRESSI RIBA (ALL) --- */
+        .progress-container {
+            position: absolute;
+            bottom: 40px;
+            left: 30px;
+            width: 88%;
+        }
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            color: #ccc;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px #000;
+        }
+        .bar-bg {
+            width: 100%;
+            height: 12px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            width: 4%; /* Muuda seda % vastavalt progressile */
+            height: 100%;
+            background: linear-gradient(90deg, #ffc107, #ff9800);
+            box-shadow: 0 0 10px #ffc107;
+        }
+
+        /* --- Inserted Art (Pilt pildis) --- */
+        .inset-art {
+            position: absolute;
+            bottom: 300px; /* Pealkirja kohal */
+            right: 30px;
+            width: 220px;
+            height: 220px;
+            border-radius: 20px;
+            border: 4px solid #fff;
+            background-image: url('https://raw.githubusercontent.com/JoosuStudio/GreyFox/main/1766426483389~4.jpg'); /* Siia kunst */
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            transform: rotate(5deg); /* Väike kalle teeb dünaamiliseks */
+            z-index: 5;
+        }
+        .inset-badge {
+            position: absolute;
+            bottom: -15px;
+            right: 20px;
+            background: #00e676;
+            color: #000;
+            font-weight: 900;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transform: rotate(-5deg);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="thumb-container">
+        
+        <div class="bg-image" id="bgImage"></div>
+        <div class="gradient-overlay"></div>
+
+        <div class="top-badge">
+            <div class="fox-logo">🦊</div>
+            <div>
+                <span class="mission-tag">LIVE</span>
+                <span class="mission-text">Est 🇪🇪 ➡️ Esp 🇪🇸</span>
+            </div>
+        </div>
+
+        <div class="inset-art" id="insetImage">
+            <div class="inset-badge">TODAY'S WORK</div>
+        </div>
+
+        <div class="title-area">
+            <div class="topic-label">💎 LIVE STUDIO</div>
+            <div class="main-title">
+                GRAVING<br>
+                <span class="highlight-text">THE BEAR</span> 🐻
+            </div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-label">
+                <span>Journey Fund</span>
+                <span>235€ / 5000€</span>
+            </div>
+            <div class="bar-bg">
+                <div class="bar-fill" style="width: 5%;"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        /* =========================================
+           🎛️  THUMBNAIL JUHTPULT  🎛️
+           ========================================= */
+        
+        // 1. PÄEVA PEALKIRI (Kasuta <br> et murda rida)
+        // Nipp: Kasuta lühikesi, löövaid sõnu!
+        const TITLE = "GRAVING<br><span class='highlight-text'>THE BEAR</span> 🐻";
+        
+        // 2. ALA-PEALKIRI (Roheline väike tekst)
+        const TOPIC = "💎 GLASS ART LIVE";
+
+        // 3. TAUSTAPILT (Sina stuudios - kopeeri URL)
+        // Soovitus: Tee üks hea "Hero" pilt endast puuriga ja kasuta seda tihti.
+        const BG_URL = "https://raw.githubusercontent.com/JoosuStudio/GreyFox/main/1766426483389~4.jpg";
+
+        // 4. VÄIKE PILT (Tänane töö/ese)
+        const INSET_URL = "https://raw.githubusercontent.com/JoosuStudio/GreyFox/main/1766426483389~4.jpg";
+
+        /* ========================================= */
+
+        // Rakendame muudatused
+        document.querySelector('.main-title').innerHTML = TITLE;
+        document.querySelector('.topic-label').innerHTML = TOPIC;
+        document.getElementById('bgImage').style.backgroundImage = `url('${BG_URL}')`;
+        document.getElementById('insetImage').style.backgroundImage = `url('${INSET_URL}')`;
+    </script>
+
+</body>
+</html>
