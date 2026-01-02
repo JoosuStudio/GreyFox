@@ -49,9 +49,10 @@
             z-index: 10;
         }
 
-        /* --- 1. IMAGE --- */
+        /* --- 1. IMAGE (UPDATED) --- */
         .image-container {
-            background: url('https://raw.githubusercontent.com/JoosuStudio/GreyFox/main/1766426483389~4.jpg') no-repeat center;
+            /* Changed background URL here */
+            background: url('https://raw.githubusercontent.com/JoosuStudio/GreyFox/refs/heads/main/1767345104955%7E2.jpg') no-repeat center;
             background-size: cover;
         }
 
@@ -151,22 +152,6 @@
             font-size: 4vmin; font-weight: 500; color: #dfe6e9; opacity: 0.8; margin-top: 0.5vmin;
         }
         
-        /* Oksa SVG taustal */
-        .branch-svg-layer {
-            position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; pointer-events: none;
-        }
-        
-        /* See klass defineerib oksa põhivärvi. 
-           Filtri (#branch3d) lisamine annab sellele 3D efekti.
-        */
-        .branch-path {
-            fill: none; 
-            stroke: #4E342E; /* Tume puidu värv */
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            filter: url(#branch3d); /* See teeb maagia */
-        }
-
         /* Lehtede ala */
         .leaves-wrapper {
             position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 2;
@@ -315,31 +300,6 @@
                 <div class="tree-subtitle">Grow the Journey</div>
             </div>
             
-            <svg class="branch-svg-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <defs>
-                    <filter id="branch3d" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur in="SourceAlpha" stdDeviation="0.8" result="blur" />
-                        <feSpecularLighting in="blur" surfaceScale="2" specularConstant="0.8" specularExponent="15" lighting-color="#ffffff" result="specOut">
-                            <fePointLight x="-20" y="-50" z="50" />
-                        </feSpecularLighting>
-                        <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut" />
-                        <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint" />
-                        <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="rgba(0,0,0,0.7)" />
-                    </filter>
-                </defs>
-                
-                <path d="M-10,105 Q30,80 50,50" class="branch-path" style="stroke-width: 4.5vmin;" />
-                <path d="M48,52 Q70,25 105,15" class="branch-path" style="stroke-width: 3.5vmin;" />
-
-                <path d="M15,90 Q20,70 10,65" class="branch-path" style="stroke-width: 1.5vmin;" />
-                <path d="M35,68 Q30,50 35,40" class="branch-path" style="stroke-width: 1.8vmin;" />
-                
-                <path d="M55,45 Q65,65 75,70" class="branch-path" style="stroke-width: 1.6vmin;" />
-                
-                <path d="M85,25 Q90,35 95,38" class="branch-path" style="stroke-width: 1.2vmin;" />
-
-            </svg>
-
             <div class="leaves-wrapper" id="leavesContainer"></div>
 
             <div class="tree-footer">
