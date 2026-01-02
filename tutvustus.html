@@ -177,7 +177,7 @@
         .legend-item { display: flex; align-items: center; gap: 1vmin; font-size: 5vmin; font-weight: 900; opacity: 1; text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.8); }
         .legend-total { text-align: center; font-size: 5vmin; font-weight: 900; color: #ffc107; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1vmin; text-shadow: 0 0 1vmin rgba(255, 193, 7, 0.4); }
 
-        /* --- 5. QUEST BOARD (COMPACT FIX) --- */
+        /* --- 5. QUEST BOARD (HIGH VISIBILITY) --- */
         .quest-container {
             box-sizing: border-box;
             background: linear-gradient(135deg, #4b1d1d, #8c2b1d);
@@ -185,60 +185,64 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding: 2vmin 3vmin 3vmin 3vmin; /* Ülemine padding väiksem */
+            padding: 2vmin 2vmin 4vmin 2vmin;
         }
+        /* Pealkiri: SUUR */
         .quest-header {
-            font-size: 6vmin; /* Väiksem pealkiri */
+            font-size: 8vmin; 
             font-weight: 900; color: #fff; 
-            text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.6); 
-            margin: 1vmin 0 2vmin 0; /* Väiksem vahe */
-            border-bottom: 0.5vmin solid #ffc107; padding-bottom: 0.5vmin;
+            text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.9); 
+            margin: 0.5vmin 0 2vmin 0;
+            border-bottom: 0.6vmin solid #ffc107; padding-bottom: 0.5vmin;
         }
         .quest-cards-wrapper {
-            display: flex; flex-direction: column; gap: 2vmin; width: 100%; flex-grow: 1;
-            margin-bottom: 1vmin;
+            display: flex; flex-direction: column; gap: 2.5vmin; width: 100%; flex-grow: 1;
         }
+        /* Kaardid: Kompaktsemad aga suurema tekstiga */
         .quest-card {
-            background: rgba(0,0,0,0.3); border-radius: 2.5vmin; padding: 1.5vmin 2vmin; /* Kompaktne padding */
-            display: flex; align-items: center; gap: 2vmin; border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(3px);
+            background: rgba(0,0,0,0.35); border-radius: 3vmin; padding: 1.5vmin 2vmin;
+            display: flex; align-items: center; gap: 3vmin; border: 0.3vmin solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
         }
-        .quest-icon { font-size: 6.5vmin; } /* Väiksem ikoon */
+        .quest-icon { font-size: 9vmin; filter: drop-shadow(0 0.5vmin 0.5vmin rgba(0,0,0,0.5)); }
+        
         .quest-details { display: flex; flex-direction: column; text-align: left; width: 100%;}
-        .quest-card-title { font-size: 4.5vmin; font-weight: 900; text-transform: uppercase; color: #ffc107; margin-bottom: 0.3vmin; }
-        .quest-card-desc { font-size: 3.2vmin; opacity: 0.9; font-weight: 500; margin-bottom: 0.5vmin; }
-        .quest-price-tag { font-size: 4vmin; font-weight: 700; }
+        
+        /* Tekstid: VÄGA SUURED ja selged */
+        .quest-card-title { font-size: 5.5vmin; font-weight: 900; text-transform: uppercase; color: #ffc107; margin-bottom: 0.2vmin; line-height: 0.9; text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.8); }
+        .quest-card-desc { font-size: 3.8vmin; opacity: 0.95; font-weight: 700; margin-bottom: 0.5vmin; line-height: 1; }
+        .quest-price-tag { font-size: 5.2vmin; font-weight: 900; text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.8); }
         .highlight-blue { color: #00e5ff; }
         .highlight-green { color: #00e676; }
         
-        /* CONTACT & PAYPAL BOXES - COMPACT */
+        /* CONTACT & PAYPAL - Nupud maksimaalseks */
         .contact-section {
-            width: 100%; display: flex; flex-direction: column; gap: 1.5vmin; 
-            margin-bottom: 8vmin; /* Jätab ruumi tickerile */
+            width: 100%; display: flex; flex-direction: column; gap: 2vmin; 
+            margin-bottom: 8vmin;
             align-items: center; justify-content: center;
         }
+        /* Eemaldasime eraldi labelid, panime info nupu sisse */
         .contact-box {
-            background: #fff; color: #b71c1c; border-radius: 2vmin; padding: 1.2vmin 3vmin;
-            font-size: 4vmin; font-weight: 900; text-align: center; width: 90%;
-            box-shadow: 0 1vmin 2vmin rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; gap: 2vmin;
+            background: #fff; color: #b71c1c; border-radius: 2.5vmin; padding: 2vmin 1vmin;
+            font-size: 5vmin; font-weight: 900; text-align: center; width: 98%;
+            box-shadow: 0 1vmin 2vmin rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; gap: 2vmin;
         }
         .paypal-box {
-            background: #0070ba; color: #fff; border-radius: 2vmin; padding: 1.2vmin 3vmin;
-            font-size: 4vmin; font-weight: 900; text-align: center; width: 90%;
-            box-shadow: 0 1vmin 2vmin rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; gap: 2vmin;
+            background: #0070ba; color: #fff; border-radius: 2.5vmin; padding: 2vmin 1vmin;
+            font-size: 5vmin; font-weight: 900; text-align: center; width: 98%;
+            box-shadow: 0 1vmin 2vmin rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; gap: 2vmin;
         }
-        .contact-label { font-size: 2.8vmin; color: #fff; opacity: 0.8; text-transform: uppercase; font-weight: 700; width: 100%; text-align: center; margin-bottom: -0.8vmin; margin-top: 0.5vmin;}
-
-        /* UUDISTERIBA (TICKER) */
+        
+        /* UUDISTERIBA (TICKER) - SUUR */
         .ticker-wrap {
-            position: absolute; bottom: 0; left: 0; width: 100%; overflow: hidden; height: 7vmin;
-            background: rgba(0,0,0,0.8); border-top: 1px solid #ffc107;
+            position: absolute; bottom: 0; left: 0; width: 100%; overflow: hidden; height: 8vmin;
+            background: rgba(0,0,0,0.9); border-top: 0.5vmin solid #ffc107;
             display: flex; align-items: center;
         }
         .ticker {
             display: inline-block; white-space: nowrap;
             padding-left: 100%; animation: ticker 25s linear infinite;
-            font-size: 4vmin; font-weight: 700; color: #fff;
+            font-size: 5vmin; font-weight: 900; color: #fff; text-transform: uppercase;
         }
         .ticker span { color: #ffc107; margin: 0 2vmin; }
         @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
@@ -338,8 +342,8 @@
                     <div class="quest-icon">💎</div>
                     <div class="quest-details">
                         <div class="quest-card-title">100 MINI MAP</div>
-                        <div class="quest-card-desc">Own 50km + Glass Art</div>
-                        <div class="quest-price-tag highlight-blue" id="questMapPrice">From €80 (Estonia: 5/6 Left)</div>
+                        <div class="quest-card-desc">Own 50km + Art</div>
+                        <div class="quest-price-tag highlight-blue" id="questMapPrice">From €80</div>
                     </div>
                 </div>
 
@@ -347,17 +351,14 @@
                     <div class="quest-icon">🌿</div>
                     <div class="quest-details">
                         <div class="quest-card-title">LIFE BRANCH</div>
-                        <div class="quest-card-desc">Add a leaf to the tree</div>
+                        <div class="quest-card-desc">Add a leaf</div>
                         <div class="quest-price-tag highlight-green">€5 / €15 / €25 / €50</div>
                     </div>
                 </div>
             </div>
 
             <div class="contact-section">
-                <div class="contact-label">Reserve your Map Section:</div>
                 <div class="contact-box">✉️ greyfoxjourney@gmail.com</div>
-                
-                <div class="contact-label">Quick Support (Leaves):</div>
                 <div class="paypal-box">🅿️ paypal.me/joosustudio</div>
             </div>
 
