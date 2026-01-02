@@ -90,30 +90,27 @@
         .brand-label { font-size: 4vmin; opacity: 0.9; font-weight: 500; }
         .brand-name { font-size: 6.5vmin; font-weight: 900; color: #ffc107; text-shadow: 0 0.3vmin 1vmin rgba(0,0,0,0.7); margin-top: 0.5vmin; display: block;}
 
-        /* --- 3. CHALLENGE GRID (NUMBRITEGA) --- */
+        /* --- 3. CHALLENGE GRID (KOMPAKTNE) --- */
         .challenge-container {
             box-sizing: border-box;
             background: linear-gradient(135deg, #2b1055, #7597de);
             color: #fff;
             flex-direction: column;
-            justify-content: space-evenly; 
+            justify-content: center; /* Tsentreerib sisu paremini */
             align-items: center;
             padding: 2vmin;
+            gap: 2vmin; /* Ühtlane vahe elementide vahel */
         }
         .grid-title {
-            font-size: 6vmin; font-weight: 900; text-transform: uppercase; text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.5);
-            text-align: center; margin: 0; line-height: 1.1;
-        }
-        .grid-subtitle {
-            font-size: 4.5vmin; background: rgba(0,0,0,0.3); padding: 0.5vmin 2vmin;
-            border-radius: 2vmin; color: #ffc107; font-weight: 700; margin: 0;
+            font-size: 6.5vmin; font-weight: 900; text-transform: uppercase; text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.5);
+            text-align: center; margin: 0; line-height: 1;
         }
         
+        /* Eemaldasin grid-subtitle täielikult ruumi säästmiseks */
+
         .mini-grid-box {
             display: grid; grid-template-columns: repeat(10, 1fr); gap: 0.6vmin;
-            /* Suurendasin veidi laiust, et numbrid paremini mahuks */
-            width: 75%; 
-            aspect-ratio: 1 / 1;
+            width: 75%; aspect-ratio: 1 / 1;
         }
         
         .mini-dot {
@@ -122,35 +119,20 @@
             width: 100%; height: 100%;
             box-shadow: inset 0 0 0.5vmin rgba(0,0,0,0.2);
             position: relative;
-            
-            /* Teksti seadistus täpi sees */
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2.2vmin; /* Teksti suurus */
+            font-size: 2.2vmin;
             font-weight: 700;
-            color: rgba(255,255,255,0.4); /* Vaikimisi hägune number */
+            color: rgba(255,255,255,0.4);
             user-select: none;
         }
         
-        /* OLEKUD */
-        .mini-dot.engraved {
-            background: #ffc107; /* KULDNE */
-            box-shadow: 0 0 1vmin #ffc107;
-            color: #000; /* Must tekst loetavuse jaoks */
-        }
-        .mini-dot.sold {
-            background: #00e676; /* ROHELINE */
-            box-shadow: 0 0 1vmin #00e676;
-            color: #000;
-        }
-        /* Teemant (Mõlemad) */
+        .mini-dot.engraved { background: #ffc107; box-shadow: 0 0 1vmin #ffc107; color: #000; }
+        .mini-dot.sold { background: #00e676; box-shadow: 0 0 1vmin #00e676; color: #000; }
         .mini-dot.diamond {
-            background: #00e5ff; /* HELESININE */
-            box-shadow: 0 0 1.5vmin #00e5ff, 0 0 3vmin rgba(255,255,255,0.8);
-            animation: pulse-diamond 2s infinite;
-            color: #000;
-            border: 0.2vmin solid #fff;
+            background: #00e5ff; box-shadow: 0 0 1.5vmin #00e5ff, 0 0 3vmin rgba(255,255,255,0.8);
+            animation: pulse-diamond 2s infinite; color: #000; border: 0.2vmin solid #fff;
         }
 
         @keyframes pulse-diamond {
@@ -159,10 +141,34 @@
             100% { transform: scale(1); box-shadow: 0 0 1vmin #00e5ff; }
         }
 
-        .progress-text {
-            font-size: 4.5vmin; font-weight: 700; text-align: center; line-height: 1.3; margin: 0;
+        /* Alumine info kast */
+        .stats-box {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5vmin;
         }
-        .progress-highlight { color: #00e676; font-weight: 900; font-size: 6vmin; } 
+        
+        .stats-row {
+            display: flex;
+            justify-content: space-evenly; /* Jaotab ilusti laiali */
+            width: 95%;
+            font-size: 3.8vmin; /* Veidi väiksem font et mahuks ritta */
+            font-weight: 700;
+        }
+        
+        .total-row {
+            font-size: 5.5vmin;
+            font-weight: 900;
+            margin-top: 1vmin;
+            color: #fff;
+            text-shadow: 0 0 1vmin rgba(0,0,0,0.5);
+        }
+
+        .highlight-gold { color: #ffc107; }
+        .highlight-green { color: #00e676; }
+        .highlight-diamond { color: #00e5ff; }
 
         /* --- 4. COUNTDOWN --- */
         .countdown-container {
@@ -257,15 +263,18 @@
 
         <div class="content challenge-container" id="challengeContent">
             <div class="grid-title">100 Mini Challenge</div>
-            <div class="grid-subtitle">1 💎 = 50 km (Funded)</div>
             
             <div class="mini-grid-box" id="gridBox"></div>
     
-            <div class="progress-text">
-                Engraved: <span id="engravedCount" style="color:#ffc107; font-size:6vmin">0</span> | 
-                Funded: <span id="soldCount" class="progress-highlight">0</span>
-                <br>
-                <span style="font-size:4.5vmin; opacity:0.9;">Total Funded: <span id="fundedKm" style="color:#00e676">0</span> km</span>
+            <div class="stats-box">
+                <div class="stats-row">
+                    <span>Engraved: <span id="cntEngraved" class="highlight-gold">0</span></span>
+                    <span>Funded: <span id="cntFunded" class="highlight-green">0</span></span>
+                    <span>Finished: <span id="cntFinished" class="highlight-diamond">0</span></span>
+                </div>
+                <div class="total-row">
+                    Total: <span id="totalKm" style="color:#00e676">0</span> / 5000 km
+                </div>
             </div>
         </div>
 
@@ -296,22 +305,17 @@
     <script>
         /* =========================================
            🎛️  JUHTPULT  🎛️
-           Muuda siin numbreid vastavalt tegelikkusele.
            ========================================= */
         const STUDIO_TEMP = 2;          
 
-        // 1. LISA SIIA NUMBRID, MIS ON VALMIS GRAVEERITUD (Kuldne 🟡)
-        // Näiteks: [1, 2, 6]
-        const ENGRAVED_LIST = [1, 2]; 
+        // LISA SIIA NUMBRID, MIS ON VALMIS GRAVEERITUD (Kuldne 🟡)
+        const ENGRAVED_LIST = [1, 2, 6, 33]; 
 
-        // 2. LISA SIIA NUMBRID, MIS ON MÜÜDUD (Roheline 🟢)
-        // Näiteks: [3]
-        // NB! Kui number on mõlemas listis (nt 33), muutub see Teemandiks 💎
-        const SOLD_LIST = [0];
+        // LISA SIIA NUMBRID, MIS ON MÜÜDUD (Roheline 🟢)
+        const SOLD_LIST = [3, 54, 33];
         /* ========================================= */
 
-
-        // --- DOM ELEMENDID ---
+        // --- DOM ---
         const contents = [
             document.getElementById('imageContent'),
             document.getElementById('infoContent'),
@@ -319,48 +323,50 @@
             document.getElementById('countdownContent'),
             document.getElementById('tempContent')
         ];
-
-        // START
         if(contents[0]) contents[0].classList.add('active');
 
         // --- Challenge Grid Logic ---
         const gridBox = document.getElementById('gridBox');
-        const engravedCountEl = document.getElementById('engravedCount');
-        const soldCountEl = document.getElementById('soldCount');
-        const fundedKmEl = document.getElementById('fundedKm');
+        const cntEngravedEl = document.getElementById('cntEngraved');
+        const cntFundedEl = document.getElementById('cntFunded');
+        const cntFinishedEl = document.getElementById('cntFinished');
+        const totalKmEl = document.getElementById('totalKm');
 
         function drawGrid() {
             if(!gridBox) return;
             gridBox.innerHTML = ''; 
             
-            const engravedCount = ENGRAVED_LIST.length;
-            const soldCount = SOLD_LIST.length;
+            let countEngraved = ENGRAVED_LIST.length;
+            let countFunded = SOLD_LIST.length;
+            
+            // Finished = Need, mis on mõlemas listis
+            let countFinished = ENGRAVED_LIST.filter(value => SOLD_LIST.includes(value)).length;
 
             for (let i = 1; i <= 100; i++) {
                 const dot = document.createElement('div');
                 dot.classList.add('mini-dot');
-                
-                // Lisame numbri täpi sisse
                 dot.innerText = i; 
 
                 const isEngraved = ENGRAVED_LIST.includes(i);
                 const isSold = SOLD_LIST.includes(i);
 
                 if (isEngraved && isSold) {
-                    dot.classList.add('diamond'); // Valmis + Müüdud
+                    dot.classList.add('diamond');
                 } else if (isEngraved) {
-                    dot.classList.add('engraved'); // Ainult valmis
+                    dot.classList.add('engraved');
                 } else if (isSold) {
-                    dot.classList.add('sold'); // Ainult müüdud
+                    dot.classList.add('sold');
                 }
-
                 gridBox.appendChild(dot);
             }
 
             // Uuendame tekste
-            if(engravedCountEl) engravedCountEl.innerText = engravedCount;
-            if(soldCountEl) soldCountEl.innerText = soldCount;
-            if(fundedKmEl) fundedKmEl.innerText = soldCount * 50; 
+            if(cntEngravedEl) cntEngravedEl.innerText = countEngraved;
+            if(cntFundedEl) cntFundedEl.innerText = countFunded;
+            if(cntFinishedEl) cntFinishedEl.innerText = countFinished;
+            
+            // Arvutame km: Müüdud (Funded) * 50
+            if(totalKmEl) totalKmEl.innerText = countFunded * 50; 
         }
 
         // --- Temp Logic ---
@@ -396,7 +402,7 @@
             countdownClockEl.innerHTML = `${d} Days<br>${hDisplay}:${mDisplay}:${sDisplay}`;
         }
 
-        // --- Carousel Loop ---
+        // --- Loop ---
         let currentContentIndex = 0;
         function toggleContent() {
             contents[currentContentIndex].classList.remove('active');
