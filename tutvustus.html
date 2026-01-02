@@ -354,9 +354,11 @@
         const ENGRAVED_LIST = [1, 2, 6, 33]; // Kollane 🟡
         const SOLD_LIST = [3, 54, 33];       // Roheline 🟢
 
-        // 3. THE LIFE BRANCH - LEHTEDE AED 🌿
-        const LEAF_GARDEN = [
-            'gold', 'medium', 'small', 'small', 'silver', 'small', 'gold', 'medium', 'small', 'small', 'silver', 'medium'
+        // 3. THE LIFE BRANCH - ANNETUSTE SUMMAD 🌿
+        // Lisa siia lihtsalt summa numbrina: 5, 15, 25 või 50.
+        // Järjekord: vasakult paremale üles (nagu puu kasvab)
+        const TREE_DONATIONS = [
+            50, 15, 5, 5, 25, 5, 50, 15, 5, 5, 25, 15
         ];
 
         /* ========================================= */
@@ -416,15 +418,15 @@
         const leavesContainer = document.getElementById('leavesContainer');
         const treeTotalValueEl = document.getElementById('treeTotalValue');
 
+        // Uus loogika: võti on nüüd annetuse summa (5, 15, 25, 50)
         const LEAF_CONFIG = {
-            'small':  { icon: '🍃', price: 5,  cls: '' },
-            'medium': { icon: '🍂', price: 15, cls: '' },
-            'silver': { icon: '✨', price: 25, cls: 'leaf-silver' },
-            'gold':   { icon: '🌟', price: 50, cls: 'leaf-gold' }
+            5:  { icon: '🍃', price: 5,  cls: '' },            // Small
+            15: { icon: '🍂', price: 15, cls: '' },            // Medium
+            25: { icon: '✨', price: 25, cls: 'leaf-silver' }, // Silver
+            50: { icon: '🌟', price: 50, cls: 'leaf-gold' }    // Gold
         };
 
         // --- OKSA KOORDINAADID (Left %, Top %) ---
-        // Need on sätitud vastavalt taustapildi oksa loogikale (vasakult paremale üles)
         const BRANCH_LOCATIONS = [
             { left: 15, top: 75 }, // Alumine vasak jäme
             { left: 25, top: 68 }, // Esimene tõus
@@ -441,13 +443,14 @@
 
         function drawTree() {
             if(!leavesContainer) return;
-            leavesContainer.innerHTML = ''; // Puhasta
+            leavesContainer.innerHTML = ''; 
 
             let totalEur = 0;
             
-            LEAF_GARDEN.forEach((type, index) => {
-                const config = LEAF_CONFIG[type];
-                if (!config) return;
+            // Käime läbi numbrite nimekirja
+            TREE_DONATIONS.forEach((amount, index) => {
+                const config = LEAF_CONFIG[amount];
+                if (!config) return; // Kui sisestasid tundmatu numbri (nt 100), jäetakse vahele
 
                 totalEur += config.price;
 
@@ -456,12 +459,11 @@
                 if(config.cls) leaf.classList.add(config.cls);
                 leaf.innerText = config.icon;
 
-                // Võtame koordinaadi järjekorras (kui lehti on rohkem kui kohti, hakkab algusest)
+                // Võtame koordinaadi järjekorras
                 const spot = BRANCH_LOCATIONS[index % BRANCH_LOCATIONS.length];
                 
-                // Lisame väikse juhuslikkuse, et kui samas kohas on mitu lehte, ei oleks nad täpselt üksteise peal
-                const noiseX = (Math.random() - 0.5) * 2; // +/- 1%
-                const noiseY = (Math.random() - 0.5) * 2; // +/- 1%
+                const noiseX = (Math.random() - 0.5) * 2; 
+                const noiseY = (Math.random() - 0.5) * 2; 
 
                 leaf.style.left = (spot.left + noiseX) + '%';
                 leaf.style.top = (spot.top + noiseY) + '%';
@@ -519,7 +521,7 @@
                 contents[currentContentIndex].classList.add('active');
             }, 50); 
         }
-        setInterval(toggleContent, 10000); // Slaidivahetus
+        setInterval(toggleContent, 10000); 
 
     </script>
 </body>
