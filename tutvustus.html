@@ -186,8 +186,14 @@
         .tree-title {
             font-size: 7vmin; font-weight: 900; color: #a8ff78; text-shadow: 0 0 2vmin rgba(0,255,0,0.3); margin: 0; letter-spacing: 0.2vmin;
         }
+        /* --- SIIN ON UUENDATUD ALAPEALKIRJA SUURUS --- */
         .tree-subtitle {
-            font-size: 4vmin; font-weight: 500; color: #dfe6e9; opacity: 0.9; margin-top: 0.5vmin; text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.8);
+            font-size: 5.5vmin;  /* OLI 4vmin, NÜÜD 5.5vmin */
+            font-weight: 700;    /* OLI 500, NÜÜD 700 (paksem) */
+            color: #dfe6e9; 
+            opacity: 1;          /* OLI 0.9, NÜÜD 1 (täiesti ere) */
+            margin-top: 0.5vmin; 
+            text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.8);
         }
 
         /* Lehtede ala */
@@ -227,12 +233,12 @@
             display: flex; justify-content: space-around; align-items: center; width: 100%;
         }
         
-        /* --- SIIN ON UUENDATUD FONDI SUURUSED --- */
+        /* --- SIIN ON EELMISE SAMMU UUENDATUD HINNAD --- */
         .legend-item { 
             display: flex; align-items: center; gap: 1vmin; 
-            font-size: 5vmin;   /* OLI 3vmin, NÜÜD 5vmin */
-            font-weight: 900;   /* RASVANE TEKST */
-            opacity: 1;         /* TÄIESTI ERE */
+            font-size: 5vmin;
+            font-weight: 900;
+            opacity: 1;
             text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.8);
         }
 
@@ -353,9 +359,9 @@
             <div class="tree-footer">
                 <div class="legend-row">
                     <div class="legend-item">🍃 €5</div>
-                    <div class="legend-item">🍂 €15</div>
-                    <div class="legend-item">✨ €25</div>
-                    <div class="legend-item">🌟 €50</div>
+                    <div class="legend-item">🌿 €15</div>
+                    <div class="legend-item">🍂 €25</div>
+                    <div class="legend-item">🍁 €50</div>
                 </div>
                 <div class="legend-total">
                     Support: <span id="treeTotalValue">€0</span>
@@ -371,7 +377,7 @@
                     <div id="countdownClock">-- Days<br>--:--:--</div>
                     <span class="spinning-emoji" id="emoji-right">🚴</span>
                 </div>
-                <p class="countdown-description">From Estonia 🇪🇪 to Spain 🇪🇸<br>Live cycling, art & wild camping!</p>
+                <p class="countdown-description">From Estonia 🇪🇪 to Spain 🇪🇸<br>Streaming,cycling, art & fun!</p>
             </div>
         </div>
 
@@ -397,15 +403,15 @@
 
         // 2. MINI CHALLENGE ANDMED
         // Lisa siia numbrid, mis on juba tehtud või müüdud
-        const ENGRAVED_LIST = [1, 2, 6, 33]; // Kollane 🟡 (Graveeritud)
-        const SOLD_LIST = [3, 54, 33];       // Roheline 🟢 (Müüdud)
+        const ENGRAVED_LIST = [1, 2,]; // Kollane 🟡 (Graveeritud)
+        const SOLD_LIST = [3,];       // Roheline 🟢 (Müüdud)
 
         // 3. THE LIFE BRANCH - ANNETUSTE JUHTPULT 🌿
         // Muuda siin numbreid vastavalt annetustele:
         const COUNT_5_EUR  = 2;   // 🍃 Mitu 5€ toetajat?
-        const COUNT_15_EUR = 10;  // 🍂 Mitu 15€ toetajat?
-        const COUNT_25_EUR = 1;   // ✨ Mitu 25€ toetajat?
-        const COUNT_50_EUR = 1;   // 🌟 Mitu 50€ toetajat?
+        const COUNT_15_EUR = 10;  // 🌿 Mitu 15€ toetajat?
+        const COUNT_25_EUR = 1;   // 🍂 Mitu 25€ toetajat?
+        const COUNT_50_EUR = 1;   // 🍁 Mitu 50€ toetajat?
 
         /* ========================================= */
 
@@ -489,9 +495,9 @@
 
         const LEAF_CONFIG = {
             'small':  { icon: '🍃', price: 5,  cls: '' },
-            'medium': { icon: '🍂', price: 15, cls: '' },
-            'silver': { icon: '✨', price: 25, cls: 'leaf-silver' },
-            'gold':   { icon: '🌟', price: 50, cls: 'leaf-gold' }
+            'medium': { icon: '🌿', price: 15, cls: '' },
+            'silver': { icon: '🍂', price: 25, cls: 'leaf-silver' },
+            'gold':   { icon: '🍁', price: 50, cls: 'leaf-gold' }
         };
 
         function generateGardenList() {
@@ -550,9 +556,9 @@
             if(el) el.innerHTML = `${STUDIO_TEMP}°C`;
             
             let c = "";
-            if (STUDIO_TEMP <= 5) c = "My paws are freezing! 🧊 Need more fur!";
+            if (STUDIO_TEMP <= 5) c = "My paws are freezing! 🧊 Need more fur! 🦣";
             else if (STUDIO_TEMP <= 10) c = "Engraving in the fridge... for art! ❄️";
-            else if (STUDIO_TEMP <= 15) c = "Chilly, but the fox survives! 🧥";
+            else if (STUDIO_TEMP <= 17) c = "Chilly, but the fox survives! 🧥";
             else c = "Finally, some warmth in here! 🔥";
             if(comm) comm.innerHTML = c;
         }
