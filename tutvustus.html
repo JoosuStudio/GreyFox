@@ -31,7 +31,7 @@
             position: relative;
         }
 
-        /* --- FADE EFFECT --- */
+        /* --- FADE EFEKT (MUUDA SIIT SUJUVUST) --- */
         .content {
             width: 100%;
             height: 100%;
@@ -40,7 +40,8 @@
             left: 0;
             opacity: 0;
             z-index: 1;
-            transition: opacity 0.8s ease-in-out;
+            /* OLI 0.8s, NÜÜD 1.5s (Rahulikum üleminek) */
+            transition: opacity 1.5s ease-in-out;
             display: flex;
         }
 
@@ -109,6 +110,7 @@
             width: 75%; aspect-ratio: 1 / 1; 
         }
         
+        /* TÄPPIDE ÜLDSTIIL */
         .mini-dot {
             background: rgba(255,255,255,0.15); 
             border-radius: 50%; width: 100%; height: 100%;
@@ -121,6 +123,7 @@
             z-index: 1; overflow: hidden; 
         }
         
+        /* --- STAATUSED --- */
         .mini-dot.engraved { background: #ffc107; box-shadow: 0 0 1vmin #ffc107; color: #000; text-shadow: none; border:none; opacity: 1;}
         .mini-dot.sold { background: #00e676; box-shadow: 0 0 1vmin #00e676; color: #000; text-shadow: none; border:none; opacity: 1;}
         .mini-dot.diamond {
@@ -128,6 +131,7 @@
             animation: bling-bling 2s infinite alternate ease-in-out; filter: drop-shadow(0 0 1vmin rgba(255, 255, 255, 0.8));
         }
 
+        /* --- LIPUD (GHOST EFFECT) --- */
         .mini-dot.flag-bg { color: #fff; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); }
         .mini-dot.flag-bg::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; }
         .flag-est::before { background: linear-gradient(to bottom, #0072ce 33%, #000 33%, #000 66%, #fff 66%); }
@@ -147,7 +151,7 @@
         .total-row { font-size: 5.5vmin; font-weight: 900; margin-top: 1vmin; color: #fff; text-shadow: 0 0 1vmin rgba(0,0,0,0.5); }
         .highlight-gold { color: #ffc107; } .highlight-green { color: #00e676; } .highlight-diamond { color: #00e5ff; }
 
-        /* --- 4. THE LIFE BRANCH --- */
+        /* --- 4. THE LIFE BRANCH (INTERACTIVE TREE) --- */
         .tree-container {
             box-sizing: border-box;
             background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.5)), url('https://raw.githubusercontent.com/JoosuStudio/GreyFox/refs/heads/main/1767345104955%7E2.jpg') no-repeat center center;
@@ -174,7 +178,7 @@
         .legend-item { display: flex; align-items: center; gap: 1vmin; font-size: 5vmin; font-weight: 900; opacity: 1; text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.8); }
         .legend-total { text-align: center; font-size: 5vmin; font-weight: 900; color: #ffc107; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1vmin; text-shadow: 0 0 1vmin rgba(255, 193, 7, 0.4); }
 
-        /* --- 5. QUEST BOARD --- */
+        /* --- 5. QUEST BOARD (HIGH VISIBILITY) --- */
         .quest-container {
             box-sizing: border-box;
             background: linear-gradient(135deg, #4b1d1d, #8c2b1d);
@@ -184,6 +188,7 @@
             align-items: center;
             padding: 2vmin 2vmin 4vmin 2vmin;
         }
+        /* Pealkiri: SUUR */
         .quest-header {
             font-size: 8vmin; 
             font-weight: 900; color: #fff; 
@@ -194,24 +199,30 @@
         .quest-cards-wrapper {
             display: flex; flex-direction: column; gap: 2.5vmin; width: 100%; flex-grow: 1;
         }
+        /* Kaardid: Kompaktsemad aga suurema tekstiga */
         .quest-card {
             background: rgba(0,0,0,0.35); border-radius: 3vmin; padding: 1.5vmin 2vmin;
             display: flex; align-items: center; gap: 3vmin; border: 0.3vmin solid rgba(255,255,255,0.2);
             backdrop-filter: blur(5px);
         }
         .quest-icon { font-size: 9vmin; filter: drop-shadow(0 0.5vmin 0.5vmin rgba(0,0,0,0.5)); }
+        
         .quest-details { display: flex; flex-direction: column; text-align: left; width: 100%;}
+        
+        /* Tekstid: VÄGA SUURED ja selged */
         .quest-card-title { font-size: 5.5vmin; font-weight: 900; text-transform: uppercase; color: #ffc107; margin-bottom: 0.2vmin; line-height: 0.9; text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.8); }
         .quest-card-desc { font-size: 3.8vmin; opacity: 0.95; font-weight: 700; margin-bottom: 0.5vmin; line-height: 1; }
         .quest-price-tag { font-size: 5.2vmin; font-weight: 900; text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.8); }
         .highlight-blue { color: #00e5ff; }
         .highlight-green { color: #00e676; }
         
+        /* CONTACT & PAYPAL - Nupud maksimaalseks */
         .contact-section {
             width: 100%; display: flex; flex-direction: column; gap: 2vmin; 
             margin-bottom: 8vmin;
             align-items: center; justify-content: center;
         }
+        /* Eemaldasime eraldi labelid, panime info nupu sisse */
         .contact-box {
             background: #fff; color: #b71c1c; border-radius: 2.5vmin; padding: 2vmin 1vmin;
             font-size: 5vmin; font-weight: 900; text-align: center; width: 98%;
@@ -222,6 +233,8 @@
             font-size: 5vmin; font-weight: 900; text-align: center; width: 98%;
             box-shadow: 0 1vmin 2vmin rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; gap: 2vmin;
         }
+        
+        /* UUDISTERIBA (TICKER) - SUUR */
         .ticker-wrap {
             position: absolute; bottom: 0; left: 0; width: 100%; overflow: hidden; height: 8vmin;
             background: rgba(0,0,0,0.9); border-top: 0.5vmin solid #ffc107;
@@ -339,182 +352,261 @@
                     <div class="quest-icon">🌿</div>
                     <div class="quest-details">
                         <div class="quest-card-title">LIFE BRANCH</div>
-                        <div class="quest-card-desc">Add leaf + Support</div>
-                        <div class="quest-price-tag highlight-green" id="questTreePrice">€5 - €50</div>
+                        <div class="quest-card-desc">Add a leaf</div>
+                        <div class="quest-price-tag highlight-green">🍃€5 / 🌿€15 / 🍁€25 / 🌟€50</div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="contact-section">
-                 <div class="contact-box">
-                    <span>📧</span> joosujanek@gmail.com
-                 </div>
-                 <div class="paypal-box">
-                    <span>🅿️</span> PayPal/JanekJoosu
-                 </div>
+                <div class="contact-box">✉️ greyfoxjourney@gmail.com</div>
+                <div class="paypal-box">🅿️ paypal.me/joosustudio</div>
             </div>
-            
+
             <div class="ticker-wrap">
-                <div class="ticker">
-                    Support the journey <span>✦</span> Own a piece of art <span>✦</span> Be part of the story <span>✦</span> 5000 km to go
-                </div>
+                <div class="ticker" id="tickerText">
+                    </div>
             </div>
         </div>
 
         <div class="content countdown-container" id="countdownContent">
             <div class="text-wrapper">
-                 <div class="countdown-title">NEXT ADVENTURE</div>
-                 <div class="countdown-wrapper">
-                     <div class="spinning-emoji">🚲</div>
-                     <div id="countdownClock">00:00:00</div>
-                 </div>
-                 <div class="countdown-description">Counting down to the start of the 2025 Journey!</div>
+                <p class="countdown-title">🚴 5000km Epic Ride 🚴</p>
+                <div class="countdown-wrapper">
+                    <span class="spinning-emoji" id="emoji-left">🦊</span>
+                    <div id="countdownClock">-- Days<br>--:--:--</div>
+                    <span class="spinning-emoji" id="emoji-right">🚴</span>
+                </div>
+                <p class="countdown-description">From Estonia 🇪🇪 to Spain 🇪🇸<br>Stream, cycling, art & fun!</p>
             </div>
         </div>
 
         <div class="content temp-container" id="tempContent">
-             <div class="snowflake" style="left:10%; animation-duration:5s;">❄</div>
-             <div class="snowflake" style="left:50%; animation-duration:7s;">❄</div>
-             <div class="snowflake" style="left:80%; animation-duration:4s;">❄</div>
-             
-             <div class="temp-title">CURRENT VIBE</div>
-             <div class="fox-icon">🥶</div>
-             <div class="temp-display">-5°C</div>
-             <div class="temp-comment">"Engraving warms the hands, walking warms the soul."</div>
+            <div class="snowflake" style="left:10%; animation-duration:5s;">❄</div>
+            <div class="snowflake" style="left:30%; animation-duration:7s;">❄</div>
+            <div class="snowflake" style="left:70%; animation-duration:6s;">❄</div>
+            <div class="snowflake" style="left:90%; animation-duration:8s;">❄</div>
+            <div class="fox-icon">🥶🦊🥶</div>
+            <div class="temp-title">Studio Like ICE Box</div>
+            <div class="temp-display" id="tempValue">--°C</div>
+            <div class="temp-comment" id="tempComment">Thinking...</div>
         </div>
-
     </div>
 
     <script>
-        /* --- CONFIGURATION --- */
-        const dotsConfig = [
-             { status: 'engraved', count: 12 },
-             { status: 'sold', count: 5 },
-             { status: 'diamond', count: 2 },
-             { status: 'flag-est', count: 1 },
-             { status: 'flag-lat', count: 1 },
-             { status: 'flag-lit', count: 1 },
-             { status: 'flag-pol', count: 1 },
-             { status: 'normal', count: 77 }
-        ];
+        /* =========================================
+           🎛️  JUHTPULT (CONTROL PANEL) 🎛️
+           ========================================= */
+        
+        // 1. STUDIO TEMPERATUUR
+        const STUDIO_TEMP = 2;          
 
-        const treeData = [
-             { type: 'leaf-gold', val: 50, top: 15, left: 50 },
-             { type: 'leaf-silver', val: 25, top: 30, left: 30 },
-             { type: 'tree-leaf', val: 5, top: 40, left: 70 },
-             { type: 'tree-leaf', val: 15, top: 60, left: 20 },
-             { type: 'tree-leaf', val: 5, top: 55, left: 60 },
-             { type: 'leaf-silver', val: 25, top: 25, left: 80 }
-        ];
+        // 2. MINI CHALLENGE ANDMED
+        const ENGRAVED_LIST = [1, 2, 6, 33]; // Kollane 🟡 (Graveeritud)
+        const SOLD_LIST = [3, 54, 33];       // Roheline 🟢 (Müüdud)
 
-        /* --- LOGIC --- */
-        function initGrid() {
-            const grid = document.getElementById('gridBox');
-            let totalEngraved = 0, totalFunded = 0, totalFinished = 0;
+        // 3. THE LIFE BRANCH - ANNETUSTE JUHTPULT 🌿
+        const COUNT_5_EUR  = 2;   // 🍃 Mitu 5€ toetajat?
+        const COUNT_15_EUR = 10;  // 🌿 Mitu 15€ toetajat?
+        const COUNT_25_EUR = 1;   // 🍁 Mitu 25€ toetajat?
+        const COUNT_50_EUR = 1;   // 🌟 Mitu 50€ toetajat?
+
+        // 4. QUEST BOARD & TICKER 📜
+        const QUEST_MAP_PRICE_TEXT = "From €80 (Estonia: 5/6 Left)";
+        const TICKER_TEXT = "🔴 JUST SOLD: Piece #003 'The Guardian' to K. Reinhard! 🛡️ Map section 100-150km CLOSED! 🇪🇪 Estonia: 1/6 SOLD! 🇪🇪 Only 5 spots left in Estonia! 💨";
+
+        /* ========================================= */
+
+        // --- DOM Elements ---
+        const contents = [
+            document.getElementById('imageContent'),
+            document.getElementById('infoContent'),
+            document.getElementById('challengeContent'),
+            document.getElementById('treeContent'),
+            document.getElementById('questContent'), 
+            document.getElementById('countdownContent'),
+            document.getElementById('tempContent')
+        ];
+        
+        // Start showing content
+        if(contents[0]) contents[0].classList.add('active');
+
+        /* -------------------------------------------
+           LOGIC: QUEST BOARD SETTINGS
+        ------------------------------------------- */
+        function updateQuestBoard() {
+            const priceEl = document.getElementById('questMapPrice');
+            const tickerEl = document.getElementById('tickerText');
             
-            dotsConfig.forEach(grp => {
-                for(let i=0; i<grp.count; i++){
-                    const d = document.createElement('div');
-                    d.className = 'mini-dot';
-                    
-                    if(grp.status === 'engraved') { d.classList.add('engraved'); d.innerText = '🔨'; totalEngraved++; }
-                    else if(grp.status === 'sold') { d.classList.add('sold'); d.innerText = '€'; totalFunded++; totalEngraved++; }
-                    else if(grp.status === 'diamond') { d.classList.add('diamond'); d.innerText = '💎'; totalFinished++; totalFunded++; totalEngraved++; }
-                    else if(grp.status.startsWith('flag-')) { 
-                        d.classList.add('flag-bg', grp.status); 
-                        d.innerText = grp.status.split('-')[1].toUpperCase();
-                    } else {
-                        d.innerText = '•';
-                    }
-                    grid.appendChild(d);
-                }
-            });
-
-            document.getElementById('cntEngraved').innerText = totalEngraved;
-            document.getElementById('cntFunded').innerText = totalFunded;
-            document.getElementById('cntFinished').innerText = totalFinished;
-            document.getElementById('totalKm').innerText = (totalFunded * 50); // Example calculation
+            if(priceEl) priceEl.innerText = QUEST_MAP_PRICE_TEXT;
+            if(tickerEl) {
+                tickerEl.innerHTML = `<span>${TICKER_TEXT}</span> <span>${TICKER_TEXT}</span>`; 
+            }
         }
 
-        function initTree() {
-            const container = document.getElementById('leavesContainer');
-            let total = 0;
-            treeData.forEach(l => {
-                const el = document.createElement('div');
-                el.className = `tree-leaf ${l.type === 'leaf-gold' ? 'leaf-gold' : l.type === 'leaf-silver' ? 'leaf-silver' : ''}`;
-                el.innerText = l.type.includes('gold') ? '🌟' : l.type.includes('silver') ? '🍁' : '🍃';
-                el.style.top = l.top + '%';
-                el.style.left = l.left + '%';
-                el.style.animationDelay = Math.random() + 's';
-                container.appendChild(el);
-                total += l.val;
+        /* -------------------------------------------
+           LOGIC: CHALLENGE GRID
+        ------------------------------------------- */
+        const gridBox = document.getElementById('gridBox');
+
+        function getCountryClass(n) {
+            if (n <= 6) return 'flag-est';        // Eesti 1-6
+            if (n <= 11) return 'flag-lat';       // Läti 7-11 (5tk)
+            if (n <= 16) return 'flag-lit';       // Leedu 12-16 (5tk)
+            if (n <= 32) return 'flag-pol';       // Poola 17-32 (16tk)
+            if (n <= 48) return 'flag-ger';       // Saksamaa 33-48 (16tk)
+            if (n <= 71) return 'flag-fra';       // Prantsusmaa 49-71 (23tk)
+            return 'flag-esp';                    // Hispaania 72-100 (29tk)
+        }
+
+        function drawGrid() {
+            if(!gridBox) return;
+            gridBox.innerHTML = ''; 
+            
+            let countEngraved = ENGRAVED_LIST.length;
+            let countFunded = SOLD_LIST.length;
+            let countFinished = ENGRAVED_LIST.filter(value => SOLD_LIST.includes(value)).length;
+
+            document.getElementById('cntEngraved').innerText = countEngraved;
+            document.getElementById('cntFunded').innerText = countFunded;
+            document.getElementById('cntFinished').innerText = countFinished;
+            document.getElementById('totalKm').innerText = countFunded * 50;
+
+            for (let i = 1; i <= 100; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('mini-dot');
+                
+                const isEngraved = ENGRAVED_LIST.includes(i);
+                const isSold = SOLD_LIST.includes(i);
+
+                if (isEngraved && isSold) {
+                    dot.classList.add('diamond'); 
+                    dot.innerText = "💎"; 
+                } else if (isEngraved) {
+                    dot.classList.add('engraved'); 
+                    dot.innerText = i;
+                } else if (isSold) {
+                    dot.classList.add('sold'); 
+                    dot.innerText = i;
+                } else {
+                    dot.innerText = i; 
+                    dot.classList.add('flag-bg');       
+                    dot.classList.add(getCountryClass(i));
+                }
+                
+                gridBox.appendChild(dot);
+            }
+        }
+
+        /* -------------------------------------------
+           LOGIC: THE LIFE BRANCH
+        ------------------------------------------- */
+        const leavesContainer = document.getElementById('leavesContainer');
+        const treeTotalValueEl = document.getElementById('treeTotalValue');
+
+        const LEAF_CONFIG = {
+            'small':  { icon: '🍃', price: 5,  cls: '' },
+            'medium': { icon: '🌿', price: 15, cls: '' },
+            'silver': { icon: '🍁', price: 25, cls: 'leaf-silver' },
+            'gold':   { icon: '🌟', price: 50, cls: 'leaf-gold' }
+        };
+
+        function generateGardenList() {
+            let garden = [];
+            for(let i=0; i<COUNT_5_EUR; i++)  garden.push('small');
+            for(let i=0; i<COUNT_15_EUR; i++) garden.push('medium');
+            for(let i=0; i<COUNT_25_EUR; i++) garden.push('silver');
+            for(let i=0; i<COUNT_50_EUR; i++) garden.push('gold');
+            return garden;
+        }
+
+        const BRANCH_LOCATIONS = [
+            { left: 15, top: 75 }, { left: 25, top: 68 }, { left: 35, top: 48 }, 
+            { left: 38, top: 62 }, { left: 52, top: 52 }, { left: 60, top: 40 }, 
+            { left: 72, top: 60 }, { left: 80, top: 35 }, { left: 90, top: 45 }, 
+            { left: 45, top: 35 }, { left: 65, top: 68 }
+        ];
+
+        function drawTree() {
+            if(!leavesContainer) return;
+            leavesContainer.innerHTML = ''; 
+
+            let totalEur = 0;
+            const leafGarden = generateGardenList();
+            
+            leafGarden.forEach((type, index) => {
+                const config = LEAF_CONFIG[type];
+                if (!config) return;
+
+                totalEur += config.price;
+
+                const leaf = document.createElement('div');
+                leaf.classList.add('tree-leaf');
+                if(config.cls) leaf.classList.add(config.cls);
+                leaf.innerText = config.icon;
+
+                const spot = BRANCH_LOCATIONS[index % BRANCH_LOCATIONS.length];
+                const noiseX = (Math.random() - 0.5) * 4;
+                const noiseY = (Math.random() - 0.5) * 4;
+
+                leaf.style.left = (spot.left + noiseX) + '%';
+                leaf.style.top = (spot.top + noiseY) + '%';
+                leaf.style.animationDelay = (Math.random() * 2) + 's';
+                leavesContainer.appendChild(leaf);
             });
-            document.getElementById('treeTotalValue').innerText = '€' + total;
+
+            if(treeTotalValueEl) treeTotalValueEl.innerText = '€' + totalEur;
+        }
+
+        /* -------------------------------------------
+           LOGIC: TEMP & COUNTDOWN
+        ------------------------------------------- */
+        function setStudioTemperature() {
+            const el = document.getElementById('tempValue');
+            const comm = document.getElementById('tempComment');
+            if(el) el.innerHTML = `${STUDIO_TEMP}°C`;
+            
+            let c = "";
+            if (STUDIO_TEMP <= 5) c = "My paws are freezing! 🧊 Need more fur! 🦣";
+            else if (STUDIO_TEMP <= 10) c = "Engraving in the fridge... for art! ❄️";
+            else if (STUDIO_TEMP <= 17) c = "Chilly, but the fox survives! 🧥";
+            else c = "Finally, some warmth in here! 🔥";
+            if(comm) comm.innerHTML = c;
         }
 
         function updateCountdown() {
-            const target = new Date('2025-05-01T00:00:00').getTime();
-            const now = new Date().getTime();
-            const diff = target - now;
-
-            if (diff < 0) {
-                document.getElementById('countdownClock').innerText = "WE ARE LIVE!";
-                return;
-            }
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            
-            document.getElementById('countdownClock').innerText = `${days}d ${hours}h`;
+            const el = document.getElementById('countdownClock');
+            if(!el) return;
+            const diff = new Date('2026-05-01T12:00:00') - new Date();
+            if (diff < 0) { el.innerHTML = "Journey Started!"; return; }
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            el.innerHTML = `${d} Days<br>${(h<10?'0'+h:h)}:${(m<10?'0'+m:m)}:${(s<10?'0'+s:s)}`;
         }
 
-        /* --- SLIDE ROTATION LOGIC --- */
-        
-        // CUSTOM TIMINGS (in milliseconds)
-        // 10000 = 10 seconds
-        const slideDurations = {
-            'imageContent': 10000,
-            'infoContent': 10000,
-            'challengeContent': 12000, 
-            'treeContent': 10000,
-            'questContent': 30000,     // <--- UPDATED: 30 seconds
-            'countdownContent': 10000,
-            'tempContent': 8000
-        };
-        
-        const defaultDuration = 10000;
-
-        function startSlideshow() {
-            const slides = document.querySelectorAll('.content');
-            let index = 0;
-
-            function nextSlide() {
-                // Hide all
-                slides.forEach(s => s.classList.remove('active'));
-                
-                // Show current
-                const currentSlide = slides[index];
-                currentSlide.classList.add('active');
-                
-                // Get duration for this specific slide ID
-                const duration = slideDurations[currentSlide.id] || defaultDuration;
-
-                // Set up next
-                index = (index + 1) % slides.length;
-                setTimeout(nextSlide, duration);
-            }
-
-            nextSlide();
-        }
-
-        // INIT
-        initGrid();
-        initTree();
-        setInterval(updateCountdown, 1000);
+        /* -------------------------------------------
+           RUN
+        ------------------------------------------- */
+        drawGrid();
+        drawTree();
+        updateQuestBoard();
+        setStudioTemperature();
         updateCountdown();
         
-        // Start the loop
-        startSlideshow();
+        setInterval(updateCountdown, 1000);
+        
+        let currentContentIndex = 0;
+        function toggleContent() {
+            contents[currentContentIndex].classList.remove('active');
+            currentContentIndex = (currentContentIndex + 1) % contents.length;
+            setTimeout(() => {
+                contents[currentContentIndex].classList.add('active');
+            }, 50); 
+        }
+        // MUUDA SEDA NUMBRIT (30000 = 30 sekundit)
+        setInterval(toggleContent, 20000); 
 
     </script>
 </body>
