@@ -138,23 +138,17 @@
             box-shadow: 0 0 1vmin #00e676;
             color: #000;
         }
-        /* Teemant (Mõlemad) */
+        /* Teemant (Mõlemad) - MUUDETUD: Ainult emoji, ilma taustata */
         .mini-dot.diamond {
-            background: #00e5ff; 
-            box-shadow: 0 0 1.5vmin #00e5ff, 0 0 3vmin rgba(255,255,255,0.8);
-            animation: pulse-diamond 2s infinite;
-            /* Siin muudame fondi suuremaks emojile */
-            font-size: 3vmin; 
-            border: 0.2vmin solid #fff;
-            /* Emojil pole värvi vaja määrata, ta on ise värviline */
+            background: transparent; 
+            box-shadow: none;
+            animation: none;
+            font-size: 4.5vmin; /* Suurem emoji */
+            border: none;
             text-shadow: none; 
         }
 
-        @keyframes pulse-diamond {
-            0% { transform: scale(1); box-shadow: 0 0 1vmin #00e5ff; }
-            50% { transform: scale(1.15); box-shadow: 0 0 2.5vmin #00e5ff, 0 0 5vmin rgba(255,255,255,0.6); }
-            100% { transform: scale(1); box-shadow: 0 0 1vmin #00e5ff; }
-        }
+        /* Eemaldasin pulse-diamond animatsiooni, kuna seda pole enam vaja */
 
         .stats-box {
             width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.5vmin;
