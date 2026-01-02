@@ -90,7 +90,7 @@
         .brand-label { font-size: 4vmin; opacity: 0.9; font-weight: 500; }
         .brand-name { font-size: 6.5vmin; font-weight: 900; color: #ffc107; text-shadow: 0 0.3vmin 1vmin rgba(0,0,0,0.7); margin-top: 0.5vmin; display: block;}
 
-        /* --- 3. CHALLENGE GRID --- */
+        /* --- 3. CHALLENGE GRID (PARANDATUD) --- */
         .challenge-container {
             box-sizing: border-box;
             background: linear-gradient(135deg, #2b1055, #7597de);
@@ -107,7 +107,9 @@
         
         .mini-grid-box {
             display: grid; grid-template-columns: repeat(10, 1fr); gap: 0.6vmin;
-            width: 75%; aspect-ratio: 1 / 1;
+            width: 75%; 
+            /* See on kriitiline rida - hoiab kasti ruudus */
+            aspect-ratio: 1 / 1; 
         }
         
         .mini-dot {
@@ -117,7 +119,9 @@
             box-shadow: inset 0 0 0.5vmin rgba(0,0,0,0.2);
             position: relative;
             
-            /* Tekst täpi sees */
+            /* See on UUS rida, mis keelab ovaaliks venimise */
+            aspect-ratio: 1 / 1; 
+
             display: flex;
             justify-content: center;
             align-items: center;
@@ -125,6 +129,7 @@
             font-weight: 700;
             color: rgba(255,255,255,0.4); 
             user-select: none;
+            line-height: 1; /* Tagab, et tekst on vertikaalselt keskel */
         }
         
         /* OLEKUD */
@@ -138,17 +143,33 @@
             box-shadow: 0 0 1vmin #00e676;
             color: #000;
         }
-        /* Teemant (Mõlemad) - MUUDETUD: Ainult emoji, ilma taustata */
+        
+        /* --- TEEMANT (BLING) --- */
+        /* Eemaldasime tausta ja lisasime sära */
         .mini-dot.diamond {
             background: transparent; 
             box-shadow: none;
-            animation: none;
-            font-size: 4.5vmin; /* Suurem emoji */
             border: none;
-            text-shadow: none; 
+            font-size: 4vmin; /* Suurem emoji */
+            
+            /* BLING BLING ANIMATSIOON */
+            animation: bling-bling 2s infinite alternate ease-in-out;
+            
+            /* See annab emojile kuma (glow) ümber, ilma ringita */
+            filter: drop-shadow(0 0 1vmin rgba(255, 255, 255, 0.8));
         }
 
-        /* Eemaldasin pulse-diamond animatsiooni, kuna seda pole enam vaja */
+        /* Animatsioon paneb teemandi suurenema ja eredamalt särama */
+        @keyframes bling-bling {
+            0% { 
+                transform: scale(1); 
+                filter: drop-shadow(0 0 0.5vmin rgba(255, 255, 255, 0.5)); 
+            }
+            100% { 
+                transform: scale(1.3); 
+                filter: drop-shadow(0 0 2vmin rgba(255, 255, 255, 1)); /* Tugev sära */
+            }
+        }
 
         .stats-box {
             width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.5vmin;
@@ -305,7 +326,6 @@
         const ENGRAVED_LIST = [1, 2, 6, 33]; 
 
         // 2. MÜÜDUD (Roheline 🟢)
-        // NB! Kui number on mõlemas listis (nt 33), muutub see TEEMANDIKS 💎
         const SOLD_LIST = [3, 54, 33];
         /* ========================================= */
 
@@ -343,7 +363,6 @@
 
                 if (isEngraved && isSold) {
                     dot.classList.add('diamond');
-                    // SIIN ON MUUDATUS: Asendame numbri teemandiga
                     dot.innerText = "💎"; 
                 } else if (isEngraved) {
                     dot.classList.add('engraved');
@@ -352,7 +371,7 @@
                     dot.classList.add('sold');
                     dot.innerText = i;
                 } else {
-                    dot.innerText = i; // Tavalisele hallile jääb ka number alles
+                    dot.innerText = i; 
                 }
                 gridBox.appendChild(dot);
             }
