@@ -132,7 +132,7 @@
         /* --- 4. THE LIFE BRANCH (INTERACTIVE TREE) --- */
         .tree-container {
             box-sizing: border-box;
-            background: linear-gradient(160deg, #112d20 0%, #000000 100%);
+            background: linear-gradient(160deg, #0b1e15 0%, #000000 100%);
             color: #fff;
             flex-direction: column;
             justify-content: flex-start;
@@ -155,12 +155,16 @@
         .branch-svg-layer {
             position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; pointer-events: none;
         }
+        
+        /* See klass defineerib oksa põhivärvi. 
+           Filtri (#branch3d) lisamine annab sellele 3D efekti.
+        */
         .branch-path {
             fill: none; 
-            stroke: #4e342e; /* Dark natural wood color */
+            stroke: #4E342E; /* Tume puidu värv */
             stroke-linecap: round;
             stroke-linejoin: round;
-            filter: drop-shadow(0 0.5vmin 1vmin rgba(0,0,0,0.8));
+            filter: url(#branch3d); /* See teeb maagia */
         }
 
         /* Lehtede ala */
@@ -176,7 +180,7 @@
         }
         /* Erilised lehed */
         .leaf-gold { 
-            font-size: 8vmin; z-index: 10; 
+            font-size: 9vmin; z-index: 10; 
             filter: drop-shadow(0 0 1.5vmin #ffc107);
             animation: sway 3s infinite ease-in-out alternate, pulse-gold 2s infinite; 
         }
@@ -184,8 +188,8 @@
             font-size: 7vmin; z-index: 9;
             filter: drop-shadow(0 0 1vmin #dfe6e9);
         }
-        @keyframes sway { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
-        @keyframes pulse-gold { 0% { transform: scale(1) rotate(-5deg); } 50% { transform: scale(1.1) rotate(0deg); } 100% { transform: scale(1) rotate(5deg); } }
+        @keyframes sway { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
+        @keyframes pulse-gold { 0% { transform: scale(1) rotate(-10deg); } 50% { transform: scale(1.15) rotate(0deg); } 100% { transform: scale(1) rotate(10deg); } }
 
         /* Legend ja Summa all */
         .tree-footer {
@@ -312,15 +316,29 @@
             </div>
             
             <svg class="branch-svg-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path d="M-10,105 Q40,80 60,50 T110,10" class="branch-path" style="stroke-width: 1.8vmin;" />
+                <defs>
+                    <filter id="branch3d" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="0.8" result="blur" />
+                        <feSpecularLighting in="blur" surfaceScale="2" specularConstant="0.8" specularExponent="15" lighting-color="#ffffff" result="specOut">
+                            <fePointLight x="-20" y="-50" z="50" />
+                        </feSpecularLighting>
+                        <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut" />
+                        <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint" />
+                        <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="rgba(0,0,0,0.7)" />
+                    </filter>
+                </defs>
                 
-                <path d="M45,65 Q42,50 35,30" class="branch-path" style="stroke-width: 1.2vmin;" />
+                <path d="M-10,105 Q30,80 50,50" class="branch-path" style="stroke-width: 4.5vmin;" />
+                <path d="M48,52 Q70,25 105,15" class="branch-path" style="stroke-width: 3.5vmin;" />
 
-                <path d="M65,45 Q75,50 85,55" class="branch-path" style="stroke-width: 1.0vmin;" />
+                <path d="M15,90 Q20,70 10,65" class="branch-path" style="stroke-width: 1.5vmin;" />
+                <path d="M35,68 Q30,50 35,40" class="branch-path" style="stroke-width: 1.8vmin;" />
+                
+                <path d="M55,45 Q65,65 75,70" class="branch-path" style="stroke-width: 1.6vmin;" />
+                
+                <path d="M85,25 Q90,35 95,38" class="branch-path" style="stroke-width: 1.2vmin;" />
 
-                <path d="M35,30 Q30,20 32,10" class="branch-path" style="stroke-width: 0.6vmin;" /> <path d="M45,65 Q50,60 55,62" class="branch-path" style="stroke-width: 0.5vmin;" />
-                <path d="M85,55 Q90,58 95,52" class="branch-path" style="stroke-width: 0.5vmin;" />
-                <path d="M60,25 Q55,15 65,10" class="branch-path" style="stroke-width: 0.4vmin;" /> </svg>
+            </svg>
 
             <div class="leaves-wrapper" id="leavesContainer"></div>
 
@@ -411,3 +429,129 @@
             document.getElementById('totalKm').innerText = countFunded * 50;
 
             for (let i = 1; i <= 100; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('mini-dot');
+                const isEngraved = ENGRAVED_LIST.includes(i);
+                const isSold = SOLD_LIST.includes(i);
+
+                if (isEngraved && isSold) {
+                    dot.classList.add('diamond'); dot.innerText = "💎"; 
+                } else if (isEngraved) {
+                    dot.classList.add('engraved'); dot.innerText = i;
+                } else if (isSold) {
+                    dot.classList.add('sold'); dot.innerText = i;
+                } else {
+                    dot.innerText = i; 
+                }
+                gridBox.appendChild(dot);
+            }
+        }
+
+        /* -------------------------------------------
+           LOGIC: THE LIFE BRANCH (PUU) 🌿
+        ------------------------------------------- */
+        const leavesContainer = document.getElementById('leavesContainer');
+        const treeTotalValueEl = document.getElementById('treeTotalValue');
+
+        const LEAF_CONFIG = {
+            'small':  { icon: '🍃', price: 5,  cls: '' },
+            'medium': { icon: '🍂', price: 15, cls: '' },
+            'silver': { icon: '✨', price: 25, cls: 'leaf-silver' },
+            'gold':   { icon: '🌟', price: 50, cls: 'leaf-gold' }
+        };
+
+        function drawTree() {
+            if(!leavesContainer) return;
+            leavesContainer.innerHTML = ''; // Puhasta
+
+            let totalEur = 0;
+            
+            // Define branch zones for better placement (approx % coordinates)
+            // {x: center_x, y: center_y, spread: randomness}
+            const ZONES = [
+                {x: 20, y: 80, spread: 10}, // Bottom Trunk
+                {x: 50, y: 50, spread: 8},  // Mid Trunk
+                {x: 80, y: 25, spread: 8},  // Top Trunk
+                {x: 35, y: 40, spread: 5},  // Upper Left Branch
+                {x: 70, y: 65, spread: 5},  // Lower Right Branch
+            ];
+
+            LEAF_GARDEN.forEach((type, index) => {
+                const config = LEAF_CONFIG[type];
+                if (!config) return;
+
+                totalEur += config.price;
+
+                const leaf = document.createElement('div');
+                leaf.classList.add('tree-leaf');
+                if(config.cls) leaf.classList.add(config.cls);
+                leaf.innerText = config.icon;
+
+                // Pick a zone based on index loops
+                const zone = ZONES[index % ZONES.length];
+                
+                // Random offset within zone
+                const rX = (Math.random() - 0.5) * zone.spread * 2;
+                const rY = (Math.random() - 0.5) * zone.spread * 2;
+
+                leaf.style.left = (zone.x + rX) + '%';
+                leaf.style.top = (zone.y + rY) + '%';
+                
+                leaf.style.animationDelay = (Math.random() * 2) + 's';
+                leavesContainer.appendChild(leaf);
+            });
+
+            if(treeTotalValueEl) treeTotalValueEl.innerText = '€' + totalEur;
+        }
+
+        /* -------------------------------------------
+           LOGIC: TEMP & COUNTDOWN
+        ------------------------------------------- */
+        function setStudioTemperature() {
+            const el = document.getElementById('tempValue');
+            const comm = document.getElementById('tempComment');
+            if(el) el.innerHTML = `${STUDIO_TEMP}°C`;
+            
+            let c = "";
+            if (STUDIO_TEMP <= 5) c = "My paws are freezing! 🧊 Need more fur!";
+            else if (STUDIO_TEMP <= 10) c = "Engraving in the fridge... for art! ❄️";
+            else if (STUDIO_TEMP <= 15) c = "Chilly, but the fox survives! 🧥";
+            else c = "Finally, some warmth in here! 🔥";
+            if(comm) comm.innerHTML = c;
+        }
+
+        function updateCountdown() {
+            const el = document.getElementById('countdownClock');
+            if(!el) return;
+            const diff = new Date('2026-05-01T12:00:00') - new Date();
+            if (diff < 0) { el.innerHTML = "Journey Started!"; return; }
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            el.innerHTML = `${d} Days<br>${(h<10?'0'+h:h)}:${(m<10?'0'+m:m)}:${(s<10?'0'+s:s)}`;
+        }
+
+        /* -------------------------------------------
+           RUN
+        ------------------------------------------- */
+        drawGrid();
+        drawTree();
+        setStudioTemperature();
+        updateCountdown();
+        
+        setInterval(updateCountdown, 1000);
+        
+        let currentContentIndex = 0;
+        function toggleContent() {
+            contents[currentContentIndex].classList.remove('active');
+            currentContentIndex = (currentContentIndex + 1) % contents.length;
+            setTimeout(() => {
+                contents[currentContentIndex].classList.add('active');
+            }, 50); 
+        }
+        setInterval(toggleContent, 10000); // Slaidivahetus
+
+    </script>
+</body>
+</html>
