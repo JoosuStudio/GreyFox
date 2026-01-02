@@ -6,83 +6,89 @@
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins:wght@400;600;700&display=swap');
 
     :root {
-        --bg-color: rgba(18, 22, 30, 0.95); /* Tume taust */
+        --bg-color: rgba(18, 22, 30, 0.95);
         --text-white: #ffffff;
         --accent-gold: #FFD700;
         --accent-blue: #00E5FF;
         --glass-border: rgba(255, 255, 255, 0.1);
+        --accent-red: #ff4444;
     }
 
     body, html {
         margin: 0;
         padding: 0;
+        width: 100%;
+        height: 100%;
         background-color: transparent;
         font-family: 'Poppins', sans-serif;
         overflow: hidden;
+        /* See tsentreerib kasti ekraanil */
+        display: flex;
+        justify-content: center;
+        align-items: center; 
     }
 
-    /* Peamine konteiner */
+    /* Peamine konteiner - Nüüd responsive! */
     .card {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        width: auto;
-        min-width: 350px;
-        max-width: 500px;
+        position: relative;
+        /* Laius on 94% ekraanist/aknast */
+        width: 94%; 
         background: linear-gradient(145deg, rgba(20, 25, 35, 0.98), rgba(30, 35, 45, 0.95));
-        border-radius: 12px;
-        padding: 20px;
+        border-radius: 3vw; /* Ümarad nurgad muutuvad suurusega */
+        padding: 3vw 4vw;   /* Sisuvahe muutub suurusega */
         color: var(--text-white);
-        border: 1px solid var(--glass-border);
-        /* Animeeritud vari */
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        border: 2px solid var(--glass-border);
+        box-shadow: 0 0 2vw rgba(0, 0, 0, 0.5);
         animation: glowPulse 4s infinite alternate;
+        box-sizing: border-box;
     }
 
-    /* Vasakpoolne värviline triip */
+    /* Vasakpoolne kuldne triip */
     .card::before {
         content: '';
         position: absolute;
         left: 0;
-        top: 15px;
-        bottom: 15px;
-        width: 4px;
+        top: 15%;
+        bottom: 15%;
+        width: 1.5vw; /* Triibu laius muutub */
         background: var(--accent-gold);
-        border-radius: 0 4px 4px 0;
-        box-shadow: 0 0 10px var(--accent-gold);
+        border-radius: 0 1vw 1vw 0;
+        box-shadow: 0 0 1vw var(--accent-gold);
     }
 
-    /* Ülemine rida: Challenge info */
+    /* --- TEKSTIDE SUURUSED ON NÜÜD 'vw' (Viewport Width) --- */
+
+    /* Ülemine rida */
     .top-badge {
-        font-size: 0.8em;
+        font-size: 3.5vw; /* Muutuv suurus */
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 0.2vw;
         color: var(--accent-blue);
         font-weight: 700;
-        margin-bottom: 5px;
+        margin-bottom: 1vw;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 2vw;
     }
     
     .live-dot {
-        height: 8px;
-        width: 8px;
-        background-color: #ff4444;
+        height: 2.5vw;
+        width: 2.5vw;
+        background-color: var(--accent-red);
         border-radius: 50%;
         display: inline-block;
-        box-shadow: 0 0 5px #ff4444;
+        box-shadow: 0 0 1vw var(--accent-red);
         animation: blink 2s infinite;
     }
 
     /* Pealkiri */
     .main-title {
         font-family: 'Montserrat', sans-serif;
-        font-size: 1.8em;
+        font-size: 6.5vw; /* Suur pealkiri */
         font-weight: 800;
         line-height: 1.1;
-        margin-bottom: 5px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        margin-bottom: 1vw;
+        text-shadow: 0.5vw 0.5vw 1vw rgba(0,0,0,0.6);
     }
 
     .main-title span {
@@ -91,24 +97,24 @@
 
     /* Alampealkiri */
     .subtitle {
-        font-size: 0.9em;
+        font-size: 3.5vw;
         color: #cccccc;
         font-weight: 400;
-        margin-bottom: 15px;
+        margin-bottom: 4vw;
         font-style: italic;
     }
 
     /* Progressi sektsioon */
     .progress-container {
-        margin-top: 10px;
+        margin-top: 2vw;
     }
 
     .progress-labels {
         display: flex;
         justify-content: space-between;
-        font-size: 0.85em;
+        font-size: 3vw;
         font-weight: 600;
-        margin-bottom: 5px;
+        margin-bottom: 1.5vw;
     }
 
     .highlight-number {
@@ -117,26 +123,26 @@
 
     .progress-bar-bg {
         width: 100%;
-        height: 8px;
+        height: 2.5vw; /* Riba kõrgus */
         background-color: rgba(255,255,255,0.1);
-        border-radius: 4px;
+        border-radius: 2vw;
         overflow: hidden;
     }
 
-    /* Muuda seda laiust (width) vastavalt sellele, mitu % on tehtud! */
+    /* MUUDA SEDA LAIUST (width) vastavalt progressile */
     .progress-bar-fill {
         height: 100%;
-        width: 2%; /* <--- SIIN MUUDA PROTSENTI (2/100 = 2%) */
+        width: 2%; /* 2/100 */
         background: linear-gradient(90deg, var(--accent-gold), #ffec8b);
-        border-radius: 4px;
-        box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        border-radius: 2vw;
+        box-shadow: 0 0 2vw rgba(255, 215, 0, 0.5);
         transition: width 1s ease-in-out;
     }
 
     /* Animatsioonid */
     @keyframes glowPulse {
-        0% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.1); border-color: rgba(255, 215, 0, 0.2); }
-        100% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.4); border-color: rgba(255, 215, 0, 0.6); }
+        0% { box-shadow: 0 0 2vw rgba(255, 215, 0, 0.1); border-color: rgba(255, 215, 0, 0.2); }
+        100% { box-shadow: 0 0 4vw rgba(255, 215, 0, 0.4); border-color: rgba(255, 215, 0, 0.6); }
     }
 
     @keyframes blink {
