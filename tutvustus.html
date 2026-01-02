@@ -163,7 +163,6 @@
             animation: sway 3s infinite ease-in-out alternate;
             filter: drop-shadow(0 0.5vmin 0.5vmin rgba(0,0,0,0.5));
             transition: transform 0.3s;
-            /* Et ikooni kese oleks täpselt koordinaadil */
             transform-origin: center top; 
         }
         /* Erilised lehed */
@@ -354,12 +353,12 @@
         const ENGRAVED_LIST = [1, 2, 6, 33]; // Kollane 🟡
         const SOLD_LIST = [3, 54, 33];       // Roheline 🟢
 
-        // 3. THE LIFE BRANCH - ANNETUSTE SUMMAD 🌿
-        // Lisa siia lihtsalt summa numbrina: 5, 15, 25 või 50.
-        // Järjekord: vasakult paremale üles (nagu puu kasvab)
-        const TREE_DONATIONS = [
-            50, 15, 5, 5, 25, 5, 50, 15, 5, 5, 25, 15
-        ];
+        // 3. THE LIFE BRANCH - ANNETUSTE JUHTPULT 🌿
+        // Muuda siin numbreid, et lisada annetusi:
+        const COUNT_5_EUR  = 2;   // 🍃 Mitu 5€ toetajat?
+        const COUNT_15_EUR = 10;  // 🍂 Mitu 15€ toetajat?
+        const COUNT_25_EUR = 1;   // ✨ Mitu 25€ toetajat?
+        const COUNT_50_EUR = 1;   // 🌟 Mitu 50€ toetajat?
 
         /* ========================================= */
 
@@ -418,13 +417,23 @@
         const leavesContainer = document.getElementById('leavesContainer');
         const treeTotalValueEl = document.getElementById('treeTotalValue');
 
-        // Uus loogika: võti on nüüd annetuse summa (5, 15, 25, 50)
+        // Defineerime lehtede tüübid
         const LEAF_CONFIG = {
-            5:  { icon: '🍃', price: 5,  cls: '' },            // Small
-            15: { icon: '🍂', price: 15, cls: '' },            // Medium
-            25: { icon: '✨', price: 25, cls: 'leaf-silver' }, // Silver
-            50: { icon: '🌟', price: 50, cls: 'leaf-gold' }    // Gold
+            'small':  { icon: '🍃', price: 5,  cls: '' },
+            'medium': { icon: '🍂', price: 15, cls: '' },
+            'silver': { icon: '✨', price: 25, cls: 'leaf-silver' },
+            'gold':   { icon: '🌟', price: 50, cls: 'leaf-gold' }
         };
+
+        // Genereerime lehtede listi vastavalt Control Paneli numbritele
+        function generateGardenList() {
+            let garden = [];
+            for(let i=0; i<COUNT_5_EUR; i++)  garden.push('small');
+            for(let i=0; i<COUNT_15_EUR; i++) garden.push('medium');
+            for(let i=0; i<COUNT_25_EUR; i++) garden.push('silver');
+            for(let i=0; i<COUNT_50_EUR; i++) garden.push('gold');
+            return garden;
+        }
 
         // --- OKSA KOORDINAADID (Left %, Top %) ---
         const BRANCH_LOCATIONS = [
@@ -443,14 +452,14 @@
 
         function drawTree() {
             if(!leavesContainer) return;
-            leavesContainer.innerHTML = ''; 
+            leavesContainer.innerHTML = ''; // Puhasta
 
             let totalEur = 0;
+            const leafGarden = generateGardenList();
             
-            // Käime läbi numbrite nimekirja
-            TREE_DONATIONS.forEach((amount, index) => {
-                const config = LEAF_CONFIG[amount];
-                if (!config) return; // Kui sisestasid tundmatu numbri (nt 100), jäetakse vahele
+            leafGarden.forEach((type, index) => {
+                const config = LEAF_CONFIG[type];
+                if (!config) return;
 
                 totalEur += config.price;
 
@@ -459,11 +468,12 @@
                 if(config.cls) leaf.classList.add(config.cls);
                 leaf.innerText = config.icon;
 
-                // Võtame koordinaadi järjekorras
+                // Võtame koordinaadi järjekorras (ringiratast kui lehti on rohkem)
                 const spot = BRANCH_LOCATIONS[index % BRANCH_LOCATIONS.length];
                 
-                const noiseX = (Math.random() - 0.5) * 2; 
-                const noiseY = (Math.random() - 0.5) * 2; 
+                // Juhuslik nihe, et lehed ei oleks täpselt üksteise peal
+                const noiseX = (Math.random() - 0.5) * 4; // suurendasin nihet veidi
+                const noiseY = (Math.random() - 0.5) * 4;
 
                 leaf.style.left = (spot.left + noiseX) + '%';
                 leaf.style.top = (spot.top + noiseY) + '%';
@@ -521,7 +531,7 @@
                 contents[currentContentIndex].classList.add('active');
             }, 50); 
         }
-        setInterval(toggleContent, 10000); 
+        setInterval(toggleContent, 10000); // Slaidivahetus
 
     </script>
 </body>
