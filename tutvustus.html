@@ -208,13 +208,22 @@
         .highlight-blue { color: #00e5ff; }
         .highlight-green { color: #00e676; }
         
-        .contact-box {
-            background: #fff; color: #b71c1c; border-radius: 2vmin; padding: 2vmin 4vmin;
-            font-size: 5vmin; font-weight: 900; text-align: center; width: 90%;
-            margin: 2vmin 0 2vmin 0; box-shadow: 0 1vmin 2vmin rgba(0,0,0,0.4);
-            margin-bottom: 9vmin; /* Ruumi Tickerile */
+        /* CONTACT & PAYPAL BOXES */
+        .contact-section {
+            width: 100%; display: flex; flex-direction: column; gap: 2vmin; margin-bottom: 9vmin; /* Ruumi Tickerile */
+            align-items: center;
         }
-        .contact-label { font-size: 3vmin; color: #fff; opacity: 0.8; margin-bottom: 1vmin; text-transform: uppercase; font-weight: 700; }
+        .contact-box {
+            background: #fff; color: #b71c1c; border-radius: 2vmin; padding: 1.5vmin 4vmin;
+            font-size: 4.5vmin; font-weight: 900; text-align: center; width: 90%;
+            box-shadow: 0 1vmin 2vmin rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; gap: 2vmin;
+        }
+        .paypal-box {
+            background: #0070ba; color: #fff; border-radius: 2vmin; padding: 1.5vmin 4vmin;
+            font-size: 4.5vmin; font-weight: 900; text-align: center; width: 90%;
+            box-shadow: 0 1vmin 2vmin rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; gap: 2vmin;
+        }
+        .contact-label { font-size: 3vmin; color: #fff; opacity: 0.8; text-transform: uppercase; font-weight: 700; width: 100%; text-align: center; margin-bottom: -1vmin; margin-top: 1vmin;}
 
         /* UUDISTERIBA (TICKER) */
         .ticker-wrap {
@@ -340,8 +349,13 @@
                 </div>
             </div>
 
-            <div class="contact-label">To claim your spot:</div>
-            <div class="contact-box">greyfoxjourney@gmail.com</div>
+            <div class="contact-section">
+                <div class="contact-label">Reserve your Map Section:</div>
+                <div class="contact-box">✉️ greyfoxjourney@gmail.com</div>
+                
+                <div class="contact-label">Quick Support (Leaves):</div>
+                <div class="paypal-box">🅿️ paypal.me/joosustudio</div>
+            </div>
 
             <div class="ticker-wrap">
                 <div class="ticker" id="tickerText">
