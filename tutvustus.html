@@ -132,8 +132,8 @@
         /* --- 4. THE LIFE BRANCH (INTERACTIVE TREE) --- */
         .tree-container {
             box-sizing: border-box;
-            background: linear-gradient(160deg, #0b1e15 0%, #000000 100%);
-            color: #fff;
+            background: #fff; /* Changed to white to match your 2nd image */
+            color: #333;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
@@ -145,10 +145,10 @@
             position: absolute; top: 3vmin; width: 100%; text-align: center; z-index: 5;
         }
         .tree-title {
-            font-size: 7vmin; font-weight: 900; color: #a8ff78; text-shadow: 0 0 2vmin rgba(0,255,0,0.3); margin: 0; letter-spacing: 0.2vmin;
+            font-size: 7vmin; font-weight: 900; color: #2e7d32; text-shadow: none; margin: 0; letter-spacing: 0.2vmin;
         }
         .tree-subtitle {
-            font-size: 4vmin; font-weight: 500; color: #dfe6e9; opacity: 0.8; margin-top: 0.5vmin;
+            font-size: 4vmin; font-weight: 500; color: #555; opacity: 0.8; margin-top: 0.5vmin;
         }
         
         /* Oksa SVG taustal */
@@ -156,15 +156,12 @@
             position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; pointer-events: none;
         }
         
-        /* See klass defineerib oksa põhivärvi. 
-           Filtri (#branch3d) lisamine annab sellele 3D efekti.
-        */
         .branch-path {
             fill: none; 
-            stroke: #4E342E; /* Tume puidu värv */
+            stroke: #3e2723; /* Dark brown/coffee */
             stroke-linecap: round;
             stroke-linejoin: round;
-            filter: url(#branch3d); /* See teeb maagia */
+            /* Removed the heavy 3D filter for a cleaner look */
         }
 
         /* Lehtede ala */
@@ -175,18 +172,18 @@
             position: absolute;
             font-size: 6vmin;
             animation: sway 3s infinite ease-in-out alternate;
-            filter: drop-shadow(0 0.5vmin 0.5vmin rgba(0,0,0,0.5));
+            filter: drop-shadow(0 0.5vmin 0.5vmin rgba(0,0,0,0.2));
             transition: transform 0.3s;
         }
         /* Erilised lehed */
         .leaf-gold { 
             font-size: 9vmin; z-index: 10; 
-            filter: drop-shadow(0 0 1.5vmin #ffc107);
+            filter: drop-shadow(0 0 1vmin #ffc107);
             animation: sway 3s infinite ease-in-out alternate, pulse-gold 2s infinite; 
         }
         .leaf-silver {
             font-size: 7vmin; z-index: 9;
-            filter: drop-shadow(0 0 1vmin #dfe6e9);
+            filter: drop-shadow(0 0 0.5vmin #b0bec5);
         }
         @keyframes sway { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
         @keyframes pulse-gold { 0% { transform: scale(1) rotate(-10deg); } 50% { transform: scale(1.15) rotate(0deg); } 100% { transform: scale(1) rotate(10deg); } }
@@ -194,19 +191,19 @@
         /* Legend ja Summa all */
         .tree-footer {
             position: absolute; bottom: 3vmin; width: 90%; 
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
-            border-radius: 3vmin; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.8); backdrop-filter: blur(5px);
+            border-radius: 3vmin; border: 1px solid rgba(0,0,0,0.1);
             padding: 2vmin; z-index: 5;
             display: flex; flex-direction: column; gap: 1.5vmin;
+            box-shadow: 0 1vmin 3vmin rgba(0,0,0,0.1);
         }
         .legend-row {
             display: flex; justify-content: space-around; align-items: center; width: 100%;
         }
-        .legend-item { display: flex; align-items: center; gap: 1vmin; font-size: 3vmin; font-weight: 700; opacity: 0.9; }
+        .legend-item { display: flex; align-items: center; gap: 1vmin; font-size: 3vmin; font-weight: 700; opacity: 0.9; color: #333; }
         .legend-total {
-            text-align: center; font-size: 5vmin; font-weight: 900; color: #ffc107; 
-            border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1vmin;
-            text-shadow: 0 0 1vmin rgba(255, 193, 7, 0.4);
+            text-align: center; font-size: 5vmin; font-weight: 900; color: #ff8f00; 
+            border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1vmin;
         }
 
 
@@ -316,27 +313,20 @@
             </div>
             
             <svg class="branch-svg-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <defs>
-                    <filter id="branch3d" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur in="SourceAlpha" stdDeviation="0.8" result="blur" />
-                        <feSpecularLighting in="blur" surfaceScale="2" specularConstant="0.8" specularExponent="15" lighting-color="#ffffff" result="specOut">
-                            <fePointLight x="-20" y="-50" z="50" />
-                        </feSpecularLighting>
-                        <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut" />
-                        <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint" />
-                        <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="rgba(0,0,0,0.7)" />
-                    </filter>
-                </defs>
-                
-                <path d="M-10,105 Q30,80 50,50" class="branch-path" style="stroke-width: 4.5vmin;" />
-                <path d="M48,52 Q70,25 105,15" class="branch-path" style="stroke-width: 3.5vmin;" />
+                <path d="M-5,60 Q15,63 35,62" class="branch-path" style="stroke-width: 1.2vmin;" />
 
-                <path d="M15,90 Q20,70 10,65" class="branch-path" style="stroke-width: 1.5vmin;" />
-                <path d="M35,68 Q30,50 35,40" class="branch-path" style="stroke-width: 1.8vmin;" />
+                <path d="M34,62 C50,60 60,55 75,55" class="branch-path" style="stroke-width: 1.0vmin;" />
+
+                <path d="M74,55 Q90,55 105,50" class="branch-path" style="stroke-width: 0.8vmin;" />
+
+
+                <path d="M25,62 Q30,50 28,40" class="branch-path" style="stroke-width: 0.6vmin;" />
+
+                <path d="M50,58 Q55,45 60,38" class="branch-path" style="stroke-width: 0.6vmin;" />
+
+                <path d="M65,56 Q75,65 85,70" class="branch-path" style="stroke-width: 0.5vmin;" />
                 
-                <path d="M55,45 Q65,65 75,70" class="branch-path" style="stroke-width: 1.6vmin;" />
-                
-                <path d="M85,25 Q90,35 95,38" class="branch-path" style="stroke-width: 1.2vmin;" />
+                <path d="M85,53 Q90,40 95,35" class="branch-path" style="stroke-width: 0.5vmin;" />
 
             </svg>
 
@@ -466,14 +456,15 @@
 
             let totalEur = 0;
             
-            // Define branch zones for better placement (approx % coordinates)
-            // {x: center_x, y: center_y, spread: randomness}
+            // Define ZONES based on the NEW Horizontal Branch shape
             const ZONES = [
-                {x: 20, y: 80, spread: 10}, // Bottom Trunk
-                {x: 50, y: 50, spread: 8},  // Mid Trunk
-                {x: 80, y: 25, spread: 8},  // Top Trunk
-                {x: 35, y: 40, spread: 5},  // Upper Left Branch
-                {x: 70, y: 65, spread: 5},  // Lower Right Branch
+                {x: 15, y: 62, spread: 5}, // Left Base
+                {x: 45, y: 60, spread: 6}, // Mid Low
+                {x: 75, y: 55, spread: 6}, // Mid Right
+                {x: 28, y: 40, spread: 3}, // Left Twig Tip
+                {x: 60, y: 40, spread: 3}, // Mid Twig Tip
+                {x: 95, y: 38, spread: 3}, // Right Twig Tip
+                {x: 85, y: 70, spread: 3}, // Downward Twig Tip
             ];
 
             LEAF_GARDEN.forEach((type, index) => {
@@ -487,7 +478,7 @@
                 if(config.cls) leaf.classList.add(config.cls);
                 leaf.innerText = config.icon;
 
-                // Pick a zone based on index loops
+                // Pick a zone
                 const zone = ZONES[index % ZONES.length];
                 
                 // Random offset within zone
