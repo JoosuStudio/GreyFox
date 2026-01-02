@@ -37,14 +37,14 @@
             position: absolute;
             top: 0;
             left: 0;
-            opacity: 0;
+            opacity: 0; /* Alguses nähtamatu */
             z-index: 1;
-            transition: opacity 0.8s ease-in-out;
+            transition: opacity 0.8s ease-in-out; /* Sujuv üleminek */
             display: flex;
         }
 
         .content.active {
-            opacity: 1;
+            opacity: 1; /* Kui aktiivne, siis nähtav */
             z-index: 10;
         }
 
@@ -64,13 +64,8 @@
             align-items: center;
             padding: 3vmin;
         }
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3vmin;
-            width: 100%;
-            margin-bottom: 2vmin;
-        }
+        .info-header { font-size: 7vmin; font-weight: 900; margin-bottom: 3vmin; display: flex; gap: 2vmin; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3vmin; width: 100%; }
         .info-box {
             background: rgba(255, 255, 255, 0.1);
             padding: 2vmin;
@@ -81,18 +76,18 @@
             backdrop-filter: blur(3px);
             border: 0.2vmin solid rgba(255,255,255,0.2);
         }
-        .info-label-small { font-size: 3vmin; opacity: 0.8; text-transform: uppercase; }
+        .info-label-small { font-size: 3.2vmin; opacity: 0.8; text-transform: uppercase; font-weight: 500; }
         .info-value-large { font-size: 5.5vmin; font-weight: 900; }
         .journey-brand-box {
             background: rgba(0,0,0,0.4);
-            padding: 1.5vmin;
-            border-radius: 3vmin;
+            padding: 2vmin;
+            border-radius: 6vmin;
             border: 0.4vmin solid #ffc107;
             text-align: center;
             width: 90%;
-            margin-top: 2vmin;
+            margin-top: 4vmin;
         }
-        .brand-name { font-size: 6vmin; font-weight: 900; color: #ffc107; }
+        .brand-name { font-size: 6.5vmin; font-weight: 900; color: #ffc107; }
 
         /* --- 3. COUNTDOWN --- */
         .countdown-container {
@@ -104,16 +99,17 @@
             align-items: center;
             padding: 3vmin;
         }
+        .countdown-title { font-size: 7.5vmin; font-weight: 900; margin-bottom: 2vmin; text-align: center;}
         #countdownClock {
-            font-size: 14vmin;
+            font-size: 15vmin;
             font-weight: 900;
             color: #ffc107;
             text-shadow: 0 0 3vmin #ffc107;
             text-align: center;
-            line-height: 1;
+            line-height: 1.1;
         }
-        .countdown-title { font-size: 7vmin; font-weight: 900; margin-bottom: 2vmin; }
-        
+        .countdown-desc { font-size: 5vmin; text-align: center; margin-top: 3vmin; font-weight: 700; opacity: 0.9; }
+
         /* --- 4. TEMP CONTENT --- */
         .temp-container {
             box-sizing: border-box;
@@ -122,16 +118,19 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 3vmin;
         }
-        .temp-display { font-size: 25vmin; font-weight: 900; color: #00e5ff; line-height: 0.9; }
-        .temp-comment { font-size: 5vmin; text-align: center; max-width: 90%; margin-top: 2vmin; }
-        .snowflake { position: absolute; color: rgba(255,255,255,0.3); font-size: 5vmin; animation: fall 5s linear infinite; }
+        .temp-title { font-size: 6.5vmin; font-weight: 900; text-transform: uppercase; margin-bottom: 2vmin; }
+        .temp-display { font-size: 25vmin; font-weight: 900; color: #00e5ff; line-height: 0.9; text-shadow: 0 0 4vmin #00e5ff; }
+        .temp-comment { font-size: 6vmin; text-align: center; max-width: 95%; margin-top: 3vmin; font-weight: 700; }
+        .snowflake { position: absolute; color: rgba(255,255,255,0.4); font-size: 7vmin; animation: fall 5s linear infinite; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
-        /* --- 5. NEW: 100 MINI CHALLENGE GRID --- */
+        /* --- 5. UUS: 100 MINI CHALLENGE GRID --- */
         .challenge-container {
             box-sizing: border-box;
-            background: linear-gradient(135deg, #2b1055, #7597de); /* Müstiline lilla/sinine */
+            /* Müstiline lilla/sinine gradient, et eristuks teistest */
+            background: linear-gradient(135deg, #2b1055, #7597de); 
             color: #fff;
             flex-direction: column;
             justify-content: center;
@@ -139,14 +138,14 @@
             padding: 2vmin;
         }
         .grid-title {
-            font-size: 6vmin;
+            font-size: 6.5vmin;
             font-weight: 900;
             text-transform: uppercase;
             margin-bottom: 1vmin;
             text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.5);
         }
         .grid-subtitle {
-            font-size: 4.5vmin;
+            font-size: 4vmin;
             background: rgba(0,0,0,0.3);
             padding: 0.5vmin 2vmin;
             border-radius: 2vmin;
@@ -158,36 +157,43 @@
         /* 10x10 Ruudustik */
         .mini-grid-box {
             display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 0.8vmin;
-            width: 90%;
-            aspect-ratio: 1 / 1; /* Hoiab ruudustiku ruudus */
+            grid-template-columns: repeat(10, 1fr); /* 10 veergu */
+            gap: 0.8vmin; /* Vahe pallide vahel */
+            width: 92%;
+            aspect-ratio: 1 / 1; /* Hoiab ruudustiku perfektses ruudus */
         }
+        
+        /* Üksik pall */
         .mini-dot {
-            background: rgba(255,255,255,0.15);
-            border-radius: 50%; /* Ümmargused täpid */
+            background: rgba(255,255,255,0.15); /* Tühi pall on poolläbipaistev */
+            border-radius: 50%; 
             width: 100%;
             height: 100%;
             box-shadow: inset 0 0 0.5vmin rgba(0,0,0,0.2);
+            transition: all 0.5s ease;
         }
         
-        /* Valmis mini stiil */
+        /* Valmis pall (Kuldne) */
         .mini-dot.done {
-            background: #ffc107; /* Kuldne */
-            box-shadow: 0 0 1.5vmin #ffc107;
-            animation: pulse-gold 2s infinite;
+            background: #ffc107; 
+            box-shadow: 0 0 1.5vmin #ffc107; /* Kuldne sära */
+            animation: pulse-gold 3s infinite; /* Elav pulseerimine */
+            transform: scale(1.1); /* Veidi suurem */
+            z-index: 2;
         }
         
         .progress-text {
-            font-size: 5vmin;
+            font-size: 5.5vmin;
             margin-top: 3vmin;
             font-weight: 900;
+            text-align: center;
+            line-height: 1.2;
         }
 
         @keyframes pulse-gold {
-            0% { transform: scale(1); box-shadow: 0 0 1vmin #ffc107; }
-            50% { transform: scale(1.1); box-shadow: 0 0 2vmin #ffc107; }
-            100% { transform: scale(1); box-shadow: 0 0 1vmin #ffc107; }
+            0% { box-shadow: 0 0 1vmin #ffc107; }
+            50% { box-shadow: 0 0 2.5vmin #ffc107; }
+            100% { box-shadow: 0 0 1vmin #ffc107; }
         }
 
     </style>
@@ -198,52 +204,52 @@
         <div class="content image-container" id="imageContent"></div>
 
         <div class="content info-container" id="infoContent">
-            <div style="font-size: 8vmin;">🦊</div>
+            <div class="info-header"><span>🦊</span> Grey Fox Artist</div>
             <div class="info-grid">
                 <div class="info-box"><span class="info-label-small">Name</span><span class="info-value-large">Janek</span></div>
                 <div class="info-box"><span class="info-label-small">From</span><span class="info-value-large">Estonia</span></div>
             </div>
-            <div class="journey-brand-box">
-                <span class="brand-name">@GreyFoxJourney</span>
-            </div>
+            <div class="journey-brand-box"><span class="brand-name">@GreyFoxJourney</span></div>
         </div>
 
         <div class="content countdown-container" id="countdownContent">
-            <div class="countdown-title">Start 🇪🇪 ➡️ 🇪🇸</div>
+            <div class="countdown-title">🚴 5000km Ride 🚴</div>
             <div id="countdownClock">-- Days<br>--:--:--</div>
+            <div class="countdown-desc">Estonia 🇪🇪 ➡️ Spain 🇪🇸</div>
         </div>
 
         <div class="content temp-container" id="tempContent">
-            <div class="snowflake" style="left:20%">❄</div><div class="snowflake" style="left:70%">❄</div>
-            <div style="font-size:6vmin">STUDIO TEMP</div>
+            <div class="snowflake" style="left:20%; animation-delay:0s">❄</div>
+            <div class="snowflake" style="left:70%; animation-delay:1s">❄</div>
+            <div class="temp-title">Studio ICE Box</div>
             <div class="temp-display" id="tempValue">--°C</div>
             <div class="temp-comment" id="tempComment">Thinking...</div>
         </div>
 
         <div class="content challenge-container" id="challengeContent">
             <div class="grid-title">100 Mini Challenge</div>
-            <div class="grid-subtitle">1 💎 = 50 km</div>
+            <div class="grid-subtitle">1 💎 = 50 km Support</div>
             
             <div class="mini-grid-box" id="gridBox"></div>
 
             <div class="progress-text">
-                <span id="completedCount" style="color:#ffc107; font-size:7vmin">0</span> / 100 Done
+                <span id="completedCount" style="color:#ffc107; font-size:8vmin">0</span> / 100 Done
                 <br>
-                <span style="font-size: 4vmin; opacity: 0.8;">(<span id="fundedKm">0</span> km Funded)</span>
+                <span style="font-size: 4vmin; opacity: 0.8; font-weight:500;">(<span id="fundedKm">0</span> km Funded)</span>
             </div>
         </div>
 
     </div>
 
     <script>
-        /* =========================================
-           JUHTPULT - MUUDA NEID NUMBREID!
-           ========================================= */
-        const STUDIO_TEMP = 2;          // Praegune ruumi temperatuur
-        const COMPLETED_MINIS = 2;      // Mitu mini on valmis (Challenge)
-        /* ========================================= */
+        /* ============================================================
+           JUHTPULT - MUUDA NEID NUMBREID ENNE STRIIMI!
+           ============================================================ */
+        const STUDIO_TEMP = 2;          // Praegune temperatuur (C°)
+        const COMPLETED_MINIS = 2;      // Mitu mini on valmis (Max 100)
+        /* ============================================================ */
 
-        // --- Grid Generation ---
+        // --- 100 Mini Grid Logic ---
         const gridBox = document.getElementById('gridBox');
         const completedCountEl = document.getElementById('completedCount');
         const fundedKmEl = document.getElementById('fundedKm');
@@ -253,14 +259,17 @@
             for (let i = 0; i < 100; i++) {
                 const dot = document.createElement('div');
                 dot.classList.add('mini-dot');
+                
+                // Kui see pall on valmis, lisa talle 'done' klass (kuldne)
                 if (i < COMPLETED_MINIS) {
-                    dot.classList.add('done'); // Tee kuldseks
+                    dot.classList.add('done'); 
                 }
                 gridBox.appendChild(dot);
             }
-            // Uuenda numbreid
+            // Uuenda tekstilisi numbreid
             completedCountEl.innerText = COMPLETED_MINIS;
-            fundedKmEl.innerText = COMPLETED_MINIS * 50; // Arvutab ise kilomeetrid!
+            // Arvutab automaatselt km (nt 2 * 50 = 100km)
+            fundedKmEl.innerText = COMPLETED_MINIS * 50; 
         }
 
         // --- Temp Logic ---
@@ -269,9 +278,9 @@
         function setTemp() {
             tempValueEl.innerHTML = `${STUDIO_TEMP}°C`;
             let c = "";
-            if(STUDIO_TEMP<=5) c="Paws freezing! 🧊 Need fur!";
-            else if(STUDIO_TEMP<=10) c="Fridge art... ❄️";
-            else c="Getting warm! 🔥";
+            if(STUDIO_TEMP<=5) c="My paws are freezing! 🧊 Need fur!";
+            else if(STUDIO_TEMP<=10) c="Engraving in the fridge... ❄️";
+            else c="Finally getting warm! 🔥";
             tempCommentEl.innerText = c;
         }
 
@@ -280,38 +289,51 @@
         function updateCountdown() {
             const diff = new Date('2026-05-01T12:00:00') - new Date();
             if (diff < 0) { countdownClockEl.innerHTML = "GO!"; return; }
+            
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const s = Math.floor((diff % (1000 * 60)) / 1000);
+            
             const hDisplay = h < 10 ? "0" + h : h;
             const mDisplay = m < 10 ? "0" + m : m;
             const sDisplay = s < 10 ? "0" + s : s;
+            
             countdownClockEl.innerHTML = `${d} Days<br>${hDisplay}:${mDisplay}:${sDisplay}`;
         }
 
-        // --- Slider Logic ---
+        // --- Carousel / Fade Logic ---
         const contents = [
             document.getElementById('imageContent'),
             document.getElementById('infoContent'),
-            document.getElementById('challengeContent'), // Panin Challenge'i ettepoole
+            document.getElementById('challengeContent'), // Uus Challenge leht
             document.getElementById('countdownContent'),
             document.getElementById('tempContent')
         ];
-        let idx = 0;
+        let currentIdx = 0;
 
         function toggleContent() {
-            contents[idx].classList.remove('active');
-            idx = (idx + 1) % contents.length;
-            contents[idx].classList.add('active');
+            // Võta praeguselt klass maha (hakkab hajuma)
+            contents[currentIdx].classList.remove('active');
+            
+            // Arvuta järgmine
+            currentIdx = (currentIdx + 1) % contents.length;
+            
+            // Lisa uuele klass (ilmub nähtavale)
+            // Väike timeout tagab sujuvama ülemineku
+            setTimeout(() => {
+                contents[currentIdx].classList.add('active');
+            }, 50);
         }
 
-        // --- Init ---
-        drawGrid();
-        setTemp();
-        contents[0].classList.add('active');
+        // --- START ---
+        drawGrid(); // Joonista pallid
+        setTemp();  // Pane temp paika
+        
+        contents[0].classList.add('active'); // Näita esimest lehte
+        
         setInterval(updateCountdown, 1000);
-        setInterval(toggleContent, 10000); // 10 SEKUNDIT (kiirem kui enne)
+        setInterval(toggleContent, 15000); // 15 sekundit iga slaidi jaoks
 
     </script>
 </body>
