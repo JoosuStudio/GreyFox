@@ -90,7 +90,7 @@
         .brand-label { font-size: 4vmin; opacity: 0.9; font-weight: 500; }
         .brand-name { font-size: 6.5vmin; font-weight: 900; color: #ffc107; text-shadow: 0 0.3vmin 1vmin rgba(0,0,0,0.7); margin-top: 0.5vmin; display: block;}
 
-        /* --- 3. CHALLENGE GRID (TÄIUSTATUD) --- */
+        /* --- 3. CHALLENGE GRID (NUMBRITEGA) --- */
         .challenge-container {
             box-sizing: border-box;
             background: linear-gradient(135deg, #2b1055, #7597de);
@@ -108,9 +108,12 @@
             font-size: 4.5vmin; background: rgba(0,0,0,0.3); padding: 0.5vmin 2vmin;
             border-radius: 2vmin; color: #ffc107; font-weight: 700; margin: 0;
         }
+        
         .mini-grid-box {
-            display: grid; grid-template-columns: repeat(10, 1fr); gap: 0.8vmin;
-            width: 65%; aspect-ratio: 1 / 1;
+            display: grid; grid-template-columns: repeat(10, 1fr); gap: 0.6vmin;
+            /* Suurendasin veidi laiust, et numbrid paremini mahuks */
+            width: 75%; 
+            aspect-ratio: 1 / 1;
         }
         
         .mini-dot {
@@ -119,22 +122,35 @@
             width: 100%; height: 100%;
             box-shadow: inset 0 0 0.5vmin rgba(0,0,0,0.2);
             position: relative;
+            
+            /* Teksti seadistus täpi sees */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.2vmin; /* Teksti suurus */
+            font-weight: 700;
+            color: rgba(255,255,255,0.4); /* Vaikimisi hägune number */
+            user-select: none;
         }
         
         /* OLEKUD */
         .mini-dot.engraved {
             background: #ffc107; /* KULDNE */
             box-shadow: 0 0 1vmin #ffc107;
+            color: #000; /* Must tekst loetavuse jaoks */
         }
         .mini-dot.sold {
-            background: #00e676; /* ROHELINE (Raha) */
+            background: #00e676; /* ROHELINE */
             box-shadow: 0 0 1vmin #00e676;
+            color: #000;
         }
-        /* Kui on mõlemad (Valmis + Müüdud) -> TEEMANT */
+        /* Teemant (Mõlemad) */
         .mini-dot.diamond {
-            background: #00e5ff; /* HELESININE TEEMANT */
+            background: #00e5ff; /* HELESININE */
             box-shadow: 0 0 1.5vmin #00e5ff, 0 0 3vmin rgba(255,255,255,0.8);
             animation: pulse-diamond 2s infinite;
+            color: #000;
+            border: 0.2vmin solid #fff;
         }
 
         @keyframes pulse-diamond {
@@ -146,7 +162,7 @@
         .progress-text {
             font-size: 4.5vmin; font-weight: 700; text-align: center; line-height: 1.3; margin: 0;
         }
-        .progress-highlight { color: #00e676; font-weight: 900; font-size: 6vmin; } /* Roheline number */
+        .progress-highlight { color: #00e676; font-weight: 900; font-size: 6vmin; } 
 
         /* --- 4. COUNTDOWN --- */
         .countdown-container {
@@ -279,18 +295,21 @@
 
     <script>
         /* =========================================
-           JUHTPULT - MUUDA NEID NUMBREID SIIN:
+           🎛️  JUHTPULT  🎛️
+           Muuda siin numbreid vastavalt tegelikkusele.
            ========================================= */
         const STUDIO_TEMP = 2;          
-        
-        // LISA SIIA NUMBRID KOMAGA ERALDATULT
-        // Näiteks: [1, 2, 5] tähendab et minid #001, #002 ja #005 on valmis
-        const ENGRAVED_LIST = [1, 2]; 
 
-        // LISA SIIA MÜÜDUD MINIDE NUMBRID
-        // Näiteks: [3] tähendab et mini #003 on müüdud (aga ei pruugi olla veel valmis)
-        const SOLD_LIST = [3];
+        // 1. LISA SIIA NUMBRID, MIS ON VALMIS GRAVEERITUD (Kuldne 🟡)
+        // Näiteks: [1, 2, 6]
+        const ENGRAVED_LIST = [1, 2, 6, 33]; 
+
+        // 2. LISA SIIA NUMBRID, MIS ON MÜÜDUD (Roheline 🟢)
+        // Näiteks: [3, 54, 33]
+        // NB! Kui number on mõlemas listis (nt 33), muutub see Teemandiks 💎
+        const SOLD_LIST = [3, 54, 33];
         /* ========================================= */
+
 
         // --- DOM ELEMENDID ---
         const contents = [
@@ -314,24 +333,25 @@
             if(!gridBox) return;
             gridBox.innerHTML = ''; 
             
-            // Arvutame kokku, kui palju on nimekirjades
             const engravedCount = ENGRAVED_LIST.length;
             const soldCount = SOLD_LIST.length;
 
-            for (let i = 1; i <= 100; i++) { // Numbrid 1 kuni 100
+            for (let i = 1; i <= 100; i++) {
                 const dot = document.createElement('div');
                 dot.classList.add('mini-dot');
                 
-                // Kontrollime staatust
+                // Lisame numbri täpi sisse
+                dot.innerText = i; 
+
                 const isEngraved = ENGRAVED_LIST.includes(i);
                 const isSold = SOLD_LIST.includes(i);
 
                 if (isEngraved && isSold) {
-                    dot.classList.add('diamond'); // Valmis ja Müüdud!
+                    dot.classList.add('diamond'); // Valmis + Müüdud
                 } else if (isEngraved) {
-                    dot.classList.add('engraved'); // Ainult valmis (Kuldne)
+                    dot.classList.add('engraved'); // Ainult valmis
                 } else if (isSold) {
-                    dot.classList.add('sold'); // Ainult müüdud (Roheline)
+                    dot.classList.add('sold'); // Ainult müüdud
                 }
 
                 gridBox.appendChild(dot);
