@@ -177,7 +177,7 @@
         .legend-item { display: flex; align-items: center; gap: 1vmin; font-size: 5vmin; font-weight: 900; opacity: 1; text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.8); }
         .legend-total { text-align: center; font-size: 5vmin; font-weight: 900; color: #ffc107; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1vmin; text-shadow: 0 0 1vmin rgba(255, 193, 7, 0.4); }
 
-        /* --- 5. QUEST BOARD (NEW) --- */
+        /* --- 5. QUEST BOARD (COMPACT FIX) --- */
         .quest-container {
             box-sizing: border-box;
             background: linear-gradient(135deg, #4b1d1d, #8c2b1d);
@@ -185,45 +185,49 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding: 3vmin;
+            padding: 2vmin 3vmin 3vmin 3vmin; /* Ülemine padding väiksem */
         }
         .quest-header {
-            font-size: 7vmin; font-weight: 900; color: #fff; 
+            font-size: 6vmin; /* Väiksem pealkiri */
+            font-weight: 900; color: #fff; 
             text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.6); 
-            margin: 2vmin 0 3vmin 0; border-bottom: 0.5vmin solid #ffc107; padding-bottom: 1vmin;
+            margin: 1vmin 0 2vmin 0; /* Väiksem vahe */
+            border-bottom: 0.5vmin solid #ffc107; padding-bottom: 0.5vmin;
         }
         .quest-cards-wrapper {
-            display: flex; flex-direction: column; gap: 3vmin; width: 100%; flex-grow: 1;
+            display: flex; flex-direction: column; gap: 2vmin; width: 100%; flex-grow: 1;
+            margin-bottom: 1vmin;
         }
         .quest-card {
-            background: rgba(0,0,0,0.3); border-radius: 3vmin; padding: 2.5vmin;
-            display: flex; align-items: center; gap: 3vmin; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.3); border-radius: 2.5vmin; padding: 1.5vmin 2vmin; /* Kompaktne padding */
+            display: flex; align-items: center; gap: 2vmin; border: 1px solid rgba(255,255,255,0.1);
             backdrop-filter: blur(3px);
         }
-        .quest-icon { font-size: 8vmin; }
+        .quest-icon { font-size: 6.5vmin; } /* Väiksem ikoon */
         .quest-details { display: flex; flex-direction: column; text-align: left; width: 100%;}
-        .quest-card-title { font-size: 5vmin; font-weight: 900; text-transform: uppercase; color: #ffc107; margin-bottom: 0.5vmin; }
-        .quest-card-desc { font-size: 3.5vmin; opacity: 0.9; font-weight: 500; margin-bottom: 1vmin; }
-        .quest-price-tag { font-size: 4.5vmin; font-weight: 700; }
+        .quest-card-title { font-size: 4.5vmin; font-weight: 900; text-transform: uppercase; color: #ffc107; margin-bottom: 0.3vmin; }
+        .quest-card-desc { font-size: 3.2vmin; opacity: 0.9; font-weight: 500; margin-bottom: 0.5vmin; }
+        .quest-price-tag { font-size: 4vmin; font-weight: 700; }
         .highlight-blue { color: #00e5ff; }
         .highlight-green { color: #00e676; }
         
-        /* CONTACT & PAYPAL BOXES */
+        /* CONTACT & PAYPAL BOXES - COMPACT */
         .contact-section {
-            width: 100%; display: flex; flex-direction: column; gap: 2vmin; margin-bottom: 9vmin; /* Ruumi Tickerile */
-            align-items: center;
+            width: 100%; display: flex; flex-direction: column; gap: 1.5vmin; 
+            margin-bottom: 8vmin; /* Jätab ruumi tickerile */
+            align-items: center; justify-content: center;
         }
         .contact-box {
-            background: #fff; color: #b71c1c; border-radius: 2vmin; padding: 1.5vmin 4vmin;
-            font-size: 4.5vmin; font-weight: 900; text-align: center; width: 90%;
+            background: #fff; color: #b71c1c; border-radius: 2vmin; padding: 1.2vmin 3vmin;
+            font-size: 4vmin; font-weight: 900; text-align: center; width: 90%;
             box-shadow: 0 1vmin 2vmin rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; gap: 2vmin;
         }
         .paypal-box {
-            background: #0070ba; color: #fff; border-radius: 2vmin; padding: 1.5vmin 4vmin;
-            font-size: 4.5vmin; font-weight: 900; text-align: center; width: 90%;
+            background: #0070ba; color: #fff; border-radius: 2vmin; padding: 1.2vmin 3vmin;
+            font-size: 4vmin; font-weight: 900; text-align: center; width: 90%;
             box-shadow: 0 1vmin 2vmin rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; gap: 2vmin;
         }
-        .contact-label { font-size: 3vmin; color: #fff; opacity: 0.8; text-transform: uppercase; font-weight: 700; width: 100%; text-align: center; margin-bottom: -1vmin; margin-top: 1vmin;}
+        .contact-label { font-size: 2.8vmin; color: #fff; opacity: 0.8; text-transform: uppercase; font-weight: 700; width: 100%; text-align: center; margin-bottom: -0.8vmin; margin-top: 0.5vmin;}
 
         /* UUDISTERIBA (TICKER) */
         .ticker-wrap {
@@ -396,12 +400,10 @@
         const STUDIO_TEMP = 2;          
 
         // 2. MINI CHALLENGE ANDMED
-        // Lisa siia numbrid, mis on juba tehtud või müüdud
         const ENGRAVED_LIST = [1, 2, 6, 33]; // Kollane 🟡 (Graveeritud)
         const SOLD_LIST = [3, 54, 33];       // Roheline 🟢 (Müüdud)
 
         // 3. THE LIFE BRANCH - ANNETUSTE JUHTPULT 🌿
-        // Muuda siin numbreid vastavalt annetustele:
         const COUNT_5_EUR  = 2;   // 🍃 Mitu 5€ toetajat?
         const COUNT_15_EUR = 10;  // 🍂 Mitu 15€ toetajat?
         const COUNT_25_EUR = 1;   // ✨ Mitu 25€ toetajat?
@@ -409,7 +411,6 @@
 
         // 4. QUEST BOARD & TICKER 📜
         const QUEST_MAP_PRICE_TEXT = "From €80 (Estonia: 5/6 Left)";
-        // Muuda seda teksti jooksva riba jaoks:
         const TICKER_TEXT = "🔴 JUST SOLD: Piece #003 'The Guardian' to K. Reinhard! 🛡️ Map section 100-150km CLOSED! 🇪🇪 Estonia: 1/6 SOLD! 🇪🇪 Only 5 spots left in Estonia! 💨";
 
         /* ========================================= */
@@ -420,7 +421,7 @@
             document.getElementById('infoContent'),
             document.getElementById('challengeContent'),
             document.getElementById('treeContent'),
-            document.getElementById('questContent'), // UUS LEHT!
+            document.getElementById('questContent'), 
             document.getElementById('countdownContent'),
             document.getElementById('tempContent')
         ];
@@ -437,17 +438,15 @@
             
             if(priceEl) priceEl.innerText = QUEST_MAP_PRICE_TEXT;
             if(tickerEl) {
-                // Ticker peab olema piisavalt pikk, et joosta sujuvalt, dubleerime teksti
                 tickerEl.innerHTML = `<span>${TICKER_TEXT}</span> <span>${TICKER_TEXT}</span>`; 
             }
         }
 
         /* -------------------------------------------
-           LOGIC: CHALLENGE GRID (LIPPUDEGA)
+           LOGIC: CHALLENGE GRID
         ------------------------------------------- */
         const gridBox = document.getElementById('gridBox');
 
-        // Funktsioon, mis määrab numbrile riigi lipu
         function getCountryClass(n) {
             if (n <= 6) return 'flag-est';        // Eesti 1-6
             if (n <= 11) return 'flag-lat';       // Läti 7-11 (5tk)
@@ -479,22 +478,18 @@
                 const isSold = SOLD_LIST.includes(i);
 
                 if (isEngraved && isSold) {
-                    // TÄIESTI VALMIS (Teemant) - võidab kõik
                     dot.classList.add('diamond'); 
                     dot.innerText = "💎"; 
                 } else if (isEngraved) {
-                    // GRAVEERITUD (Kollane)
                     dot.classList.add('engraved'); 
                     dot.innerText = i;
                 } else if (isSold) {
-                    // MÜÜDUD (Roheline)
                     dot.classList.add('sold'); 
                     dot.innerText = i;
                 } else {
-                    // VABA (Näita riigi lippu)
                     dot.innerText = i; 
-                    dot.classList.add('flag-bg');       // Üldine lipu stiil
-                    dot.classList.add(getCountryClass(i)); // Konkreetne riik
+                    dot.classList.add('flag-bg');       
+                    dot.classList.add(getCountryClass(i));
                 }
                 
                 gridBox.appendChild(dot);
@@ -502,7 +497,7 @@
         }
 
         /* -------------------------------------------
-           LOGIC: THE LIFE BRANCH (PUU) 🌿
+           LOGIC: THE LIFE BRANCH
         ------------------------------------------- */
         const leavesContainer = document.getElementById('leavesContainer');
         const treeTotalValueEl = document.getElementById('treeTotalValue');
