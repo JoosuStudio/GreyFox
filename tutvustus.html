@@ -114,12 +114,38 @@
             display: flex; justify-content: center; align-items: center; font-size: 2.2vmin; 
             font-weight: 700; color: rgba(255,255,255,0.4); user-select: none; line-height: 1;
         }
-        .mini-dot.engraved { background: #ffc107; box-shadow: 0 0 1vmin #ffc107; color: #000; }
-        .mini-dot.sold { background: #00e676; box-shadow: 0 0 1vmin #00e676; color: #000; }
+        
+        /* --- STAATUSED --- */
+        .mini-dot.engraved { background: #ffc107; box-shadow: 0 0 1vmin #ffc107; color: #000; text-shadow: none; border:none;}
+        .mini-dot.sold { background: #00e676; box-shadow: 0 0 1vmin #00e676; color: #000; text-shadow: none; border:none;}
         .mini-dot.diamond {
             background: transparent; box-shadow: none; border: none; font-size: 4vmin;
             animation: bling-bling 2s infinite alternate ease-in-out; filter: drop-shadow(0 0 1vmin rgba(255, 255, 255, 0.8));
         }
+
+        /* --- LIPUD (CSS Gradients) --- */
+        .mini-dot.flag-bg {
+            color: #fff;
+            text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.3);
+            box-sizing: border-box;
+        }
+        /* Eesti: Sinine-Must-Valge (horisontaalne) */
+        .flag-est { background: linear-gradient(to bottom, #0072ce 33%, #000 33%, #000 66%, #fff 66%); }
+        /* Läti: Punane-Valge-Punane (horisontaalne) */
+        .flag-lat { background: linear-gradient(to bottom, #9E3039 40%, #fff 40%, #fff 60%, #9E3039 60%); }
+        /* Leedu: Kollane-Roheline-Punane (horisontaalne) */
+        .flag-lit { background: linear-gradient(to bottom, #FDB913 33%, #006A44 33%, #006A44 66%, #C1272D 66%); }
+        /* Poola: Valge-Punane (horisontaalne). Must tekst parema loetavuse jaoks */
+        .flag-pol { background: linear-gradient(to bottom, #fff 50%, #DC143C 50%); color: #000 !important; text-shadow: none !important; }
+        /* Saksamaa: Must-Punane-Kuldne (horisontaalne) */
+        .flag-ger { background: linear-gradient(to bottom, #000 33%, #DD0000 33%, #DD0000 66%, #FFCE00 66%); }
+        /* Prantsusmaa: Sinine-Valge-Punane (VERTIKAALNE) */
+        .flag-fra { background: linear-gradient(to right, #002395 33%, #fff 33%, #fff 66%, #ED2939 66%); }
+        /* Hispaania: Punane-Kollane-Punane (horisontaalne) */
+        .flag-esp { background: linear-gradient(to bottom, #AA151B 25%, #F1BF00 25%, #F1BF00 75%, #AA151B 75%); }
+
+
         @keyframes bling-bling {
             0% { transform: scale(1); filter: drop-shadow(0 0 0.5vmin rgba(255, 255, 255, 0.5)); }
             100% { transform: scale(1.3); filter: drop-shadow(0 0 2vmin rgba(255, 255, 255, 1)); }
@@ -325,7 +351,7 @@
                     <div id="countdownClock">-- Days<br>--:--:--</div>
                     <span class="spinning-emoji" id="emoji-right">🚴</span>
                 </div>
-                <p class="countdown-description">From Estonia 🇪🇪 to Spain 🇪🇸<br>Stream cycling, art & fun!</p>
+                <p class="countdown-description">From Estonia 🇪🇪 to Spain 🇪🇸<br>Live cycling, art & wild camping!</p>
             </div>
         </div>
 
@@ -347,18 +373,19 @@
            ========================================= */
         
         // 1. STUDIO TEMPERATUUR
-        const STUDIO_TEMP = 5;          
+        const STUDIO_TEMP = 2;          
 
         // 2. MINI CHALLENGE ANDMED
-        const ENGRAVED_LIST = [1, 2,]; // Kollane 🟡
-        const SOLD_LIST = [3,];       // Roheline 🟢
+        // Lisa siia numbrid, mis on juba tehtud või müüdud
+        const ENGRAVED_LIST = [1, 2, 6, 33]; // Kollane 🟡 (Graveeritud)
+        const SOLD_LIST = [3, 54, 33];       // Roheline 🟢 (Müüdud)
 
         // 3. THE LIFE BRANCH - ANNETUSTE JUHTPULT 🌿
-        // Muuda siin numbreid, et lisada annetusi:
-        const COUNT_5_EUR  = 0;   // 🍃 Mitu 5€ toetajat?
-        const COUNT_15_EUR = 0;  // 🍂 Mitu 15€ toetajat?
-        const COUNT_25_EUR = 0;   // ✨ Mitu 25€ toetajat?
-        const COUNT_50_EUR = 0;   // 🌟 Mitu 50€ toetajat?
+        // Muuda siin numbreid vastavalt annetustele:
+        const COUNT_5_EUR  = 2;   // 🍃 Mitu 5€ toetajat?
+        const COUNT_15_EUR = 10;  // 🍂 Mitu 15€ toetajat?
+        const COUNT_25_EUR = 1;   // ✨ Mitu 25€ toetajat?
+        const COUNT_50_EUR = 1;   // 🌟 Mitu 50€ toetajat?
 
         /* ========================================= */
 
@@ -367,7 +394,7 @@
             document.getElementById('imageContent'),
             document.getElementById('infoContent'),
             document.getElementById('challengeContent'),
-            document.getElementById('treeContent'), // Uus Tree Slide
+            document.getElementById('treeContent'),
             document.getElementById('countdownContent'),
             document.getElementById('tempContent')
         ];
@@ -376,9 +403,21 @@
         if(contents[0]) contents[0].classList.add('active');
 
         /* -------------------------------------------
-           LOGIC: CHALLENGE GRID
+           LOGIC: CHALLENGE GRID (LIPPUDEGA)
         ------------------------------------------- */
         const gridBox = document.getElementById('gridBox');
+
+        // Funktsioon, mis määrab numbrile riigi lipu
+        function getCountryClass(n) {
+            if (n <= 6) return 'flag-est';        // Eesti 1-6
+            if (n <= 11) return 'flag-lat';       // Läti 7-11 (5tk)
+            if (n <= 16) return 'flag-lit';       // Leedu 12-16 (5tk)
+            if (n <= 32) return 'flag-pol';       // Poola 17-32 (16tk)
+            if (n <= 48) return 'flag-ger';       // Saksamaa 33-48 (16tk)
+            if (n <= 71) return 'flag-fra';       // Prantsusmaa 49-71 (23tk)
+            return 'flag-esp';                    // Hispaania 72-100 (29tk)
+        }
+
         function drawGrid() {
             if(!gridBox) return;
             gridBox.innerHTML = ''; 
@@ -395,18 +434,29 @@
             for (let i = 1; i <= 100; i++) {
                 const dot = document.createElement('div');
                 dot.classList.add('mini-dot');
+                
                 const isEngraved = ENGRAVED_LIST.includes(i);
                 const isSold = SOLD_LIST.includes(i);
 
                 if (isEngraved && isSold) {
-                    dot.classList.add('diamond'); dot.innerText = "💎"; 
+                    // TÄIESTI VALMIS (Teemant) - võidab kõik
+                    dot.classList.add('diamond'); 
+                    dot.innerText = "💎"; 
                 } else if (isEngraved) {
-                    dot.classList.add('engraved'); dot.innerText = i;
+                    // GRAVEERITUD (Kollane)
+                    dot.classList.add('engraved'); 
+                    dot.innerText = i;
                 } else if (isSold) {
-                    dot.classList.add('sold'); dot.innerText = i;
+                    // MÜÜDUD (Roheline)
+                    dot.classList.add('sold'); 
+                    dot.innerText = i;
                 } else {
+                    // VABA (Näita riigi lippu)
                     dot.innerText = i; 
+                    dot.classList.add('flag-bg');       // Üldine lipu stiil
+                    dot.classList.add(getCountryClass(i)); // Konkreetne riik
                 }
+                
                 gridBox.appendChild(dot);
             }
         }
@@ -417,7 +467,6 @@
         const leavesContainer = document.getElementById('leavesContainer');
         const treeTotalValueEl = document.getElementById('treeTotalValue');
 
-        // Defineerime lehtede tüübid
         const LEAF_CONFIG = {
             'small':  { icon: '🍃', price: 5,  cls: '' },
             'medium': { icon: '🍂', price: 15, cls: '' },
@@ -425,7 +474,6 @@
             'gold':   { icon: '🌟', price: 50, cls: 'leaf-gold' }
         };
 
-        // Genereerime lehtede listi vastavalt Control Paneli numbritele
         function generateGardenList() {
             let garden = [];
             for(let i=0; i<COUNT_5_EUR; i++)  garden.push('small');
@@ -435,24 +483,16 @@
             return garden;
         }
 
-        // --- OKSA KOORDINAADID (Left %, Top %) ---
         const BRANCH_LOCATIONS = [
-            { left: 15, top: 75 }, // Alumine vasak jäme
-            { left: 25, top: 68 }, // Esimene tõus
-            { left: 35, top: 48 }, // Vasak ülemine haru
-            { left: 38, top: 62 }, // Keskmine alumine haru
-            { left: 52, top: 52 }, // Keskmine jäme
-            { left: 60, top: 40 }, // Ülemine keskmine
-            { left: 72, top: 60 }, // Parem alumine haru
-            { left: 80, top: 35 }, // Parem ülemine haru
-            { left: 90, top: 45 }, // Päris parem serv
-            { left: 45, top: 35 }, // Kõrge oks
-            { left: 65, top: 68 }  // Madal oks
+            { left: 15, top: 75 }, { left: 25, top: 68 }, { left: 35, top: 48 }, 
+            { left: 38, top: 62 }, { left: 52, top: 52 }, { left: 60, top: 40 }, 
+            { left: 72, top: 60 }, { left: 80, top: 35 }, { left: 90, top: 45 }, 
+            { left: 45, top: 35 }, { left: 65, top: 68 }
         ];
 
         function drawTree() {
             if(!leavesContainer) return;
-            leavesContainer.innerHTML = ''; // Puhasta
+            leavesContainer.innerHTML = ''; 
 
             let totalEur = 0;
             const leafGarden = generateGardenList();
@@ -468,16 +508,12 @@
                 if(config.cls) leaf.classList.add(config.cls);
                 leaf.innerText = config.icon;
 
-                // Võtame koordinaadi järjekorras (ringiratast kui lehti on rohkem)
                 const spot = BRANCH_LOCATIONS[index % BRANCH_LOCATIONS.length];
-                
-                // Juhuslik nihe, et lehed ei oleks täpselt üksteise peal
-                const noiseX = (Math.random() - 0.5) * 4; // suurendasin nihet veidi
+                const noiseX = (Math.random() - 0.5) * 4;
                 const noiseY = (Math.random() - 0.5) * 4;
 
                 leaf.style.left = (spot.left + noiseX) + '%';
                 leaf.style.top = (spot.top + noiseY) + '%';
-                
                 leaf.style.animationDelay = (Math.random() * 2) + 's';
                 leavesContainer.appendChild(leaf);
             });
@@ -531,7 +567,7 @@
                 contents[currentContentIndex].classList.add('active');
             }, 50); 
         }
-        setInterval(toggleContent, 10000); // Slaidivahetus
+        setInterval(toggleContent, 10000); // 10 sekundi tagant slaidivahetus
 
     </script>
 </body>
