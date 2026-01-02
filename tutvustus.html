@@ -41,7 +41,7 @@
             opacity: 0;
             z-index: 1;
             transition: opacity 0.8s ease-in-out;
-            display: flex;
+            display: flex; /* Alati flex */
         }
 
         .content.active {
@@ -49,13 +49,13 @@
             z-index: 10;
         }
 
-        /* --- 1. IMAGE CONTENT STYLE --- */
+        /* --- 1. IMAGE --- */
         .image-container {
             background: url('https://raw.githubusercontent.com/JoosuStudio/GreyFox/main/1766426483389~4.jpg') no-repeat center;
             background-size: cover;
         }
 
-        /* --- 2. INFO CONTENT STYLE --- */
+        /* --- 2. INFO --- */
         .info-container {
             box-sizing: border-box;
             background: radial-gradient(circle at center, rgba(30, 90, 50, 0.95), rgba(5, 35, 20, 0.98));
@@ -109,13 +109,13 @@
         .brand-label { font-size: 4vmin; opacity: 0.9; font-weight: 500; }
         .brand-name { font-size: 6.5vmin; font-weight: 900; color: #ffc107; text-shadow: 0 0.3vmin 1vmin rgba(0,0,0,0.7); margin-top: 0.5vmin; display: block;}
 
-        /* --- 3. CHALLENGE GRID STYLE (PARANDATUD) --- */
+        /* --- 3. CHALLENGE GRID (PARANDATUD) --- */
         .challenge-container {
             box-sizing: border-box;
             background: linear-gradient(135deg, #2b1055, #7597de);
             color: #fff;
             flex-direction: column;
-            /* Muutsin selle 'space-evenly', et jaotaks ruumi paremini */
+            /* Jaotame ruumi ühtlaselt, et asjad mahuksid */
             justify-content: space-evenly; 
             align-items: center;
             padding: 2vmin;
@@ -124,9 +124,9 @@
             font-size: 6vmin;
             font-weight: 900;
             text-transform: uppercase;
-            margin-bottom: 0; /* Vähendasin marginaali */
             text-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.5);
             text-align: center;
+            margin: 0;
             line-height: 1.1;
         }
         .grid-subtitle {
@@ -134,204 +134,19 @@
             background: rgba(0,0,0,0.3);
             padding: 0.5vmin 2vmin;
             border-radius: 2vmin;
-            margin-bottom: 1vmin; /* Vähendasin vahet */
             color: #ffc107;
             font-weight: 700;
+            margin: 0;
         }
         .mini-grid-box {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
             gap: 0.8vmin;
-            /* !!! SIIN OLI VIGA ENNE (90%) - MUUTSIN VÄIKSEMAKS !!! */
-            width: 60%; 
+            /* Vähendasin laiust, et ei suruks teksti välja */
+            width: 65%; 
             aspect-ratio: 1 / 1;
         }
         .mini-dot {
             background: rgba(255,255,255,0.15);
             border-radius: 50%;
-            width: 100%;
-            height: 100%;
-            box-shadow: inset 0 0 0.5vmin rgba(0,0,0,0.2);
-        }
-        .mini-dot.done {
-            background: #ffc107;
-            box-shadow: 0 0 1.5vmin #ffc107;
-            animation: pulse-gold 2s infinite;
-        }
-        .progress-text {
-            font-size: 5vmin;
-            margin-top: 1vmin; /* Vähendasin vahet */
-            font-weight: 900;
-            text-align: center;
-            line-height: 1.3;
-        }
-        @keyframes pulse-gold {
-            0% { transform: scale(1); box-shadow: 0 0 1vmin #ffc107; }
-            50% { transform: scale(1.1); box-shadow: 0 0 2vmin #ffc107; }
-            100% { transform: scale(1); box-shadow: 0 0 1vmin #ffc107; }
-        }
-
-        /* --- 4. COUNTDOWN STYLES --- */
-        .countdown-container {
-            box-sizing: border-box;
-            background: linear-gradient(135deg, rgba(10, 80, 40, 0.95), rgba(20, 110, 50, 0.95));
-            color: #fff;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 3vmin;
-        }
-        .text-wrapper {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 3vmin;
-            width: 100%;
-        }
-        .countdown-title {
-            font-size: 7.5vmin;
-            font-weight: 900;
-            text-shadow: 0 0.5vmin 1.5vmin rgba(0,0,0,0.7);
-            margin: 0 0 2vmin 0;
-            text-align: center;
-            line-height: 1.1;
-        }
-        #countdownClock {
-            font-size: 15vmin;
-            font-weight: 900;
-            color: #ffc107;
-            text-shadow: 0 0 3vmin #ffc107, 0 0 5vmin rgba(0,0,0,0.8);
-            animation: pulse 2s infinite;
-            margin: 1vmin 0;
-            line-height: 1.1;
-            text-align: center;
-        }
-        .countdown-description {
-            font-size: 5.5vmin;
-            opacity: 0.95;
-            line-height: 1.4;
-            margin-top: 3vmin;
-            text-align: center;
-            max-width: 98%;
-            font-weight: 700;
-            text-shadow: 0 0.2vmin 0.5vmin rgba(0,0,0,0.6);
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
-        }
-        .countdown-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 4vmin;
-            width: 100%;
-        }
-        .spinning-emoji {
-            font-size: 10vmin;
-            animation: spin 6s linear infinite;
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* --- 5. TEMP CONTENT STYLES --- */
-        .temp-container {
-            box-sizing: border-box;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: #fff;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 3vmin;
-        }
-        .snowflake {
-            position: absolute;
-            top: -15%;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 7vmin;
-            animation: fall linear infinite;
-        }
-        @keyframes fall {
-            to { transform: translateY(110vh) rotate(360deg); }
-        }
-        .temp-title {
-            font-size: 6.5vmin;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-bottom: 2vmin;
-            z-index: 2;
-            text-shadow: 0 0.5vmin 1.5vmin rgba(0,0,0,0.7);
-            letter-spacing: 0.2vmin;
-        }
-        .temp-display {
-            font-size: 25vmin;
-            font-weight: 900;
-            color: #00e5ff;
-            text-shadow: 0 0 4vmin #00e5ff, 0 0.5vmin 2vmin rgba(0,0,0,0.9);
-            margin: 1vmin 0;
-            z-index: 2;
-            line-height: 0.9;
-        }
-        .temp-comment {
-            font-size: 6vmin;
-            text-align: center;
-            max-width: 95%;
-            z-index: 2;
-            font-style: italic;
-            opacity: 1;
-            margin-top: 3vmin;
-            font-weight: 700;
-            text-shadow: 0 0.3vmin 0.8vmin rgba(0,0,0,0.8);
-            line-height: 1.3;
-        }
-        .fox-icon {
-            font-size: 12vmin;
-            margin-bottom: 2vmin;
-            z-index: 2;
-            filter: drop-shadow(0 0.5vmin 1vmin rgba(0,0,0,0.5));
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="content image-container" id="imageContent"></div>
-
-        <div class="content info-container" id="infoContent">
-            <div class="info-header">
-                <span>🦊</span> The Grey Fox Artist
-            </div>
-
-            <div class="info-grid">
-                <div class="info-box">
-                    <span class="info-box-icon">👤</span>
-                    <span class="info-label-small">Name</span>
-                    <span class="info-value-large">Janek Joosu</span>
-                </div>
-                <div class="info-box">
-                    <span class="info-box-icon">🎂</span>
-                    <span class="info-label-small">Age</span>
-                    <span class="info-value-large">39</span>
-                </div>
-                <div class="info-box">
-                    <span class="info-box-icon">🇪🇪</span>
-                    <span class="info-label-small">From</span>
-                    <span class="info-value-large">Estonia</span>
-                </div>
-                <div class="info-box">
-                    <span class="info-box-icon">💎</span>
-                    <span class="info-label-small">Craft</span>
-                    <span class="info-value-large" style="font-size: 5vmin;">Glass Engraver</span>
-                </div>
-            </div>
-
-            <div class="journey-brand-box">
-                <span class="brand-label">Follow the trace:</span>
-                <span class="brand-name">@GreyFoxJourney</span>
-            </div>
-        </div>
-
-        
+            width: 10
