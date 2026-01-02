@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins:wght@600;700&display=swap');
 
     :root {
         --bg-color: rgba(18, 22, 30, 0.95);
         --text-white: #ffffff;
         --accent-gold: #FFD700;
         --accent-blue: #00E5FF;
-        --glass-border: rgba(255, 255, 255, 0.1);
         --accent-red: #ff4444;
+        --glass-border: rgba(255, 255, 255, 0.15);
     }
 
     body, html {
@@ -22,161 +22,154 @@
         background-color: transparent;
         font-family: 'Poppins', sans-serif;
         overflow: hidden;
-        /* See tsentreerib kasti ekraanil */
+        /* Hoiab kasti keskel */
         display: flex;
         justify-content: center;
         align-items: center; 
     }
 
-    /* Peamine konteiner - Nüüd responsive! */
-    .card {
+    /* Peamine konteiner - Nüüd madal ja lai */
+    .banner-card {
         position: relative;
-        /* Laius on 94% ekraanist/aknast */
-        width: 94%; 
-        background: linear-gradient(145deg, rgba(20, 25, 35, 0.98), rgba(30, 35, 45, 0.95));
-        border-radius: 3vw; /* Ümarad nurgad muutuvad suurusega */
-        padding: 3vw 4vw;   /* Sisuvahe muutub suurusega */
+        width: 96%; /* Laius peaaegu terve ekraan */
+        /* Flexbox paneb asjad kõrvuti, mitte üksteise alla */
+        display: flex; 
+        justify-content: space-between; /* Lükkab vasaku ja parema poole laiali */
+        align-items: center; /* Joondab vertikaalselt keskele */
+        
+        background: linear-gradient(90deg, rgba(20, 25, 35, 0.98), rgba(35, 40, 50, 0.95));
+        border-radius: 2vw; /* Ümarad nurgad */
+        padding: 1.5vw 3vw; /* Vähem paddingut üleval/all */
+        
         color: var(--text-white);
-        border: 2px solid var(--glass-border);
-        box-shadow: 0 0 2vw rgba(0, 0, 0, 0.5);
-        animation: glowPulse 4s infinite alternate;
+        border: 0.2vw solid var(--glass-border);
+        box-shadow: 0 0.5vw 2vw rgba(0, 0, 0, 0.6);
         box-sizing: border-box;
+        
+        /* See hoiab kõrguse madala */
+        height: auto; 
     }
 
-    /* Vasakpoolne kuldne triip */
-    .card::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 15%;
-        bottom: 15%;
-        width: 1.5vw; /* Triibu laius muutub */
-        background: var(--accent-gold);
-        border-radius: 0 1vw 1vw 0;
-        box-shadow: 0 0 1vw var(--accent-gold);
-    }
-
-    /* --- TEKSTIDE SUURUSED ON NÜÜD 'vw' (Viewport Width) --- */
-
-    /* Ülemine rida */
-    .top-badge {
-        font-size: 3.5vw; /* Muutuv suurus */
-        text-transform: uppercase;
-        letter-spacing: 0.2vw;
-        color: var(--accent-blue);
-        font-weight: 700;
-        margin-bottom: 1vw;
+    /* --- VASAK SEKTSIOON (Päev + Pealkiri) --- */
+    .left-section {
         display: flex;
         align-items: center;
-        gap: 2vw;
-    }
-    
-    .live-dot {
-        height: 2.5vw;
-        width: 2.5vw;
-        background-color: var(--accent-red);
-        border-radius: 50%;
-        display: inline-block;
-        box-shadow: 0 0 1vw var(--accent-red);
-        animation: blink 2s infinite;
+        gap: 2.5vw; /* Vahe elemendi vahel */
     }
 
-    /* Pealkiri */
+    .badge-pill {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.5vw 1.5vw;
+        border-radius: 1vw;
+        font-size: 2.5vw;
+        font-weight: 700;
+        color: var(--accent-blue);
+        display: flex;
+        align-items: center;
+        gap: 1vw;
+        white-space: nowrap;
+    }
+
+    .live-dot {
+        height: 1.5vw;
+        width: 1.5vw;
+        background-color: var(--accent-red);
+        border-radius: 50%;
+        box-shadow: 0 0 1vw var(--accent-red);
+        animation: blink 1.5s infinite;
+    }
+
     .main-title {
         font-family: 'Montserrat', sans-serif;
-        font-size: 6.5vw; /* Suur pealkiri */
+        font-size: 4vw; /* Suur pealkiri */
         font-weight: 800;
-        line-height: 1.1;
-        margin-bottom: 1vw;
-        text-shadow: 0.5vw 0.5vw 1vw rgba(0,0,0,0.6);
+        text-shadow: 0 0.2vw 0.5vw rgba(0,0,0,0.5);
+        white-space: nowrap;
+        line-height: 1;
     }
 
     .main-title span {
         color: var(--accent-gold);
     }
 
-    /* Alampealkiri */
-    .subtitle {
-        font-size: 3.5vw;
+    /* --- PAREM SEKTSIOON (Progress) --- */
+    .right-section {
+        text-align: right;
+    }
+
+    .progress-text {
+        font-size: 2.5vw;
         color: #cccccc;
-        font-weight: 400;
-        margin-bottom: 4vw;
-        font-style: italic;
-    }
-
-    /* Progressi sektsioon */
-    .progress-container {
-        margin-top: 2vw;
-    }
-
-    .progress-labels {
-        display: flex;
-        justify-content: space-between;
-        font-size: 3vw;
         font-weight: 600;
-        margin-bottom: 1.5vw;
+        text-transform: uppercase;
+        letter-spacing: 0.1vw;
     }
 
-    .highlight-number {
+    .progress-numbers {
+        font-size: 3.5vw;
+        font-weight: 800;
+        color: var(--text-white);
+        line-height: 1;
+    }
+    
+    .progress-numbers span {
         color: var(--accent-gold);
     }
 
-    .progress-bar-bg {
+    /* --- ALUMINE PROGRESSIRIBA --- */
+    .bottom-progress-bg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
         width: 100%;
-        height: 2.5vw; /* Riba kõrgus */
-        background-color: rgba(255,255,255,0.1);
-        border-radius: 2vw;
+        height: 0.8vw; /* Riba kõrgus */
+        background: rgba(0,0,0,0.3);
         overflow: hidden;
+        border-bottom-left-radius: 1.8vw; /* Jälgib kaardi kumerust */
+        border-bottom-right-radius: 1.8vw;
     }
 
-    /* MUUDA SEDA LAIUST (width) vastavalt progressile */
-    .progress-bar-fill {
+    /* MUUDA LAIUST SIIN (width) */
+    .bottom-progress-fill {
         height: 100%;
-        width: 2%; /* 2/100 */
-        background: linear-gradient(90deg, var(--accent-gold), #ffec8b);
-        border-radius: 2vw;
-        box-shadow: 0 0 2vw rgba(255, 215, 0, 0.5);
+        width: 2%;  /* <--- 2/100 */
+        background: var(--accent-gold);
+        box-shadow: 0 0 1.5vw var(--accent-gold);
         transition: width 1s ease-in-out;
-    }
-
-    /* Animatsioonid */
-    @keyframes glowPulse {
-        0% { box-shadow: 0 0 2vw rgba(255, 215, 0, 0.1); border-color: rgba(255, 215, 0, 0.2); }
-        100% { box-shadow: 0 0 4vw rgba(255, 215, 0, 0.4); border-color: rgba(255, 215, 0, 0.6); }
     }
 
     @keyframes blink {
         0% { opacity: 1; }
-        50% { opacity: 0.4; }
+        50% { opacity: 0.3; }
         100% { opacity: 1; }
     }
 </style>
 </head>
 <body>
 
-<div class="card">
-    <div class="top-badge">
-        <span class="live-dot"></span>
-        DAY 10 / 30 CHALLENGE
-    </div>
-
-    <div class="main-title">
-        Engraving <span>#003</span>
-    </div>
-
-    <div class="subtitle">
-        Mini engraving series
-    </div>
-
-    <div class="progress-container">
-        <div class="progress-labels">
-            <span>Progress</span>
-            <span class="highlight-number">2 / 100 Completed</span>
+<div class="banner-card">
+    
+    <div class="left-section">
+        <div class="badge-pill">
+            <div class="live-dot"></div>
+            DAY 10
         </div>
-        <div class="progress-bar-bg">
-            <div class="progress-bar-fill" style="width: 2%;"></div>
+        <div class="main-title">
+            Engraving <span>#003</span>
         </div>
     </div>
+
+    <div class="right-section">
+        <div class="progress-numbers">
+            <span>2</span> / 100
+        </div>
+        <div class="progress-text">Finished</div>
+    </div>
+
+    <div class="bottom-progress-bg">
+        <div class="bottom-progress-fill" style="width: 2%;"></div>
+    </div>
+
 </div>
 
 </body>
