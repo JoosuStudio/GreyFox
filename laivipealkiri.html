@@ -32,7 +32,8 @@
         align-items: center; 
         background: linear-gradient(90deg, rgba(20, 25, 35, 0.98), rgba(35, 40, 50, 0.95));
         border-radius: 2vw;
-        padding: 1.5vw 3vw; 
+        /* MUUDETUD: Suurendasin veidi ülemist ja alumist paddingut (oli 1.5vw), et kell mahuks */
+        padding: 2vw 3vw; 
         color: var(--text-white);
         border: 0.2vw solid var(--glass-border);
         box-shadow: 0 0.5vw 2vw rgba(0, 0, 0, 0.6);
@@ -42,7 +43,7 @@
     .left-section {
         display: flex;
         align-items: center;
-        gap: 2vw;
+        gap: 2.5vw;
     }
 
     .badge-pill {
@@ -57,43 +58,40 @@
         gap: 1vw;
         white-space: nowrap;
         font-variant-numeric: tabular-nums;
+        height: fit-content;
     }
 
-    /* --- KELLA STIIL --- */
-    .clock-box.badge-pill {
+    /* --- UUS KELLA JA KUUPÄEVA GRUPP --- */
+    .clock-group {
+        display: flex;
         flex-direction: column;
-        align-items: center; 
+        align-items: center; /* Joondab kella ja kuupäeva keskele */
         justify-content: center;
-        /* Veidi suurem padding, et tekst hingaks */
-        padding: 0.6vw 1.8vw;
+        line-height: 1;
     }
 
     .clock-time {
-        /* Suurem font ja parem loetavus */
-        font-size: 2.2vw;
-        font-weight: 700;
-        color: var(--text-white);
+        /* Sama stiil mis "DAY 10" */
         font-family: 'Montserrat', sans-serif; 
-        text-align: center;
-        line-height: 1;
-        /* Kerge vari eristumiseks */
-        text-shadow: 0 0.1vw 0.3vw rgba(0,0,0,0.5);
+        font-size: 3vw;  /* Suur ja nähtav */
+        font-weight: 800; /* Extra Bold */
+        color: var(--text-white);
+        font-variant-numeric: tabular-nums; /* Numbrid ei hüppa */
+        text-shadow: 0 0.2vw 0.5vw rgba(0,0,0,0.5);
+        margin-bottom: 0.2vw; /* Väike vahe kuupäevaga */
     }
 
     .clock-date {
-        /* Muudetud font ja suurus */
-        font-size: 0.9vw;
-        font-weight: 700; /* RASVANE */
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.2vw;
+        font-weight: 700;
+        /* MUUDETUD: Punane värv */
+        color: var(--accent-red); 
         text-transform: uppercase;
         letter-spacing: 0.1vw;
-        color: var(--accent-blue);
-        font-family: 'Montserrat', sans-serif;
-        text-align: center;
-        margin-top: 0.2vw;
-        /* Helendav efekt, et oleks näha tumedal taustal */
-        text-shadow: 0 0 1vw rgba(0, 229, 255, 0.4); 
+        text-shadow: 0 0 1vw rgba(255, 68, 68, 0.3); /* Punakas kuma */
     }
-    /* ------------------- */
+    /* ------------------------------------ */
 
     .live-dot {
         height: 1.5vw;
@@ -177,19 +175,19 @@
             DAY 10
         </div>
 
-        <div class="clock-box badge-pill">
+        <div class="clock-group">
             <div class="clock-time" id="time-display">00:00:00</div>
             <div class="clock-date" id="date-display">...</div>
         </div>
 
         <div class="main-title">
-            Engraving <span>#004</span>
+            Engraving <span>#003</span>
         </div>
     </div>
 
     <div class="right-section">
         <div class="progress-numbers">
-            <span>3</span> / 100
+            <span>2</span> / 100
         </div>
         <div class="progress-text">Finished</div>
     </div>
