@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { margin: 0; padding: 0; overflow: hidden; }
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; 
+            height: 100%;
+            border: none;
+            display: none; /* Vaikimisi peidetud */
+        }
+        /* Näita esimest vaikimisi */
+        #goal1 { display: block; }
+    </style>
+</head>
+<body>
+
+    <iframe id="goal1" src="https://streamlabs.com/widgets/follower-goal?token=81E66FA67DFCFF571C1C074CFF3510D494005D1BC90DD3A4D92A8AB5FD09E34A473BE3EDC1A83A5D375E3CA48F7570CAD8D032A17F88B9EE42635A6416415F190E13FC2DE63CDC992C49444070DFE4E664313AB22CBBC8F44409E072D3A356A517C74C2FA7304E75A4A3E8A021C6A744FABD885C2B0D9B174EDE40EFC2"></iframe>
+
+    <iframe id="goal2" src="KLEEBI_OMA_DONATION_GOAL_LINK_SIIA"></iframe>
+
+    <script>
+        const goal1 = document.getElementById('goal1');
+        const goal2 = document.getElementById('goal2');
+        let showFirst = true;
+
+        function switchGoals() {
+            if (showFirst) {
+                goal1.style.display = 'none';
+                goal2.style.display = 'block';
+            } else {
+                goal1.style.display = 'block';
+                goal2.style.display = 'none';
+            }
+            showFirst = !showFirst;
+        }
+
+        // Vaheta iga 5 minuti tagant
+        setInterval(switchGoals, 300000); 
+    </script>
+
+</body>
+</html>
