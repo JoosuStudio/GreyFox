@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;600;700&display=swap');
 
     :root {
         --bg-color: rgba(18, 22, 30, 0.95);
@@ -45,7 +45,6 @@
         gap: 2vw;
     }
 
-    /* Ühine stiil "DAY 10" ja kellale */
     .badge-pill {
         background: rgba(255, 255, 255, 0.1);
         padding: 0.5vw 1.5vw;
@@ -60,37 +59,41 @@
         font-variant-numeric: tabular-nums;
     }
 
-    /* --- MUUDATUSED SIIN --- */
+    /* --- KELLA STIIL --- */
     .clock-box.badge-pill {
         flex-direction: column;
-        /* Muudetud: align-items center joondab sisu horisontaalselt keskele */
         align-items: center; 
         justify-content: center;
-        padding: 0.5vw 1.5vw; /* Sama padding mis teisel nupul */
+        /* Veidi suurem padding, et tekst hingaks */
+        padding: 0.6vw 1.8vw;
     }
 
     .clock-time {
-        font-size: 1.8vw;
-        font-weight: 600;
+        /* Suurem font ja parem loetavus */
+        font-size: 2.2vw;
+        font-weight: 700;
         color: var(--text-white);
-        font-family: 'Courier New', Courier, monospace; 
-        text-shadow: 0 0 0.5vw rgba(0, 229, 255, 0.3);
-        /* Lisatud: kindlustab teksti joonduse */
+        font-family: 'Montserrat', sans-serif; 
         text-align: center;
-        line-height: 1.1;
+        line-height: 1;
+        /* Kerge vari eristumiseks */
+        text-shadow: 0 0.1vw 0.3vw rgba(0,0,0,0.5);
     }
 
     .clock-date {
-        font-size: 1vw;
-        font-weight: 400;
+        /* Muudetud font ja suurus */
+        font-size: 0.9vw;
+        font-weight: 700; /* RASVANE */
         text-transform: uppercase;
-        letter-spacing: 0.05vw;
+        letter-spacing: 0.1vw;
         color: var(--accent-blue);
-        font-family: 'Courier New', Courier, monospace;
-        /* Lisatud: kindlustab teksti joonduse */
+        font-family: 'Montserrat', sans-serif;
         text-align: center;
+        margin-top: 0.2vw;
+        /* Helendav efekt, et oleks näha tumedal taustal */
+        text-shadow: 0 0 1vw rgba(0, 229, 255, 0.4); 
     }
-    /* ----------------------- */
+    /* ------------------- */
 
     .live-dot {
         height: 1.5vw;
@@ -171,7 +174,7 @@
     <div class="left-section">
         <div class="badge-pill">
             <div class="live-dot"></div>
-            DAY 11
+            DAY 10
         </div>
 
         <div class="clock-box badge-pill">
