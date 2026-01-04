@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins:wght@600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins:wght@400;600;700&display=swap');
 
     :root {
         --bg-color: rgba(18, 22, 30, 0.95);
@@ -18,40 +18,34 @@
         margin: 0;
         padding: 0;
         width: 100%;
-        /* Eemaldasime height: 100%, et kast ei oleks üle ekraani */
         background-color: transparent;
         font-family: 'Poppins', sans-serif;
         overflow: hidden;
     }
 
-    /* Peamine konteiner */
     .banner-card {
         position: relative;
-        width: 98%; /* Võtab terve laiuse */
-        margin: 1%; /* Väike varu äärteks */
-        
-        /* Flexbox sisu paigutuseks */
+        width: 98%;
+        margin: 1%;
         display: flex; 
         justify-content: space-between; 
         align-items: center; 
-        
         background: linear-gradient(90deg, rgba(20, 25, 35, 0.98), rgba(35, 40, 50, 0.95));
         border-radius: 2vw;
         padding: 1.5vw 3vw; 
-        
         color: var(--text-white);
         border: 0.2vw solid var(--glass-border);
         box-shadow: 0 0.5vw 2vw rgba(0, 0, 0, 0.6);
         box-sizing: border-box;
     }
 
-    /* --- VASAK SEKTSIOON --- */
     .left-section {
         display: flex;
         align-items: center;
-        gap: 2.5vw;
+        gap: 2vw;
     }
 
+    /* Ühine stiil "DAY 10" ja kellale */
     .badge-pill {
         background: rgba(255, 255, 255, 0.1);
         padding: 0.5vw 1.5vw;
@@ -63,7 +57,40 @@
         align-items: center;
         gap: 1vw;
         white-space: nowrap;
+        font-variant-numeric: tabular-nums;
     }
+
+    /* --- MUUDATUSED SIIN --- */
+    .clock-box.badge-pill {
+        flex-direction: column;
+        /* Muudetud: align-items center joondab sisu horisontaalselt keskele */
+        align-items: center; 
+        justify-content: center;
+        padding: 0.5vw 1.5vw; /* Sama padding mis teisel nupul */
+    }
+
+    .clock-time {
+        font-size: 1.8vw;
+        font-weight: 600;
+        color: var(--text-white);
+        font-family: 'Courier New', Courier, monospace; 
+        text-shadow: 0 0 0.5vw rgba(0, 229, 255, 0.3);
+        /* Lisatud: kindlustab teksti joonduse */
+        text-align: center;
+        line-height: 1.1;
+    }
+
+    .clock-date {
+        font-size: 1vw;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 0.05vw;
+        color: var(--accent-blue);
+        font-family: 'Courier New', Courier, monospace;
+        /* Lisatud: kindlustab teksti joonduse */
+        text-align: center;
+    }
+    /* ----------------------- */
 
     .live-dot {
         height: 1.5vw;
@@ -87,7 +114,6 @@
         color: var(--accent-gold);
     }
 
-    /* --- PAREM SEKTSIOON --- */
     .right-section {
         text-align: right;
     }
@@ -111,7 +137,6 @@
         color: var(--accent-gold);
     }
 
-    /* --- ALUMINE PROGRESSIRIBA --- */
     .bottom-progress-bg {
         position: absolute;
         bottom: 0;
@@ -126,7 +151,7 @@
 
     .bottom-progress-fill {
         height: 100%;
-        width: 2%;  /* MUUDA PROTSENTI SIIN */
+        width: 2%;
         background: var(--accent-gold);
         box-shadow: 0 0 1.5vw var(--accent-gold);
         transition: width 1s ease-in-out;
@@ -148,6 +173,12 @@
             <div class="live-dot"></div>
             DAY 11
         </div>
+
+        <div class="clock-box badge-pill">
+            <div class="clock-time" id="time-display">00:00:00</div>
+            <div class="clock-date" id="date-display">...</div>
+        </div>
+
         <div class="main-title">
             Engraving <span>#004</span>
         </div>
@@ -165,6 +196,27 @@
     </div>
 
 </div>
+
+<script>
+    function updateClock() {
+        const tallinnTime = new Date().toLocaleString("en-US", {timeZone: "Europe/Tallinn"});
+        const dateObj = new Date(tallinnTime);
+
+        const hours = String(dateObj.getHours()).padStart(2, '0');
+        const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+        const seconds = String(dateObj.getSeconds()).padStart(2, '0');
+        
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const year = dateObj.getFullYear();
+
+        document.getElementById('time-display').textContent = `${hours}:${minutes}:${seconds}`;
+        document.getElementById('date-display').textContent = `${day}.${month}.${year}`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+</script>
 
 </body>
 </html>
