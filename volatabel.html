@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap');
+
+        :root {
+            /* MUUDA NEID NUMBREID SIIN (ilma € märgita) */
+            --vola-swedbank: 1591.07;  /* Allikas: 1000010697.png */
+            --vola-julianus-1: 6348.31; /* Allikas: 1000010698.png */
+            --vola-julianus-2: 3456.50; /* Allikas: 1000010698.png */
+            --vola-julianus-3: 15286.35;/* Allikas: 1000010698.png */
+            
+            --main-bg: rgba(0, 0, 0, 0.7);
+            --accent-color: #ff4d4d; /* Punane - võla värv */
+            --text-color: #ffffff;
+        }
+
+        body {
+            background-color: transparent;
+            font-family: 'Rajdhani', sans-serif;
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 350px;
+        }
+
+        .header {
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .debt-container {
+            background: var(--main-bg);
+            padding: 10px 15px;
+            border-radius: 5px;
+            border-left: 4px solid var(--accent-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .label {
+            font-size: 16px;
+            opacity: 0.8;
+            text-transform: uppercase;
+        }
+
+        .amount {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .total-box {
+            margin-top: 10px;
+            background: var(--accent-color);
+            color: black;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 24px;
+            box-shadow: 0 0 20px rgba(255, 77, 77, 0.4);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">Debt Tracker: Freedom Path</div>
+
+    <div class="debt-container">
+        <div class="label">Swedbank</div>
+        <div class="amount" id="swed">€0</div>
+    </div>
+
+    <div class="debt-container">
+        <div class="label">Julianus #1</div>
+        <div class="amount" id="j1">€0</div>
+    </div>
+
+    <div class="debt-container">
+        <div class="label">Julianus #2</div>
+        <div class="amount" id="j2">€0</div>
+    </div>
+
+    <div class="debt-container">
+        <div class="label">Julianus #3</div>
+        <div class="amount" id="j3">€0</div>
+    </div>
+
+    <div class="total-box">
+        <span>TOTAL:</span>
+        <span id="total">€0</span>
+    </div>
+
+    <script>
+        function format(num) {
+            return parseFloat(num).toLocaleString('et-EE', { minimumFractionDigits: 2 }) + " €";
+        }
+
+        const root = getComputedStyle(document.documentElement);
+        const v1 = root.getPropertyValue('--vola-swedbank').trim();
+        const v2 = root.getPropertyValue('--vola-julianus-1').trim();
+        const v3 = root.getPropertyValue('--vola-julianus-2').trim();
+        const v4 = root.getPropertyValue('--vola-julianus-3').trim();
+
+        document.getElementById('swed').innerText = format(v1);
+        document.getElementById('j1').innerText = format(v2);
+        document.getElementById('j2').innerText = format(v3);
+        document.getElementById('j3').innerText = format(v4);
+
+        const total = parseFloat(v1) + parseFloat(v2) + parseFloat(v3) + parseFloat(v4);
+        document.getElementById('total').innerText = format(total);
+    </script>
+</body>
+</html>
