@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GreyFox Journey Overlay</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: transparent;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    font-family: 'Rajdhani', sans-serif;
+  }
+
+  /* ── BOTTOM BAR ── */
+  #bottom-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 72px;
+    background: linear-gradient(90deg, rgba(0,0,0,0.92) 0%, rgba(10,20,10,0.88) 100%);
+    border-top: 2px solid #00ff88;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 0;
+  }
+
+  /* LOGO / BRAND */
+  #brand {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 20px;
+    border-right: 1px solid rgba(0,255,136,0.25);
+    min-width: 180px;
+  }
+  #brand .title {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: #00ff88;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  #brand .subtitle {
+    font-size: 10px;
+    color: rgba(0,255,136,0.5);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* PROGRESS SECTION */
+  #progress-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 20px;
+    border-right: 1px solid rgba(0,255,136,0.2);
+    min-width: 280px;
+  }
+  #progress-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  #progress-label {
+    font-size: 10px;
+    color: rgba(0,255,136,0.6);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  #progress-bar-bg {
+    flex: 1;
+    height: 5px;
+    background: rgba(0,255,136,0.12);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  #progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00cc66, #00ff88);
+    border-radius: 3px;
+    transition: width 1s ease;
+    box-shadow: 0 0 8px rgba(0,255,136,0.6);
+    width: 0%;
+  }
+  #progress-pct {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #00ff88;
+    min-width: 38px;
+  }
+  #route-label {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    line-height: 1;
+  }
+  #route-label span { color: #00ff88; }
+
+  /* STAT BLOCKS */
+  .stat-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 18px;
+    border-right: 1px solid rgba(0,255,136,0.15);
+    min-width: 100px;
+  }
+  .stat-block:last-of-type { border-right: none; }
+  .stat-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: #00ff88;
+    line-height: 1;
+    text-shadow: 0 0 12px rgba(0,255,136,0.5);
+  }
+  .stat-val.white { color: #ffffff; text-shadow: none; }
+  .stat-val.dim { color: rgba(0,255,136,0.55); font-size: 18px; }
+  .stat-lbl {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-top: 3px;
+  }
+
+  /* COUNTRY BADGE */
+  #country-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    border-left: 1px solid rgba(0,255,136,0.2);
+    min-width: 140px;
+  }
+  #country-flag { font-size: 28px; line-height: 1; }
+  #country-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.8);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* ── TOP RIGHT PANEL ── */
+  #top-right {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  #day-panel {
+    background: rgba(0,0,0,0.85);
+    border: 1px solid rgba(0,255,136,0.35);
+    border-radius: 6px;
+    padding: 10px 16px;
+    min-width: 200px;
+    position: relative;
+    overflow: hidden;
+  }
+  #day-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00ff88, transparent);
+  }
+  #day-panel .dp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  #day-panel .dp-title {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: rgba(0,255,136,0.6);
+    text-transform: uppercase;
+  }
+  #day-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #00ff88;
+    background: rgba(0,255,136,0.1);
+    padding: 2px 7px;
+    border-radius: 3px;
+  }
+  .dp-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+  .dp-key {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .dp-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    color: #ffffff;
+  }
+  .dp-val.green { color: #00ff88; }
+
+  /* Daily bar */
+  #daily-bar-wrap {
+    margin-top: 6px;
+  }
+  #daily-bar-bg {
+    height: 3px;
+    background: rgba(0,255,136,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  #daily-bar-fill {
+    height: 100%;
+    background: #00ff88;
+    border-radius: 2px;
+    transition: width 1s ease;
+    width: 0%;
+  }
+  #daily-bar-label {
+    font-size: 9px;
+    color: rgba(0,255,136,0.4);
+    text-align: right;
+    margin-top: 3px;
+    letter-spacing: 1px;
+  }
+
+  /* TIME */
+  #time-display {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: rgba(0,255,136,0.7);
+    letter-spacing: 2px;
+    text-align: right;
+  }
+
+  /* GPS indicator */
+  #gps-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 9px;
+    color: rgba(0,255,136,0.5);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  #gps-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #00ff88;
+    box-shadow: 0 0 6px rgba(0,255,136,0.8);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(0,255,136,0.8); }
+    50% { opacity: 0.4; box-shadow: 0 0 2px rgba(0,255,136,0.3); }
+  }
+
+  /* COUNTRY CHANGE NOTIFICATION */
+  #country-notify {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: rgba(0,0,0,0.92);
+    border: 2px solid #00ff88;
+    border-radius: 12px;
+    padding: 24px 40px;
+    text-align: center;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 100;
+    box-shadow: 0 0 40px rgba(0,255,136,0.3), inset 0 0 40px rgba(0,255,136,0.05);
+  }
+  #country-notify.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  #cn-entering {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: rgba(0,255,136,0.6);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  #cn-flag { font-size: 56px; display: block; margin: 8px 0; }
+  #cn-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 28px;
+    color: #00ff88;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  #cn-dist {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 8px;
+    letter-spacing: 1px;
+  }
+
+  /* Scanline effect */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+    pointer-events: none;
+    z-index: 999;
+  }
+</style>
+</head>
+<body>
+
+<!-- BOTTOM BAR -->
+<div id="bottom-bar">
+  <div id="brand">
+    <div class="title">GreyFox</div>
+    <div class="subtitle">Journey</div>
+  </div>
+
+  <div id="progress-section">
+    <div id="route-label">Eesti <span>→</span> Hispaania</div>
+    <div id="progress-bar-wrap">
+      <div id="progress-label">Läbitud</div>
+      <div id="progress-bar-bg"><div id="progress-bar-fill"></div></div>
+      <div id="progress-pct">0%</div>
+    </div>
+  </div>
+
+  <div class="stat-block">
+    <div class="stat-val" id="stat-done">0</div>
+    <div class="stat-lbl">km kokku</div>
+  </div>
+
+  <div class="stat-block">
+    <div class="stat-val dim" id="stat-remaining">4687</div>
+    <div class="stat-lbl">km jäänud</div>
+  </div>
+
+  <div class="stat-block">
+    <div class="stat-val white" id="stat-today">0</div>
+    <div class="stat-lbl">km täna</div>
+  </div>
+
+  <div class="stat-block">
+    <div class="stat-val white" id="stat-avg">0</div>
+    <div class="stat-lbl">km/päev avg</div>
+  </div>
+
+  <div id="country-badge">
+    <div id="country-flag">🇪🇪</div>
+    <div id="country-name">Eesti</div>
+  </div>
+</div>
+
+<!-- TOP RIGHT PANEL -->
+<div id="top-right">
+  <div id="time-display">00:00:00</div>
+  <div id="gps-indicator"><div id="gps-dot"></div><span id="gps-status">GPS AKTIIVNE</span></div>
+  <div id="day-panel">
+    <div class="dp-header">
+      <div class="dp-title">Tänane päev</div>
+      <div id="day-num">PÄEV 1</div>
+    </div>
+    <div class="dp-row">
+      <div class="dp-key">Sõidetud</div>
+      <div class="dp-val green" id="dp-today">0 km</div>
+    </div>
+    <div class="dp-row">
+      <div class="dp-key">Jäänud</div>
+      <div class="dp-val" id="dp-total-remaining">4687 km</div>
+    </div>
+    <div class="dp-row">
+      <div class="dp-key">Kõrgus</div>
+      <div class="dp-val" id="dp-elevation">— m</div>
+    </div>
+    <div id="daily-bar-wrap">
+      <div id="daily-bar-bg"><div id="daily-bar-fill"></div></div>
+      <div id="daily-bar-label">PÄEVA EESMÄRK: 100 km</div>
+    </div>
+  </div>
+</div>
+
+<!-- COUNTRY NOTIFICATION -->
+<div id="country-notify">
+  <div id="cn-entering">Sisenemas riiki</div>
+  <span id="cn-flag">🇪🇪</span>
+  <div id="cn-name">Eesti</div>
+  <div id="cn-dist"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+//  GREYFOX OVERLAY — KONFIGURATSIOON
+// ═══════════════════════════════════════════
+
+const CONFIG = {
+  totalRouteKm: 4687.3,
+  dailyGoalKm: 100,
+  // Muuda seda iga päev — mitu päeva on matkatud
+  // Või lase GPS automaatselt arvutada (vt allpool)
+  startDate: "2025-05-01", // ← MUUDA OMA ALGUSKUUPÄEVAKS
+  
+  // GPX marsruut - riigid koos km-ga kus piir ületatakse
+  countryCrossings: [
+    { name: "Eesti",        flag: "🇪🇪", distKm: 0 },
+    { name: "Läti",         flag: "🇱🇻", distKm: 371.3 },
+    { name: "Leedu",        flag: "🇱🇹", distKm: 596.7 },
+    { name: "Poola",        flag: "🇵🇱", distKm: 932.7 },
+    { name: "Saksamaa",     flag: "🇩🇪", distKm: 1563.6 },
+    { name: "Prantsusmaa",  flag: "🇫🇷", distKm: 2543.9 },
+    { name: "Hispaania",    flag: "🇪🇸", distKm: 3362.6 },
+  ]
+};
+
+// ═══════════════════════════════════════════
+//  STAATUS — muuda siit käsitsi DAILY RESET
+// ═══════════════════════════════════════════
+
+const STATE = {
+  totalKmDone: 0,      // ← Kokku sõidetud km (uuenda iga kord)
+  todayKmDone: 0,      // ← Täna sõidetud km
+  dayNumber: 1,        // ← Mitu päeva on sõidetud
+  elevation: null,     // ← GPS kõrgus meetrites (automaatne)
+};
+
+// ═══════════════════════════════════════════
+//  GPS AUTOMAATIKA
+// ═══════════════════════════════════════════
+
+let lastCountryName = "";
+let sessionStartKm = STATE.totalKmDone;
+let todayStartKm = STATE.totalKmDone - STATE.todayKmDone;
+
+// Geolocation - kui töötab brauseris / OBS browser source
+function startGPS() {
+  if (!navigator.geolocation) {
+    document.getElementById('gps-status').textContent = 'GPS PUUDUB';
+    return;
+  }
+
+  navigator.geolocation.watchPosition(
+    pos => {
+      const { latitude, longitude, altitude } = pos.coords;
+      
+      // Kõrgus
+      if (altitude !== null) {
+        STATE.elevation = Math.round(altitude);
+      }
+
+      // Leia lähim punkt GPX marsruudil ja arvuta km
+      // (Lihtsustus: kasutab riigipiiride tuvastust koordinaatide järgi)
+      const detectedCountry = detectCountry(latitude, longitude);
+      if (detectedCountry && detectedCountry.name !== lastCountryName) {
+        if (lastCountryName !== "") {
+          showCountryNotification(detectedCountry);
+        }
+        lastCountryName = detectedCountry.name;
+        updateCountryBadge(detectedCountry);
+      }
+
+      document.getElementById('gps-status').textContent = 'GPS AKTIIVNE';
+    },
+    err => {
+      document.getElementById('gps-status').textContent = 'GPS OTSIB...';
+      document.getElementById('gps-dot').style.background = '#ffaa00';
+    },
+    { enableHighAccuracy: true, maximumAge: 10000, timeout: 15000 }
+  );
+}
+
+function detectCountry(lat, lon) {
+  // Tagastab riigi lat/lon põhjal
+  if (lat >= 57.5 && lat <= 59.8 && lon >= 21.8 && lon <= 28.3) return CONFIG.countryCrossings[0];
+  if (lat >= 55.7 && lat <= 58.1 && lon >= 20.9 && lon <= 28.3) return CONFIG.countryCrossings[1];
+  if (lat >= 53.9 && lat <= 56.5 && lon >= 20.9 && lon <= 26.9) return CONFIG.countryCrossings[2];
+  if (lat >= 49.0 && lat <= 54.9 && lon >= 14.1 && lon <= 24.3) return CONFIG.countryCrossings[3];
+  if (lat >= 47.3 && lat <= 55.1 && lon >= 5.9  && lon <= 15.1) return CONFIG.countryCrossings[4];
+  if (lat >= 42.3 && lat <= 51.1 && lon >= -5.1 && lon <= 9.6)  return CONFIG.countryCrossings[5];
+  if (lat >= 36.0 && lat <= 43.8 && lon >= -9.3 && lon <= 3.4)  return CONFIG.countryCrossings[6];
+  return null;
+}
+
+// Riigi tuvastamine km põhjal (fallback / käsitsi)
+function getCountryByKm(km) {
+  let current = CONFIG.countryCrossings[0];
+  for (const c of CONFIG.countryCrossings) {
+    if (km >= c.distKm) current = c;
+    else break;
+  }
+  return current;
+}
+
+// ═══════════════════════════════════════════
+//  UI UUENDAMINE
+// ═══════════════════════════════════════════
+
+function updateUI() {
+  const total = CONFIG.totalRouteKm;
+  const done = STATE.totalKmDone;
+  const remaining = Math.max(0, total - done);
+  const pct = Math.min(100, (done / total) * 100);
+  const today = STATE.todayKmDone;
+
+  // Progress bar
+  document.getElementById('progress-bar-fill').style.width = pct.toFixed(1) + '%';
+  document.getElementById('progress-pct').textContent = pct.toFixed(1) + '%';
+
+  // Stats
+  document.getElementById('stat-done').textContent = Math.round(done);
+  document.getElementById('stat-remaining').textContent = Math.round(remaining);
+  document.getElementById('stat-today').textContent = Math.round(today);
+
+  // Avg km/päev
+  const dayNum = Math.max(1, STATE.dayNumber);
+  const avg = done > 0 ? Math.round(done / dayNum) : 0;
+  document.getElementById('stat-avg').textContent = avg;
+
+  // Day panel
+  document.getElementById('day-num').textContent = 'PÄEV ' + dayNum;
+  document.getElementById('dp-today').textContent = Math.round(today) + ' km';
+  document.getElementById('dp-total-remaining').textContent = Math.round(remaining) + ' km';
+  
+  if (STATE.elevation !== null) {
+    document.getElementById('dp-elevation').textContent = STATE.elevation + ' m';
+  }
+
+  // Daily progress bar (goal 100km)
+  const dailyPct = Math.min(100, (today / CONFIG.dailyGoalKm) * 100);
+  document.getElementById('daily-bar-fill').style.width = dailyPct + '%';
+
+  // Country by km (kui GPS ei tööta)
+  const countryByKm = getCountryByKm(done);
+  if (!navigator.geolocation || lastCountryName === "") {
+    updateCountryBadge(countryByKm);
+    lastCountryName = countryByKm.name;
+  }
+}
+
+function updateCountryBadge(country) {
+  document.getElementById('country-flag').textContent = country.flag;
+  document.getElementById('country-name').textContent = country.name;
+}
+
+function showCountryNotification(country) {
+  const notify = document.getElementById('country-notify');
+  document.getElementById('cn-flag').textContent = country.flag;
+  document.getElementById('cn-name').textContent = country.name.toUpperCase();
+  document.getElementById('cn-dist').textContent = Math.round(STATE.totalKmDone) + ' km sõidetud';
+  notify.classList.add('show');
+  setTimeout(() => notify.classList.remove('show'), 5000);
+}
+
+// ═══════════════════════════════════════════
+//  KELL
+// ═══════════════════════════════════════════
+
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const s = String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('time-display').textContent = `${h}:${m}:${s}`;
+}
+
+// ═══════════════════════════════════════════
+//  MANUAL UPDATE API
+//  Kasuta URL parameetreid:
+//  ?done=1500&today=72&day=14
+// ═══════════════════════════════════════════
+
+function loadFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('done'))  STATE.totalKmDone = parseFloat(params.get('done'));
+  if (params.has('today')) STATE.todayKmDone = parseFloat(params.get('today'));
+  if (params.has('day'))   STATE.dayNumber = parseInt(params.get('day'));
+  if (params.has('elev'))  STATE.elevation = parseInt(params.get('elev'));
+  if (params.has('goal'))  CONFIG.dailyGoalKm = parseInt(params.get('goal'));
+}
+
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+
+loadFromURL();
+updateUI();
+updateClock();
+startGPS();
+
+setInterval(updateClock, 1000);
+setInterval(() => {
+  loadFromURL();
+  updateUI();
+}, 5000);
+
+</script>
+</body>
+</html>
