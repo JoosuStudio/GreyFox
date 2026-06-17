@@ -10,147 +10,118 @@
             font-family: 'Arial', sans-serif;
             background: transparent;
             color: #fff;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
         }
         .weather-container {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 5px 10px;
-            background: linear-gradient(90deg, rgba(46, 139, 87, 0.8), rgba(112, 128, 144, 0.8));
+            padding: 5px 14px;
+            background: linear-gradient(90deg, rgba(46,139,87,0.85), rgba(112,128,144,0.85));
             border-radius: 15px;
             font-size: 24px;
             font-weight: 700;
-        }
-        .weather-icon {
-            font-size: 28px;
-        }
-        .mood {
-            font-size: 24px;
-            display: flex;
-            gap: 5px;
+            white-space: nowrap;
         }
     </style>
 </head>
 <body>
     <div class="weather-container" id="weather">
-        <span class="weather-icon" id="icon">📍</span>
-        <span id="weather-text">Fetching location...</span>
-        <span class="mood" id="mood">
-            <span id="weather-mood"></span>
-            <span id="temp-mood"></span>
-        </span>
+        <span id="icon">🌍</span>
+        <span id="weather-text">Fetching weather...</span>
+        <span id="weather-mood"></span>
+        <span id="temp-mood"></span>
     </div>
 
     <script>
-        const weatherApiKey = "d9a878e897fdb75a841b81d836039fbd";
-        let timezoneOffset = 0;
+        let cachedCity = "";
+        let cachedCountry = "";
+        let cachedWeather = "";
+        let cachedTemp = 0;
+        let cachedWind = 0;
 
         const weatherIcons = {
-            "Clear": "☀️", "Clouds": "☁️", "Rain": "🌧️",
-            "Snow": "❄️", "Thunderstorm": "⛈️", "Drizzle": "🌦️",
-            "Mist": "🌫️", "Fog": "🌫️", "Haze": "🌁", "Smoke": "🌫️"
+            "Sunny": "☀️", "Clear": "☀️",
+            "Partly cloudy": "⛅", "Cloudy": "☁️", "Overcast": "☁️",
+            "Mist": "🌫️", "Fog": "🌫️", "Freezing fog": "🌫️",
+            "Patchy rain": "🌦️", "Light rain": "🌦️", "Drizzle": "🌦️",
+            "Moderate rain": "🌧️", "Heavy rain": "🌧️",
+            "Snow": "❄️", "Blizzard": "❄️", "Sleet": "🌨️",
+            "Thunder": "⛈️", "Thunderstorm": "⛈️"
         };
 
-        function getWeatherMood(weather) {
-            switch (weather) {
-                case "Clear":        return "Sun's Out, Buns Out 🌞🦊";
-                case "Clouds":       return "Clouds, No Crowds ⛅🦊";
-                case "Rain":
-                case "Drizzle":      return "Wet Fox, Sad Fox 🌧️🦊";
-                case "Thunderstorm": return "Thunder Fright, Hold Tight ⚡🦊";
-                case "Snow":         return "Snow Fox, Slow Fox ❄️🦊";
-                case "Mist":
-                case "Fog":          return "Lost Fox, Fog Boss 🌫️🦊";
-                default:             return "Fox Says, Meh 🤷🦊";
+        function getIcon(desc) {
+            for (const key of Object.keys(weatherIcons)) {
+                if (desc.toLowerCase().includes(key.toLowerCase())) return weatherIcons[key];
             }
+            return "🌍";
+        }
+
+        function getWeatherMood(desc) {
+            const d = desc.toLowerCase();
+            if (d.includes("sun") || d.includes("clear"))   return "Sun's Out, Buns Out 🌞🦊";
+            if (d.includes("thunder"))                       return "Thunder Fright, Hold Tight ⚡🦊";
+            if (d.includes("snow") || d.includes("blizzard"))return "Snow Fox, Slow Fox ❄️🦊";
+            if (d.includes("rain") || d.includes("drizzle")) return "Wet Fox, Sad Fox 🌧️🦊";
+            if (d.includes("mist") || d.includes("fog"))    return "Lost Fox, Fog Boss 🌫️🦊";
+            if (d.includes("cloud") || d.includes("overcast"))return "Clouds, No Crowds ⛅🦊";
+            return "Fox Says, Meh 🤷🦊";
         }
 
         function getTempMood(temp) {
             if (temp > 32)      return "Fox on Fire, Send Help 🔥🦊";
-            else if (temp > 26) return "Sweaty Fox, Hot Rocks 🥵🦊";
-            else if (temp < 0)  return "Fox Icicle, Survival? 🚨🦊";
-            else if (temp < 10) return "Frozen Fox, No Socks 🥶🦊";
-            else if (temp < 16) return "Chilly Fox, Still Rocks 🧥🦊";
-            else                return "Perfect Ride, Fox Pride 😍🦊";
+            if (temp > 26)      return "Sweaty Fox, Hot Rocks 🥵🦊";
+            if (temp < 0)       return "Fox Icicle, Survival? 🚨🦊";
+            if (temp < 10)      return "Frozen Fox, No Socks 🥶🦊";
+            if (temp < 16)      return "Chilly Fox, Still Rocks 🧥🦊";
+            return "Perfect Ride, Fox Pride 😍🦊";
         }
 
         function getTimeStrings() {
             const now = new Date();
-            const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
-            const localTime = new Date(utcTime + (timezoneOffset * 1000));
-            const hours   = localTime.getHours().toString().padStart(2, '0');
-            const minutes = localTime.getMinutes().toString().padStart(2, '0');
-            const day     = localTime.getDate().toString().padStart(2, '0');
-            const month   = (localTime.getMonth() + 1).toString().padStart(2, '0');
-            const year    = localTime.getFullYear();
-            return { timeString: `${hours}:${minutes}`, dateString: `${day}/${month}/${year}` };
+            const hh  = now.getHours().toString().padStart(2,'0');
+            const mm  = now.getMinutes().toString().padStart(2,'0');
+            const dd  = now.getDate().toString().padStart(2,'0');
+            const mo  = (now.getMonth()+1).toString().padStart(2,'0');
+            const yy  = now.getFullYear();
+            return { time: `${hh}:${mm}`, date: `${dd}/${mo}/${yy}` };
         }
 
-        async function fetchWeather(lat, lon) {
+        function updateDisplay() {
+            const { time, date } = getTimeStrings();
+            document.getElementById("icon").textContent = getIcon(cachedWeather);
+            document.getElementById("weather-text").textContent =
+                `${cachedCity}, ${cachedCountry}: ${cachedTemp}°C, ${cachedWeather}, Wind: ${cachedWind} m/s | ${date} 📅 ${time} 🕒`;
+            document.getElementById("weather-mood").textContent = getWeatherMood(cachedWeather);
+            document.getElementById("temp-mood").textContent = getTempMood(cachedTemp);
+        }
+
+        async function fetchWeather() {
             try {
-                const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${weatherApiKey}`;
-                const response = await fetch(url);
-                const data = await response.json();
+                // wttr.in — HTTPS, IP-põhine asukoht, tasuta, ei vaja API võtit
+                const res  = await fetch("https://wttr.in/?format=j1");
+                const data = await res.json();
 
-                if (data.cod !== 200) {
-                    document.getElementById("weather-text").textContent = `Weather error: ${data.message}`;
-                    return;
-                }
+                const cur     = data.current_condition[0];
+                const area    = data.nearest_area[0];
 
-                const temp      = Math.round(data.main.temp);
-                const weather   = data.weather[0].main;
-                const city      = data.name;
-                const country   = data.sys.country;
-                const windSpeed = Math.round(data.wind.speed);
-                timezoneOffset  = data.timezone;
+                cachedTemp    = Math.round(parseFloat(cur.temp_C));
+                cachedWind    = Math.round(parseFloat(cur.windspeedKmph) / 3.6); // km/h → m/s
+                cachedWeather = cur.weatherDesc[0].value;
+                cachedCity    = area.areaName[0].value;
+                cachedCountry = area.country[0].value;
 
-                const icon = weatherIcons[weather] || "🌍";
-                const { timeString, dateString } = getTimeStrings();
-
-                document.getElementById("icon").textContent = icon;
-                document.getElementById("weather-text").textContent =
-                    `${city}, ${country}: ${temp}°C, ${weather}, Wind: ${windSpeed} m/s | ${dateString} 📅 ${timeString} 🕒`;
-                document.getElementById("weather-mood").textContent = getWeatherMood(weather);
-                document.getElementById("temp-mood").textContent = getTempMood(temp);
-
+                updateDisplay();
             } catch (err) {
                 document.getElementById("weather-text").textContent = "Weather unavailable";
-                document.getElementById("weather-mood").textContent = "Fox Confused, Weather Fused 🤯🦊";
+                document.getElementById("weather-mood").textContent = "Fox Confused 🤯🦊";
                 document.getElementById("temp-mood").textContent = "";
             }
         }
 
-        async function init() {
-            try {
-                // ip-api.com — tasuta, ei vaja API võtit, töötab OBS-is
-                const res = await fetch("http://ip-api.com/json/");
-                const loc = await res.json();
-
-                if (loc.status !== "success") throw new Error("IP lookup failed");
-
-                await fetchWeather(loc.lat, loc.lon);
-
-                // Uuenda ilma iga 10 minuti järel
-                setInterval(() => fetchWeather(loc.lat, loc.lon), 600000);
-
-            } catch (err) {
-                document.getElementById("weather-text").textContent = "Location unavailable";
-                document.getElementById("weather-mood").textContent = "Fox Lost, No Signal 📡🦊";
-            }
-        }
-
-        init();
-
-        // Uuenda kella iga minut
-        setInterval(() => {
-            const { timeString, dateString } = getTimeStrings();
-            const el = document.getElementById("weather-text");
-            const parts = el.textContent.split(" | ");
-            if (parts.length >= 1) {
-                el.textContent = `${parts[0]} | ${dateString} 📅 ${timeString} 🕒`;
-            }
-        }, 60000);
+        fetchWeather();
+        setInterval(fetchWeather, 600000);   // ilm iga 10 min
+        setInterval(updateDisplay, 60000);    // kell iga minut
     </script>
 </body>
 </html>
