@@ -34,8 +34,8 @@
 </head>
 <body>
     <div class="weather-container" id="weather">
-        <span class="weather-icon" id="icon"></span>
-        <span id="weather-text">Fetching weather...</span>
+        <span class="weather-icon" id="icon">📍</span>
+        <span id="weather-text">Fetching location...</span>
         <span class="mood" id="mood">
             <span id="weather-mood"></span>
             <span id="temp-mood"></span>
@@ -43,121 +43,114 @@
     </div>
 
     <script>
-        // Replace with your OpenWeatherMap API key
-        const apiKey = "d9a878e897fdb75a841b81d836039fbd";
-        // Coordinates for Viru-Jaagupi, Estonia
-        const lat = 59.2425;
-        const lon = 26.47583;
-        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+        const weatherApiKey = "d9a878e897fdb75a841b81d836039fbd";
+        let timezoneOffset = 0;
 
-        // Global variable to store timezone offset
-        let timezoneOffset = 0; // Default to 0 until fetched
+        const weatherIcons = {
+            "Clear": "☀️", "Clouds": "☁️", "Rain": "🌧️",
+            "Snow": "❄️", "Thunderstorm": "⛈️", "Drizzle": "🌦️",
+            "Mist": "🌫️", "Fog": "🌫️", "Haze": "🌁", "Smoke": "🌫️"
+        };
 
-        async function fetchWeather() {
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                const temp = Math.round(data.main.temp);
-                const weather = data.weather[0].main;
-                const city = data.name; // "Vinni"
-                const windSpeed = Math.round(data.wind.speed); // Wind speed in m/s
-                timezoneOffset = data.timezone; // Update global timezone offset
-
-                const weatherIcons = {
-                    "Clear": "☀️",
-                    "Clouds": "☁️",
-                    "Rain": "🌧️",
-                    "Snow": "❄️",
-                    "Thunderstorm": "⛈️",
-                    "Drizzle": "🌦️",
-                    "Mist": "🌫️"
-                };
-                const icon = weatherIcons[weather] || "🌍";
-
-                // Weather-based emoticon
-                let weatherMood;
-                switch (weather) {
-                    case "Clear":
-                        weatherMood = "Sun’s Out, Buns Out 🌞🦊";
-                        break;
-                    case "Clouds":
-                        weatherMood = "Clouds, No Crowds ⛅🦊";
-                        break;
-                    case "Rain":
-                    case "Drizzle":
-                        weatherMood = "Wet Fox, Sad Fox 🌧️🦊";
-                        break;
-                    case "Thunderstorm":
-                        weatherMood = "Thunder Fright, Hold Tight ⚡🦊";
-                        break;
-                    case "Snow":
-                        weatherMood = "Snow Fox, Slow Fox ❄️🦊";
-                        break;
-                    case "Mist":
-                        weatherMood = "Lost Fox, Fog Boss 🌫️🦊";
-                        break;
-                    default:
-                        weatherMood = "Fox Says, Meh 🤷🦊";
-                }
-
-                // Temperature-based emoticon
-                let tempMood;
-                if (temp > 32) {
-                    tempMood = "Fox on Fire, Send Help 🔥🦊"; // Too hot
-                } else if (temp > 26) {
-                    tempMood = "Sweaty Fox, Hot Rocks 🥵🦊"; // Hot for a ride
-                } else if (temp < 0) {
-                    tempMood = "Fox Icicle, Survival? 🚨🦊"; // Too cold
-                } else if (temp < 10) {
-                    tempMood = "Frozen Fox, No Socks 🥶🦊"; // Very cold
-                } else if (temp < 16) {
-                    tempMood = "Chilly Fox, Still Rocks 🧥🦊"; // Cool
-                } else {
-                    tempMood = "Perfect Ride, Fox Pride 😍🦊"; // Comfortable range (16°C to 26°C)
-                }
-
-                // Calculate local time and date based on timezone offset
-                const now = new Date();
-                const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000); // Convert to UTC
-                const localTime = new Date(utcTime + (timezoneOffset * 1000)); // Adjust for local timezone
-                const hours = localTime.getHours().toString().padStart(2, '0');
-                const minutes = localTime.getMinutes().toString().padStart(2, '0');
-                const day = localTime.getDate().toString().padStart(2, '0');
-                const month = (localTime.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
-                const year = localTime.getFullYear();
-                const timeString = `${hours}:${minutes}`;
-                const dateString = `${day}/${month}/${year}`;
-
-                document.getElementById("icon").textContent = icon;
-                document.getElementById("weather-text").textContent = `${city}, Estonia 🇪🇪: ${temp}°C, ${weather}, Wind: ${windSpeed} m/s | ${dateString} 📅 ${timeString} 🕒`;
-                document.getElementById("weather-mood").textContent = weatherMood;
-                document.getElementById("temp-mood").textContent = tempMood;
-            } catch (error) {
-                document.getElementById("weather-text").textContent = "Weather unavailable";
-                document.getElementById("weather-mood").textContent = "Fox Confused, Weather Fused 🤯🦊";
-                document.getElementById("temp-mood").textContent = "Fox Confused, Weather Fused 🤯🦊";
+        function getWeatherMood(weather) {
+            switch (weather) {
+                case "Clear":        return "Sun's Out, Buns Out 🌞🦊";
+                case "Clouds":       return "Clouds, No Crowds ⛅🦊";
+                case "Rain":
+                case "Drizzle":      return "Wet Fox, Sad Fox 🌧️🦊";
+                case "Thunderstorm": return "Thunder Fright, Hold Tight ⚡🦊";
+                case "Snow":         return "Snow Fox, Slow Fox ❄️🦊";
+                case "Mist":
+                case "Fog":          return "Lost Fox, Fog Boss 🌫️🦊";
+                default:             return "Fox Says, Meh 🤷🦊";
             }
         }
 
-        // Fetch weather initially and update every 10 minutes
-        fetchWeather();
-        setInterval(fetchWeather, 600000);
+        function getTempMood(temp) {
+            if (temp > 32)      return "Fox on Fire, Send Help 🔥🦊";
+            else if (temp > 26) return "Sweaty Fox, Hot Rocks 🥵🦊";
+            else if (temp < 0)  return "Fox Icicle, Survival? 🚨🦊";
+            else if (temp < 10) return "Frozen Fox, No Socks 🥶🦊";
+            else if (temp < 16) return "Chilly Fox, Still Rocks 🧥🦊";
+            else                return "Perfect Ride, Fox Pride 😍🦊";
+        }
 
-        // Update time and date every minute
-        setInterval(() => {
+        function getTimeStrings() {
             const now = new Date();
             const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
             const localTime = new Date(utcTime + (timezoneOffset * 1000));
-            const hours = localTime.getHours().toString().padStart(2, '0');
+            const hours   = localTime.getHours().toString().padStart(2, '0');
             const minutes = localTime.getMinutes().toString().padStart(2, '0');
-            const day = localTime.getDate().toString().padStart(2, '0');
-            const month = (localTime.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
-            const year = localTime.getFullYear();
-            const timeString = `${hours}:${minutes}`;
-            const dateString = `${day}/${month}/${year}`;
-            const weatherText = document.getElementById("weather-text").textContent.split(" | ")[0];
-            document.getElementById("weather-text").textContent = `${weatherText} | ${dateString} 📅 ${timeString} 🕒`;
-        }, 60000); // Update every minute
+            const day     = localTime.getDate().toString().padStart(2, '0');
+            const month   = (localTime.getMonth() + 1).toString().padStart(2, '0');
+            const year    = localTime.getFullYear();
+            return { timeString: `${hours}:${minutes}`, dateString: `${day}/${month}/${year}` };
+        }
+
+        async function fetchWeather(lat, lon) {
+            try {
+                const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${weatherApiKey}`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.cod !== 200) {
+                    document.getElementById("weather-text").textContent = `Weather error: ${data.message}`;
+                    return;
+                }
+
+                const temp      = Math.round(data.main.temp);
+                const weather   = data.weather[0].main;
+                const city      = data.name;
+                const country   = data.sys.country;
+                const windSpeed = Math.round(data.wind.speed);
+                timezoneOffset  = data.timezone;
+
+                const icon = weatherIcons[weather] || "🌍";
+                const { timeString, dateString } = getTimeStrings();
+
+                document.getElementById("icon").textContent = icon;
+                document.getElementById("weather-text").textContent =
+                    `${city}, ${country}: ${temp}°C, ${weather}, Wind: ${windSpeed} m/s | ${dateString} 📅 ${timeString} 🕒`;
+                document.getElementById("weather-mood").textContent = getWeatherMood(weather);
+                document.getElementById("temp-mood").textContent = getTempMood(temp);
+
+            } catch (err) {
+                document.getElementById("weather-text").textContent = "Weather unavailable";
+                document.getElementById("weather-mood").textContent = "Fox Confused, Weather Fused 🤯🦊";
+                document.getElementById("temp-mood").textContent = "";
+            }
+        }
+
+        async function init() {
+            try {
+                // ip-api.com — tasuta, ei vaja API võtit, töötab OBS-is
+                const res = await fetch("http://ip-api.com/json/");
+                const loc = await res.json();
+
+                if (loc.status !== "success") throw new Error("IP lookup failed");
+
+                await fetchWeather(loc.lat, loc.lon);
+
+                // Uuenda ilma iga 10 minuti järel
+                setInterval(() => fetchWeather(loc.lat, loc.lon), 600000);
+
+            } catch (err) {
+                document.getElementById("weather-text").textContent = "Location unavailable";
+                document.getElementById("weather-mood").textContent = "Fox Lost, No Signal 📡🦊";
+            }
+        }
+
+        init();
+
+        // Uuenda kella iga minut
+        setInterval(() => {
+            const { timeString, dateString } = getTimeStrings();
+            const el = document.getElementById("weather-text");
+            const parts = el.textContent.split(" | ");
+            if (parts.length >= 1) {
+                el.textContent = `${parts[0]} | ${dateString} 📅 ${timeString} 🕒`;
+            }
+        }, 60000);
     </script>
 </body>
 </html>
