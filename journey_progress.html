@@ -25,9 +25,16 @@ var SETTINGS = {
   messages: [
     "Hand-engraved glass • commissions open",
     "Estonia → Spain by bike, 5000 km",
-    "Support the ride ❤",
+    "Support the ride: paypal.me/joosustudio",
   ],
   messageSeconds: 20,           // mitu sekundit üks tekst on ekraanil
+
+  // PayPal QR-kood (viib aadressile paypal.me/joosustudio)
+  qrShow: true,                 // false = QR-koodi ei näidata
+  qrEveryMinutes: 5,            // kui tihti ilmub (iga 5 min: :00, :05, :10 ...)
+  qrShowSeconds: 30,            // mitu sekundit korraga ekraanil
+  qrSide: "right",              // "right" = paremal, "left" = vasakul
+  qrLabel: "Support the ride",  // tekst QR-koodi kohal
 
 
   /* ---------- harvem muudetavad ---------- */
@@ -40,7 +47,8 @@ var SETTINGS = {
   showTemperature: true,
   showSun: true,                // päikeseloojangu / -tõusu loendur
   topPosition: 3,               // ülariba kaugus ülaservast, % ekraanist
-  bottomPosition: 4             // alariba kaugus alaservast, % (suurem = kõrgemal)
+  bottomPosition: 4,            // alariba kaugus alaservast, % (suurem = kõrgemal)
+
 };
 /* ===================================================================== */
 </script>
@@ -92,6 +100,17 @@ var SETTINGS = {
          border-radius: 50%; background: var(--ink); border: 0.22rem solid var(--fox); box-sizing: border-box; }
   .km { color: var(--ink); font-weight: 700; font-size: 1.7rem; }
   .km small { color: var(--soft); font-weight: 500; font-size: 1.4rem; }
+  .qr {
+    position: absolute; width: 13rem; box-sizing: border-box;
+    background: var(--glass); border: 0.08rem solid var(--etch); border-radius: 1.2rem;
+    padding: 0.7rem 0.7rem 0.6rem; text-align: center;
+    opacity: 0; transform: translateY(1.5rem); transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .qr.show { opacity: 1; transform: none; }
+  .qr-label { font-size: 1.5rem; font-weight: 700; color: var(--fox); line-height: 1.1; margin-bottom: 0.45rem; }
+  .qr-tile { background: #fff; border-radius: 0.5rem; padding: 0.9rem; line-height: 0; }
+  .qr-tile svg { width: 100%; height: auto; display: block; shape-rendering: crispEdges; }
+  .qr-link { font-size: 1.2rem; font-weight: 600; color: var(--ink); margin-top: 0.4rem; line-height: 1.1; }
   .hidden { display: none !important; }
 </style>
 </head>
@@ -107,4 +126,151 @@ var SETTINGS = {
           <path d="M5 17a7 7 0 0 1 14 0"/><path d="M2 20h20"/>
           <path id="sunArrow" d="M12 3v6M9 6l3-3 3 3"/>
         </svg>
-        <span><sp
+        <span><span id="sunLabel"></span> <b id="sunTime"></b></span><span class="sep"></span><span id="sunLeft"></span>
+      </span>
+      <span id="clock"></span>
+    </span>
+  </div>
+
+  <div class="pill bottom" id="bottom">
+    <div class="msg" id="msg"></div>
+    <div class="row">
+      <span id="from"></span>
+      <div class="bar"><div class="fill" id="fill"></div><div class="tip" id="tip"></div></div>
+      <span id="to"></span>
+      <span class="km"><span id="km"></span> <small>/ <span id="total"></span> km</small></span>
+    </div>
+  </div>
+
+  <div class="qr" id="qr">
+    <div class="qr-label" id="qrLabel"></div>
+    <div class="qr-tile">
+      <svg viewBox="0 0 29 29" aria-label="PayPal QR"><path fill="#000" d="M0 0h7v1h-7zM8 0h2v1h-2zM11 0h1v1h-1zM16 0h4v1h-4zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM9 1h1v1h-1zM13 1h1v1h-1zM15 1h1v1h-1zM17 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h1v1h-1zM11 2h1v1h-1zM16 2h2v1h-2zM20 2h1v1h-1zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h2v1h-2zM11 3h2v1h-2zM14 3h3v1h-3zM18 3h3v1h-3zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM9 4h1v1h-1zM11 4h3v1h-3zM17 4h1v1h-1zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h2v1h-2zM11 5h4v1h-4zM16 5h1v1h-1zM19 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h2v1h-2zM11 7h1v1h-1zM15 7h1v1h-1zM17 7h2v1h-2zM1 8h1v1h-1zM3 8h1v1h-1zM5 8h4v1h-4zM10 8h3v1h-3zM15 8h2v1h-2zM21 8h3v1h-3zM25 8h2v1h-2zM28 8h1v1h-1zM1 9h3v1h-3zM9 9h1v1h-1zM11 9h3v1h-3zM16 9h2v1h-2zM20 9h1v1h-1zM22 9h1v1h-1zM26 9h1v1h-1zM28 9h1v1h-1zM2 10h2v1h-2zM5 10h2v1h-2zM9 10h2v1h-2zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h2v1h-2zM22 10h2v1h-2zM27 10h1v1h-1zM1 11h4v1h-4zM7 11h1v1h-1zM10 11h2v1h-2zM13 11h1v1h-1zM19 11h1v1h-1zM21 11h2v1h-2zM26 11h2v1h-2zM1 12h2v1h-2zM4 12h1v1h-1zM6 12h1v1h-1zM8 12h2v1h-2zM11 12h1v1h-1zM14 12h1v1h-1zM16 12h2v1h-2zM20 12h1v1h-1zM22 12h2v1h-2zM0 13h1v1h-1zM11 13h2v1h-2zM15 13h2v1h-2zM19 13h3v1h-3zM23 13h1v1h-1zM25 13h1v1h-1zM27 13h1v1h-1zM0 14h2v1h-2zM4 14h3v1h-3zM8 14h1v1h-1zM10 14h2v1h-2zM15 14h2v1h-2zM21 14h2v1h-2zM28 14h1v1h-1zM1 15h1v1h-1zM3 15h1v1h-1zM7 15h2v1h-2zM10 15h1v1h-1zM14 15h1v1h-1zM16 15h4v1h-4zM23 15h1v1h-1zM0 16h2v1h-2zM5 16h4v1h-4zM10 16h3v1h-3zM15 16h1v1h-1zM18 16h2v1h-2zM21 16h1v1h-1zM23 16h1v1h-1zM27 16h1v1h-1zM2 17h1v1h-1zM4 17h1v1h-1zM10 17h2v1h-2zM15 17h2v1h-2zM22 17h2v1h-2zM25 17h1v1h-1zM27 17h2v1h-2zM0 18h1v1h-1zM2 18h1v1h-1zM4 18h1v1h-1zM6 18h2v1h-2zM12 18h1v1h-1zM15 18h2v1h-2zM18 18h1v1h-1zM20 18h2v1h-2zM23 18h1v1h-1zM27 18h2v1h-2zM2 19h1v1h-1zM5 19h1v1h-1zM11 19h1v1h-1zM13 19h1v1h-1zM17 19h2v1h-2zM20 19h1v1h-1zM24 19h2v1h-2zM28 19h1v1h-1zM0 20h2v1h-2zM3 20h2v1h-2zM6 20h2v1h-2zM9 20h1v1h-1zM12 20h5v1h-5zM20 20h5v1h-5zM26 20h2v1h-2zM8 21h1v1h-1zM10 21h1v1h-1zM16 21h1v1h-1zM20 21h1v1h-1zM24 21h1v1h-1zM27 21h2v1h-2zM0 22h7v1h-7zM8 22h2v1h-2zM13 22h1v1h-1zM17 22h1v1h-1zM20 22h1v1h-1zM22 22h1v1h-1zM24 22h4v1h-4zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM10 23h4v1h-4zM16 23h2v1h-2zM20 23h1v1h-1zM24 23h1v1h-1zM26 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM14 24h2v1h-2zM20 24h6v1h-6zM27 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h1v1h-1zM10 25h7v1h-7zM19 25h4v1h-4zM24 25h3v1h-3zM28 25h1v1h-1zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM9 26h1v1h-1zM11 26h1v1h-1zM13 26h2v1h-2zM17 26h1v1h-1zM19 26h2v1h-2zM24 26h3v1h-3zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM8 27h1v1h-1zM12 27h1v1h-1zM15 27h1v1h-1zM17 27h1v1h-1zM20 27h2v1h-2zM23 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM9 28h1v1h-1zM13 28h2v1h-2zM17 28h2v1h-2zM20 28h3v1h-3zM24 28h2v1h-2zM27 28h1v1h-1z"/></svg>
+    </div>
+    <div class="qr-link">paypal.me/joosustudio</div>
+  </div>
+
+<script>
+(function () {
+  var S = SETTINGS;
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* positions */
+  $("top").style.top = S.topPosition + "%";
+  $("bottom").style.bottom = S.bottomPosition + "%";
+
+  /* place */
+  if (S.place) { $("place").textContent = S.place; }
+  else { $("place").classList.add("hidden"); $("placeSep").classList.add("hidden"); }
+
+  /* km bar */
+  function fmt(n) { return Math.round(n).toLocaleString("en-US").replace(/,/g, " "); }
+  $("from").textContent = S.from;
+  $("to").textContent = S.to;
+  $("km").textContent = fmt(S.km);
+  $("total").textContent = fmt(S.totalKm);
+  var pct = Math.max(0, Math.min(100, S.km / S.totalKm * 100));
+  $("fill").style.width = pct + "%";
+  $("tip").style.left = pct + "%";
+
+  /* rotating messages */
+  var msgs = (S.messages || []).filter(function (m) { return m && String(m).trim(); });
+  var mi = 0;
+  if (!msgs.length) { $("msg").classList.add("hidden"); }
+  else {
+    $("msg").textContent = msgs[0];
+    if (msgs.length > 1) setInterval(function () {
+      $("msg").classList.add("fade");
+      setTimeout(function () {
+        mi = (mi + 1) % msgs.length;
+        $("msg").textContent = msgs[mi];
+        $("msg").classList.remove("fade");
+      }, 600);
+    }, Math.max(5, S.messageSeconds) * 1000);
+  }
+
+  /* dates */
+  function todayIn(tz) {
+    try { return new Intl.DateTimeFormat("en-CA", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date()); }
+    catch (e) { return new Date().toISOString().slice(0, 10); }
+  }
+  function toUTC(s) { var a = s.split("-").map(Number); return Date.UTC(a[0], a[1] - 1, a[2]); }
+  function hhmm(d) {
+    try { return new Intl.DateTimeFormat("en-GB", { timeZone: S.timeZone, hour: "2-digit", minute: "2-digit" }).format(d); }
+    catch (e) { return d.toTimeString().slice(0, 5); }
+  }
+
+  /* sunrise / sunset (standard astronomical formula, no internet needed) */
+  var rad = Math.PI / 180, dayMs = 86400000, J1970 = 2440588, J2000 = 2451545, obl = rad * 23.4397, J0 = 0.0009;
+  function sunTimes(date, lat, lng) {
+    var lw = rad * -lng, phi = rad * lat, d = date.valueOf() / dayMs - 0.5 + J1970 - J2000;
+    var n = Math.round(d - J0 - lw / (2 * Math.PI)), ds = J0 + lw / (2 * Math.PI) + n;
+    var M = rad * (357.5291 + 0.98560028 * ds);
+    var C = rad * (1.9148 * Math.sin(M) + 0.02 * Math.sin(2 * M) + 0.0003 * Math.sin(3 * M));
+    var L = M + C + rad * 102.9372 + Math.PI, dec = Math.asin(Math.sin(obl) * Math.sin(L));
+    var Jnoon = J2000 + ds + 0.0053 * Math.sin(M) - 0.0069 * Math.sin(2 * L);
+    var w = Math.acos((Math.sin(-0.833 * rad) - Math.sin(phi) * Math.sin(dec)) / (Math.cos(phi) * Math.cos(dec)));
+    var Jset = J2000 + J0 + (w + lw) / (2 * Math.PI) + n + 0.0053 * Math.sin(M) - 0.0069 * Math.sin(2 * L);
+    function fromJ(j) { return new Date((j + 0.5 - J1970) * dayMs); }
+    return { rise: fromJ(Jnoon - (Jset - Jnoon)), set: fromJ(Jset) };
+  }
+  function left(ms) {
+    var m = Math.max(0, Math.round(ms / 60000)), h = Math.floor(m / 60);
+    return h ? h + "h " + (m % 60) + "m" : m + "m";
+  }
+  function updateSun(todayStr) {
+    if (!S.showSun || typeof S.lat !== "number" || typeof S.lon !== "number") { $("sun").classList.add("hidden"); return; }
+    var now = new Date();
+    var t = sunTimes(new Date(toUTC(todayStr) + 12 * 3600000), S.lat, S.lon);
+    var target, label, up;
+    if (now < t.rise) { target = t.rise; label = "Sunrise"; up = true; }
+    else if (now < t.set) { target = t.set; label = "Sunset"; up = false; }
+    else { target = sunTimes(new Date(toUTC(todayStr) + 36 * 3600000), S.lat, S.lon).rise; label = "Sunrise"; up = true; }
+    $("sunLabel").textContent = label;
+    $("sunTime").textContent = hhmm(target);
+    $("sunLeft").textContent = left(target - now);
+    $("sunArrow").setAttribute("d", up ? "M12 3v6M9 6l3-3 3 3" : "M12 3v6M9 6l3 3 3-3");
+  }
+
+  function tick() {
+    var today = todayIn(S.timeZone);
+    $("dayNum").textContent = S.startDay + Math.round((toUTC(today) - toUTC(S.startDate)) / dayMs);
+    $("clock").textContent = hhmm(new Date());
+    updateSun(today);
+  }
+
+  /* temperature */
+  function weather() {
+    if (!S.showTemperature || typeof S.lat !== "number" || typeof S.lon !== "number") return;
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=" + S.lat + "&longitude=" + S.lon + "&current=temperature_2m")
+      .then(function (r) { return r.json(); })
+      .then(function (d) { if (d && d.current && typeof d.current.temperature_2m === "number") $("weather").textContent = Math.round(d.current.temperature_2m) + "°C"; })
+      .catch(function () {});
+  }
+
+  /* PayPal QR: appears on a fixed clock schedule, so a page refresh does not reset it.
+     Add ?qrtest=1 to the link to keep it visible while positioning. */
+  var qr = $("qr");
+  $("qrLabel").textContent = S.qrLabel || "";
+  function placeQr() {
+    qr.style.bottom = (window.innerHeight * S.bottomPosition / 100 + $("bottom").offsetHeight + window.innerWidth * 0.02) + "px";
+    if (S.qrSide === "left") { qr.style.left = "2.2rem"; qr.style.right = "auto"; } else { qr.style.right = "2.2rem"; qr.style.left = "auto"; }
+  }
+  var qrTest = /[?&]qrtest=1/.test(location.search);
+  function updateQr() {
+    if (!S.qrShow) { qr.classList.add("hidden"); return; }
+    var every = Math.max(1, S.qrEveryMinutes) * 60, secs = Math.floor(Date.now() / 1000);
+    qr.classList.toggle("show", qrTest || secs % every < Math.min(S.qrShowSeconds, every));
+  }
+  placeQr(); updateQr();
+  window.addEventListener("resize", placeQr);
+  setInterval(placeQr, 5000);
+  setInterval(updateQr, 1000);
+
+  tick(); weather();
+  setInterval(tick, 15000);
+  setInterval(weather, 15 * 60000);
+})();
+</script>
+</body>
+</html>
