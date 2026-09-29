@@ -3,281 +3,134 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GreyFoxJourney GPS overlay</title>
+<title>GreyFoxJourney overlay</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@rtirl/api@latest/lib/index.min.js"></script>
 <style>
   :root {
-    --glass: rgba(18, 22, 26, 0.66);
-    --etch: rgba(255, 255, 255, 0.32);
-    --edge: rgba(255, 255, 255, 0.14);
+    --glass: rgba(18, 22, 26, 0.58);
+    --etch: rgba(255, 255, 255, 0.22);
     --ink: #ffffff;
     --soft: #d7dde2;
     --fox: #e8893a;
-    --track: rgba(255, 255, 255, 0.16);
+    --track: rgba(255, 255, 255, 0.2);
   }
   html { font-size: calc(100vw / 54); }
-  html, body { margin: 0; background: transparent; overflow: hidden; }
+  html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; }
   body {
+    position: relative;
     font-family: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
     color: var(--ink);
-    padding: 3.2rem 2.6rem;
-    text-shadow: 0 0.08rem 0.25rem rgba(0, 0, 0, 0.55);
+    text-shadow: 0 0.06rem 0.2rem rgba(0, 0, 0, 0.6);
   }
-  .panel {
+  .pill {
+    position: absolute; left: 2.2rem; right: 2.2rem;
     background: var(--glass);
-    border: 0.12rem solid var(--edge);
-    outline: 0.06rem solid var(--etch);
-    outline-offset: -0.5rem;
-    border-radius: 1.1rem;
+    border: 0.08rem solid var(--etch);
+    border-radius: 2rem;
+    display: flex; align-items: center;
+    padding: 0 1.3rem;
+    box-sizing: border-box;
   }
-  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.2rem; }
-  .day { display: inline-flex; flex-direction: column; padding: 1.1rem 1.6rem 1.2rem; min-width: 17rem; max-width: 30rem; }
-  .day-line { display: flex; align-items: baseline; gap: 0.7rem; line-height: 0.9; }
-  .day-word { font-size: 2.6rem; font-weight: 500; color: var(--soft); }
-  .day-num { font-size: 5.4rem; font-weight: 700; color: var(--fox); letter-spacing: 0.02em; }
-  .place { font-size: 2.3rem; font-weight: 600; margin-top: 0.5rem; line-height: 1.05; min-height: 2.4rem; }
-  .meta { display: flex; gap: 1.2rem; font-size: 1.7rem; font-weight: 500; color: var(--soft); margin-top: 0.3rem; }
-  .meta span:empty { display: none; }
+  .top { height: 2.9rem; gap: 1rem; font-size: 1.65rem; font-weight: 600; white-space: nowrap; }
+  .day { color: var(--fox); font-weight: 700; }
+  .sep { width: 0.08rem; height: 1.4rem; background: var(--etch); flex: none; }
+  .place { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .right { margin-left: auto; display: flex; gap: 1rem; color: var(--soft); font-weight: 500; }
+  .right span:empty { display: none; }
 
-  .mapwrap { display: flex; flex-direction: column; align-items: center; transition: opacity 0.8s ease; }
-  .map {
-    width: 12rem; height: 12rem; border-radius: 50%; overflow: hidden;
-    border: 0.35rem solid rgba(18, 22, 26, 0.8);
-    outline: 0.06rem solid var(--etch); outline-offset: 0.25rem;
-    background: #1d2226;
-  }
-  .map .leaflet-container, .map.leaflet-container { background: #1d2226; }
-  .attr { font-size: 0.75rem; color: var(--soft); opacity: 0.8; margin-top: 0.6rem; font-family: Arial, sans-serif; text-shadow: none; }
-
-  .route { margin-top: 1.1rem; padding: 1.1rem 1.6rem 1.4rem; }
-  .route-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 1.8rem; font-weight: 600; }
-  .route-top .km { font-size: 2.2rem; font-weight: 700; }
-  .route-top .km small { font-size: 1.6rem; font-weight: 500; color: var(--soft); }
-  .ends { color: var(--soft); font-weight: 500; }
-  .bar { position: relative; height: 1rem; margin-top: 0.8rem; background: var(--track); border-radius: 0.5rem; }
-  .fill { position: absolute; inset: 0 auto 0 0; background: var(--fox); border-radius: 0.5rem; transition: width 1s ease; }
-  .tip {
-    position: absolute; top: 50%; width: 2rem; height: 2rem; transform: translate(-50%, -50%);
-    border-radius: 50%; background: var(--ink); border: 0.3rem solid var(--fox); box-sizing: border-box;
-    transition: left 1s ease;
-  }
-
-  .stats { display: flex; justify-content: flex-end; margin-top: 1.1rem; transition: opacity 0.8s ease; }
-  .speed { padding: 1rem 1.5rem 1.1rem; text-align: center; min-width: 8.5rem; }
-  .speed-num { font-size: 4.2rem; font-weight: 700; line-height: 0.95; }
-  .speed-unit { font-size: 1.5rem; color: var(--soft); font-weight: 500; }
-  .speed-meta { font-size: 1.5rem; color: var(--soft); font-weight: 500; margin-top: 0.5rem; line-height: 1.25; }
-
-  body.hide-gps .mapwrap, body.hide-gps .stats { opacity: 0; }
+  .bottom { flex-direction: column; align-items: stretch; padding: 0.55rem 1.4rem 0.7rem; border-radius: 1.4rem; }
+  .msg { font-size: 1.45rem; font-weight: 600; color: var(--soft); text-align: center; margin-bottom: 0.35rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .msg:empty { display: none; }
+  .row { display: flex; align-items: center; gap: 0.9rem; font-size: 1.5rem; font-weight: 500; color: var(--soft); white-space: nowrap; }
+  .bar { position: relative; flex: 1; height: 0.6rem; background: var(--track); border-radius: 0.3rem; }
+  .fill { position: absolute; inset: 0 auto 0 0; background: var(--fox); border-radius: 0.3rem; }
+  .tip { position: absolute; top: 50%; width: 1.3rem; height: 1.3rem; transform: translate(-50%, -50%); border-radius: 50%; background: var(--ink); border: 0.22rem solid var(--fox); box-sizing: border-box; }
+  .km { color: var(--ink); font-weight: 700; font-size: 1.7rem; }
+  .km small { color: var(--soft); font-weight: 500; font-size: 1.4rem; }
   .hidden { display: none !important; }
 </style>
 </head>
 <body>
-  <div class="top">
-    <div class="panel day">
-      <div class="day-line"><span class="day-word">Day</span><span class="day-num" id="dayNum">–</span></div>
-      <div class="place" id="place"></div>
-      <div class="meta"><span id="date"></span><span id="clock"></span><span id="weather"></span></div>
-    </div>
-    <div class="mapwrap" id="mapwrap">
-      <div class="map" id="map"></div>
-      <div class="attr">© OpenStreetMap © CARTO</div>
-    </div>
+  <div class="pill top" id="top">
+    <span class="day">Day <span id="dayNum">–</span></span>
+    <span class="sep"></span>
+    <span class="place" id="place"></span>
+    <span class="right"><span id="date"></span><span id="clock"></span><span id="weather"></span></span>
   </div>
 
-  <div class="panel route" id="route">
-    <div class="route-top">
-      <span class="ends" id="from"></span>
+  <div class="pill bottom" id="bottom">
+    <div class="msg" id="msg"></div>
+    <div class="row">
+      <span id="from"></span>
+      <div class="bar"><div class="fill" id="fill"></div><div class="tip" id="tip"></div></div>
+      <span id="to"></span>
       <span class="km"><span id="km"></span> <small>/ <span id="total"></span> km</small></span>
-      <span class="ends" id="to"></span>
-    </div>
-    <div class="bar"><div class="fill" id="fill"></div><div class="tip" id="tip"></div></div>
-  </div>
-
-  <div class="stats" id="stats">
-    <div class="panel speed">
-      <div class="speed-num" id="speed">0</div>
-      <div class="speed-unit">km/h</div>
-      <div class="speed-meta"><span id="alt">–</span> m<br>today <span id="today">0</span> km</div>
     </div>
   </div>
 
 <script>
 (function () {
   var p = new URLSearchParams(location.search);
-  function num(name, def) { var v = parseFloat(p.get(name)); return isNaN(v) ? def : v; }
+  function num(n, d) { var v = parseFloat(p.get(n)); return isNaN(v) ? d : v; }
   var cfg = {
-    key: p.get("key") || "",
     start: p.get("start") || "2026-09-25",
     startDay: num("startday", 120),
     tz: p.get("tz") || "Europe/Madrid",
     place: p.get("place") || "",
-    lang: p.get("lang") || "en",
     km: num("km", 3750),
     total: num("total", 5000),
     from: p.get("from") || "Estonia",
     to: p.get("to") || "Spain",
-    zoom: num("zoom", 11),
-    precision: num("precision", 2),
-    stillMin: num("still", 10),
-    delayMin: num("delay", 0),
-    showRoute: p.get("route") !== "0",
-    showMap: p.get("map") !== "0"
+    msg: p.get("msg") || "",
+    lat: p.get("lat"), lon: p.get("lon"),
+    topPos: num("top", 3),
+    bottomPos: num("bottom", 4),
+    showBottom: p.get("route") !== "0"
   };
   var $ = function (id) { return document.getElementById(id); };
 
-  /* saved distance (survives refresh) */
-  var STORE_KEY = "greyfox-gps-v1";
-  var store = { base: cfg.km, added: 0, day: "", dayMeters: 0 };
-  try { var s = JSON.parse(localStorage.getItem(STORE_KEY) || "null"); if (s && typeof s.added === "number") store = s; } catch (e) {}
-  if (store.base !== cfg.km) { store.base = cfg.km; store.added = 0; }
-  function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {} }
+  $("top").style.top = cfg.topPos + "%";
+  $("bottom").style.bottom = cfg.bottomPos + "%";
+  if (!cfg.showBottom) $("bottom").classList.add("hidden");
 
-  /* day counter, date, clock */
+  $("place").textContent = cfg.place;
+  if (!cfg.place) { $("place").classList.add("hidden"); document.querySelector(".sep").classList.add("hidden"); }
+  $("msg").textContent = cfg.msg;
+
+  function fmt(n) { return Math.round(n).toLocaleString("en-US").replace(/,/g, " "); }
+  $("from").textContent = cfg.from;
+  $("to").textContent = cfg.to;
+  $("km").textContent = fmt(cfg.km);
+  $("total").textContent = fmt(cfg.total);
+  var pct = Math.max(0, Math.min(100, cfg.km / cfg.total * 100));
+  $("fill").style.width = pct + "%";
+  $("tip").style.left = pct + "%";
+
   function todayIn(tz) {
     try { return new Intl.DateTimeFormat("en-CA", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date()); }
     catch (e) { return new Date().toISOString().slice(0, 10); }
   }
-  function toUTC(ymd) { var a = ymd.split("-").map(Number); return Date.UTC(a[0], a[1] - 1, a[2]); }
-  function tickClock() {
-    var today = todayIn(cfg.tz);
-    $("dayNum").textContent = cfg.startDay + Math.round((toUTC(today) - toUTC(cfg.start)) / 86400000);
+  function toUTC(s) { var a = s.split("-").map(Number); return Date.UTC(a[0], a[1] - 1, a[2]); }
+  function tick() {
+    $("dayNum").textContent = cfg.startDay + Math.round((toUTC(todayIn(cfg.tz)) - toUTC(cfg.start)) / 86400000);
     var now = new Date();
     try {
       $("date").textContent = new Intl.DateTimeFormat("en-GB", { timeZone: cfg.tz, day: "numeric", month: "short" }).format(now);
       $("clock").textContent = new Intl.DateTimeFormat("en-GB", { timeZone: cfg.tz, hour: "2-digit", minute: "2-digit" }).format(now);
     } catch (e) {}
-    if (store.day !== today) { store.day = today; store.dayMeters = 0; save(); renderRoute(); }
   }
-
-  function fmt(n) { return Math.round(n).toLocaleString("en-US").replace(/,/g, " "); }
-  function renderRoute() {
-    $("today").textContent = (store.dayMeters / 1000).toFixed(1);
-    if (!cfg.showRoute) { $("route").classList.add("hidden"); return; }
-    var km = store.base + store.added / 1000;
-    $("from").textContent = cfg.from;
-    $("to").textContent = cfg.to;
-    $("km").textContent = fmt(km);
-    $("total").textContent = fmt(cfg.total);
-    var pct = Math.max(0, Math.min(100, (km / cfg.total) * 100));
-    $("fill").style.width = pct + "%";
-    $("tip").style.left = pct + "%";
+  function weather() {
+    if (!cfg.lat || !cfg.lon) return;
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=" + encodeURIComponent(cfg.lat) + "&longitude=" + encodeURIComponent(cfg.lon) + "&current=temperature_2m")
+      .then(function (r) { return r.json(); })
+      .then(function (d) { if (d && d.current && typeof d.current.temperature_2m === "number") $("weather").textContent = Math.round(d.current.temperature_2m) + "°C"; })
+      .catch(function () {});
   }
-
-  /* map */
-  var map = null, marker = null;
-  if (cfg.showMap && window.L) {
-    map = L.map("map", { zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false,
-      doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false }).setView([41.24, 1.81], cfg.zoom);
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", { subdomains: "abcd", maxZoom: 19 }).addTo(map);
-    marker = L.circleMarker([41.24, 1.81], { radius: 9, color: "#ffffff", weight: 3, fillColor: "#e8893a", fillOpacity: 1 }).addTo(map);
-  } else {
-    $("mapwrap").classList.add("hidden");
-  }
-
-  /* GPS handling */
-  var history = [];
-  var lastRaw = null;
-  var lastData = 0, lastMove = Date.now(), speedFromApi = null;
-  var geo = { lat: null, lon: null, t: 0 }, weatherT = 0;
-
-  function hav(a, b) {
-    var R = 6371000, r = Math.PI / 180;
-    var dLat = (b.lat - a.lat) * r, dLon = (b.lon - a.lon) * r;
-    var x = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    return 2 * R * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
-  }
-  function round(v) { var f = Math.pow(10, cfg.precision); return Math.round(v * f) / f; }
-
-  function onLocation(loc) {
-    if (!loc || typeof loc.latitude !== "number") return;
-    var now = Date.now();
-    var pt = { t: now, lat: loc.latitude, lon: loc.longitude };
-    lastData = now;
-    history.push(pt);
-    var cutoff = now - (cfg.delayMin + 5) * 60000;
-    while (history.length > 2 && history[0].t < cutoff) history.shift();
-
-    if (!lastRaw) { lastRaw = pt; return; }
-    var d = hav(lastRaw, pt);
-    if (d < 25) return;
-    var dt = Math.max(1, (pt.t - lastRaw.t) / 1000);
-    var kmh = d / dt * 3.6;
-    if (kmh < 60) {
-      store.added += d; store.dayMeters += d; save(); renderRoute();
-      if (speedFromApi === null) $("speed").textContent = Math.round(kmh);
-    }
-    lastMove = now;
-    lastRaw = pt;
-  }
-
-  function shownPoint() {
-    if (!history.length) return null;
-    if (cfg.delayMin <= 0) return history[history.length - 1];
-    var target = Date.now() - cfg.delayMin * 60000, chosen = null;
-    for (var i = 0; i < history.length; i++) { if (history[i].t <= target) chosen = history[i]; }
-    return chosen;
-  }
-
-  function updateDisplay() {
-    var now = Date.now();
-    var offline = !lastData || now - lastData > 3 * 60000;
-    var still = now - lastMove > cfg.stillMin * 60000;
-    document.body.classList.toggle("hide-gps", offline || still);
-    if (still) $("speed").textContent = "0";
-
-    var pt = shownPoint();
-    if (!pt) return;
-    var lat = round(pt.lat), lon = round(pt.lon);
-    if (map && !(offline || still)) { marker.setLatLng([lat, lon]); map.panTo([lat, lon], { animate: true, duration: 1.5 }); }
-
-    if (!cfg.place && (geo.lat === null || (hav({ lat: geo.lat, lon: geo.lon }, { lat: lat, lon: lon }) > 3000 && now - geo.t > 180000))) {
-      geo = { lat: lat, lon: lon, t: now };
-      fetch("https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=10&accept-language=" + encodeURIComponent(cfg.lang) + "&lat=" + lat + "&lon=" + lon)
-        .then(function (r) { return r.json(); })
-        .then(function (d) {
-          var a = (d && d.address) || {};
-          var town = a.city || a.town || a.village || a.municipality || a.county || "";
-          var region = a.state || a.region || a.country || "";
-          var txt = [town, region].filter(Boolean).join(", ");
-          if (txt) $("place").textContent = txt;
-        }).catch(function () {});
-    }
-
-    if (now - weatherT > 15 * 60000) {
-      weatherT = now;
-      fetch("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&current=temperature_2m")
-        .then(function (r) { return r.json(); })
-        .then(function (d) { if (d && d.current && typeof d.current.temperature_2m === "number") $("weather").textContent = Math.round(d.current.temperature_2m) + "°C"; })
-        .catch(function () {});
-    }
-  }
-
-  /* start */
-  if (cfg.place) $("place").textContent = cfg.place;
-  renderRoute();
-  tickClock();
-  setInterval(tickClock, 20000);
-  setInterval(updateDisplay, 5000);
-
-  if (cfg.key && window.RealtimeIRL) {
-    var src = RealtimeIRL.forPullKey(cfg.key);
-    src.addLocationListener(onLocation);
-    if (src.addSpeedListener) src.addSpeedListener(function (sp) {
-      if (typeof sp === "number") { speedFromApi = sp; $("speed").textContent = Math.round(sp * 3.6); }
-    });
-    if (src.addAltitudeListener) src.addAltitudeListener(function (a) {
-      var v = (a && typeof a === "object") ? (a.EGM96 != null ? a.EGM96 : a.WGS84) : a;
-      if (typeof v === "number") $("alt").textContent = Math.round(v);
-    });
-  } else {
-    document.body.classList.add("hide-gps");
-  }
+  tick(); weather();
+  setInterval(tick, 20000);
+  setInterval(weather, 15 * 60000);
 })();
 </script>
 </body>
