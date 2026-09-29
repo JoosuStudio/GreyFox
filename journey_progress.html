@@ -7,6 +7,44 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+
+<script>
+/* =====================================================================
+   MUUDA SIIN  ·  CHANGE HERE
+   Salvesta, lae GitHubi üles, oota 1–2 min, vajuta Cloud-OBS-is Refresh.
+   ===================================================================== */
+var SETTINGS = {
+
+  place: "Sitges, Catalunya",   // koht ülaribal  (tühi "" = peidetud)
+  km: 3750,                     // läbitud kilomeetrid kokku
+  lat: 41.24,                   // koordinaadid päikese ja temperatuuri jaoks
+  lon: 1.81,                    // (Google Maps: vajuta kaardil kohale → numbrid)
+
+  // Vahetuv tekst alumise riba kohal. Iga rida jutumärkides, koma lõpus.
+  // Kui ei soovi ühtegi, jäta alles ainult:  messages: [],
+  messages: [
+    "Hand-engraved glass • commissions open",
+    "Estonia → Spain by bike, 5000 km",
+    "Support the ride ❤",
+  ],
+  messageSeconds: 20,           // mitu sekundit üks tekst on ekraanil
+
+
+  /* ---------- harvem muudetavad ---------- */
+  totalKm: 5000,
+  from: "Estonia",
+  to: "Spain",
+  startDate: "2026-09-25",      // sel kuupäeval oli...
+  startDay: 120,                // ...see päev
+  timeZone: "Europe/Madrid",
+  showTemperature: true,
+  showSun: true,                // päikeseloojangu / -tõusu loendur
+  topPosition: 3,               // ülariba kaugus ülaservast, % ekraanist
+  bottomPosition: 4             // alariba kaugus alaservast, % (suurem = kõrgemal)
+};
+/* ===================================================================== */
+</script>
+
 <style>
   :root {
     --glass: rgba(18, 22, 26, 0.58);
@@ -33,20 +71,25 @@
     padding: 0 1.3rem;
     box-sizing: border-box;
   }
-  .top { height: 2.9rem; gap: 1rem; font-size: 1.65rem; font-weight: 600; white-space: nowrap; }
-  .day { color: var(--fox); font-weight: 700; }
+  .top { height: 2.9rem; gap: 0.8rem; font-size: 1.55rem; font-weight: 600; white-space: nowrap; }
+  .day { color: var(--fox); font-weight: 700; flex: none; }
   .sep { width: 0.08rem; height: 1.4rem; background: var(--etch); flex: none; }
   .place { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
-  .right { margin-left: auto; display: flex; gap: 1rem; color: var(--soft); font-weight: 500; }
-  .right span:empty { display: none; }
+  .right { margin-left: auto; display: flex; align-items: center; gap: 0.8rem; color: var(--soft); font-weight: 500; flex: none; }
+  .right > span:empty { display: none; }
+  .sun { display: flex; align-items: center; gap: 0.4rem; }
+  .sun svg { width: 1.9rem; height: 1.9rem; flex: none; }
+  .sun b { color: var(--ink); font-weight: 600; }
 
   .bottom { flex-direction: column; align-items: stretch; padding: 0.55rem 1.4rem 0.7rem; border-radius: 1.4rem; }
-  .msg { font-size: 1.45rem; font-weight: 600; color: var(--soft); text-align: center; margin-bottom: 0.35rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .msg:empty { display: none; }
+  .msg { font-size: 1.45rem; font-weight: 600; color: var(--soft); text-align: center; margin-bottom: 0.35rem;
+         white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: opacity 0.6s ease; }
+  .msg.fade { opacity: 0; }
   .row { display: flex; align-items: center; gap: 0.9rem; font-size: 1.5rem; font-weight: 500; color: var(--soft); white-space: nowrap; }
   .bar { position: relative; flex: 1; height: 0.6rem; background: var(--track); border-radius: 0.3rem; }
   .fill { position: absolute; inset: 0 auto 0 0; background: var(--fox); border-radius: 0.3rem; }
-  .tip { position: absolute; top: 50%; width: 1.3rem; height: 1.3rem; transform: translate(-50%, -50%); border-radius: 50%; background: var(--ink); border: 0.22rem solid var(--fox); box-sizing: border-box; }
+  .tip { position: absolute; top: 50%; width: 1.3rem; height: 1.3rem; transform: translate(-50%, -50%);
+         border-radius: 50%; background: var(--ink); border: 0.22rem solid var(--fox); box-sizing: border-box; }
   .km { color: var(--ink); font-weight: 700; font-size: 1.7rem; }
   .km small { color: var(--soft); font-weight: 500; font-size: 1.4rem; }
   .hidden { display: none !important; }
@@ -55,83 +98,13 @@
 <body>
   <div class="pill top" id="top">
     <span class="day">Day <span id="dayNum">–</span></span>
-    <span class="sep"></span>
+    <span class="sep" id="placeSep"></span>
     <span class="place" id="place"></span>
-    <span class="right"><span id="date"></span><span id="clock"></span><span id="weather"></span></span>
-  </div>
-
-  <div class="pill bottom" id="bottom">
-    <div class="msg" id="msg"></div>
-    <div class="row">
-      <span id="from"></span>
-      <div class="bar"><div class="fill" id="fill"></div><div class="tip" id="tip"></div></div>
-      <span id="to"></span>
-      <span class="km"><span id="km"></span> <small>/ <span id="total"></span> km</small></span>
-    </div>
-  </div>
-
-<script>
-(function () {
-  var p = new URLSearchParams(location.search);
-  function num(n, d) { var v = parseFloat(p.get(n)); return isNaN(v) ? d : v; }
-  var cfg = {
-    start: p.get("start") || "2026-09-25",
-    startDay: num("startday", 120),
-    tz: p.get("tz") || "Europe/Madrid",
-    place: p.get("place") || "Sitges, Catalunya",
-    km: num("km", 3750),
-    total: num("total", 5000),
-    from: p.get("from") || "Estonia",
-    to: p.get("to") || "Spain",
-    msg: p.get("msg") || "",
-    lat: p.get("lat"), lon: p.get("lon"),
-    topPos: num("top", 3),
-    bottomPos: num("bottom", 4),
-    showBottom: p.get("route") !== "0"
-  };
-  var $ = function (id) { return document.getElementById(id); };
-
-  $("top").style.top = cfg.topPos + "%";
-  $("bottom").style.bottom = cfg.bottomPos + "%";
-  if (!cfg.showBottom) $("bottom").classList.add("hidden");
-
-  $("place").textContent = cfg.place;
-  if (!cfg.place) { $("place").classList.add("hidden"); document.querySelector(".sep").classList.add("hidden"); }
-  $("msg").textContent = cfg.msg;
-
-  function fmt(n) { return Math.round(n).toLocaleString("en-US").replace(/,/g, " "); }
-  $("from").textContent = cfg.from;
-  $("to").textContent = cfg.to;
-  $("km").textContent = fmt(cfg.km);
-  $("total").textContent = fmt(cfg.total);
-  var pct = Math.max(0, Math.min(100, cfg.km / cfg.total * 100));
-  $("fill").style.width = pct + "%";
-  $("tip").style.left = pct + "%";
-
-  function todayIn(tz) {
-    try { return new Intl.DateTimeFormat("en-CA", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date()); }
-    catch (e) { return new Date().toISOString().slice(0, 10); }
-  }
-  function toUTC(s) { var a = s.split("-").map(Number); return Date.UTC(a[0], a[1] - 1, a[2]); }
-  function tick() {
-    $("dayNum").textContent = cfg.startDay + Math.round((toUTC(todayIn(cfg.tz)) - toUTC(cfg.start)) / 86400000);
-    var now = new Date();
-    try {
-      $("date").textContent = new Intl.DateTimeFormat("en-GB", { timeZone: cfg.tz, day: "numeric", month: "short" }).format(now);
-      $("clock").textContent = new Intl.DateTimeFormat("en-GB", { timeZone: cfg.tz, hour: "2-digit", minute: "2-digit" }).format(now);
-    } catch (e) {}
-  }
-  function weather() {
-    if (!cfg.lat || !cfg.lon) return;
-    fetch("https://api.open-meteo.com/v1/forecast?latitude=" + encodeURIComponent(cfg.lat) + "&longitude=" + encodeURIComponent(cfg.lon) + "&current=temperature_2m")
-      .then(function (r) { return r.json(); })
-      .then(function (d) { if (d && d.current && typeof d.current.temperature_2m === "number") $("weather").textContent = Math.round(d.current.temperature_2m) + "°C"; })
-      .catch(function () {});
-  }
-  tick(); weather();
-  setInterval(tick, 20000);
-  setInterval(weather, 15 * 60000);
-})();
-</script>
-</body>
-</html>
+    <span class="right">
+      <span id="weather"></span>
+      <span class="sun" id="sun">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#e8893a" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M5 17a7 7 0 0 1 14 0"/><path d="M2 20h20"/>
+          <path id="sunArrow" d="M12 3v6M9 6l3-3 3 3"/>
+        </svg>
+        <span><sp
