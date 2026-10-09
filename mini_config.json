@@ -1,0 +1,11 @@
+{
+  "month": "OCTOBER",
+  "income": 390,
+  "minis": null,
+  "miniValue": 130,
+  "monthlyGoal": 12,
+  "showEuroReference": true,
+  "showCharacter": true,
+  "showPhysicalMini": true,
+  "animationsEnabled": true
+}

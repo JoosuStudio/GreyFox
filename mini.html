@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grey Fox Mini System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070707; --panel:#111111; --panel2:#1b1b1b;
+  --silver:#d8d8d8; --grey:#7e8388; --orange:#ff6a00; --amber:#ffa000; --white:#f5f5f5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;overflow:hidden;width:100%;height:100%}
+body{font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif;color:var(--white)}
+#stage{position:absolute;left:0;top:0;transform-origin:0 0;width:1600px;height:620px}
+
+.fox,.mini{position:absolute;bottom:0;pointer-events:none;user-select:none}
+.fox{left:0;height:620px}
+.mini{right:0;height:500px;bottom:22px}
+
+.glow{position:absolute;filter:drop-shadow(0 0 5px rgba(255,106,0,.75)) drop-shadow(0 0 1px #ff6a00)}
+.box{background:linear-gradient(180deg,#161616,#090909);position:relative}
+
+/* ---------- title ---------- */
+.g-title{left:366px;top:228px;width:1040px;height:122px}
+.g-title .box{height:100%;display:flex;align-items:center;
+  clip-path:polygon(26px 0,100% 0,100% 100%,0 100%,0 38px)}
+.titlewrap{flex:1;text-align:center;padding-left:60px}
+.title{font-family:Cinzel,Georgia,serif;font-weight:900;font-size:62px;line-height:1;white-space:nowrap;letter-spacing:1px}
+.t1{background:linear-gradient(180deg,#ffffff 10%,#b9bcc0 55%,#74787d);-webkit-background-clip:text;background-clip:text;color:transparent}
+.t2{background:linear-gradient(180deg,#ffd451 5%,#ffa000 50%,#ff6a00);-webkit-background-clip:text;background-clip:text;color:transparent}
+.month{font-size:25px;font-weight:600;letter-spacing:12px;color:var(--silver);margin-top:6px;padding-left:12px}
+.month:before,.month:after{content:"";display:inline-block;width:150px;height:2px;vertical-align:middle;margin:0 14px;
+  background:linear-gradient(90deg,transparent,var(--amber))}
+.month:after{transform:scaleX(-1)}
+.euro{width:210px;height:100%;border-left:2px solid rgba(255,106,0,.55);display:flex;flex-direction:column;
+  justify-content:center;padding-left:26px;background:linear-gradient(180deg,#1b1b1b,#0d0d0d)}
+.euro small{font-size:24px;font-weight:600;letter-spacing:1px}
+.euro b{font-size:46px;line-height:1;color:var(--amber);font-weight:700}
+
+/* ---------- gems ---------- */
+.g-gems{left:366px;top:356px;width:1040px;height:122px}
+.g-gems .box{height:100%;padding:12px 26px 0 30px}
+.gemrow{display:flex;align-items:center;gap:6px;height:76px}
+.gems{flex:1;display:flex;gap:6px;justify-content:space-between;min-width:0}
+.gem{flex:1 1 0;max-width:64px;min-width:0;aspect-ratio:60/72;position:relative}
+.gem svg{width:100%;height:100%;display:block;overflow:visible}
+.gem .lit{filter:drop-shadow(0 0 5px rgba(255,120,0,.9))}
+.gem.active .lit{animation:pulse 2.2s ease-in-out infinite}
+.gem.done-now{animation:pop 1.6s ease-out}
+@keyframes pulse{50%{filter:drop-shadow(0 0 11px rgba(255,160,0,1))}}
+@keyframes pop{0%{transform:scale(1)}18%{transform:scale(1.55);filter:brightness(2.4)}45%{transform:scale(.95)}100%{transform:scale(1)}}
+.count{width:150px;text-align:right;font-size:44px;font-weight:700;white-space:nowrap}
+.count b{color:var(--amber)}
+.bar{height:12px;margin-top:9px;border-radius:7px;background:#050505;border:1px solid #3a3a3a;overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:7px;transition:width 1.2s ease;
+  background:linear-gradient(90deg,#ff4d00,#ffa000);box-shadow:0 0 10px #ff6a00}
+
+/* ---------- stats ---------- */
+.g-stats{left:300px;top:484px;width:1106px;height:104px}
+.g-stats .box{height:100%;display:flex;clip-path:polygon(0 0,100% 0,100% 100%,30px 100%,0 68px)}
+.stat{flex:1;display:flex;align-items:center;gap:20px;padding-left:44px;border-left:2px solid rgba(255,106,0,.45)}
+.stat:first-child{border-left:0;padding-left:60px}
+.stat svg{width:50px;height:50px;flex:none}
+.stat small{display:block;font-size:22px;font-weight:600;letter-spacing:1.5px;color:var(--silver)}
+.stat b{display:block;font-size:42px;line-height:1;font-weight:700;color:var(--amber);white-space:nowrap}
+.stat b span{color:var(--white)}
+
+/* ---------- toast ---------- */
+.toast{position:absolute;left:366px;top:150px;width:1040px;text-align:center;font-size:64px;font-weight:700;letter-spacing:6px;
+  color:#fff;text-shadow:0 0 14px #ff6a00,0 0 34px #ff6a00;opacity:0;pointer-events:none}
+.toast.show{animation:toast 3.4s ease-out}
+@keyframes toast{0%{opacity:0;transform:translateY(30px) scale(.8)}12%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0;transform:translateY(-16px)}}
+
+/* ---------- no character / no mini ---------- */
+body.nofox .fox{display:none}
+body.nomini .mini{display:none}
+body.noeuro .euro{display:none}
+
+/* ================= BAR layout: thin strip for riding streams ================= */
+body.l-bar #stage{width:1080px;height:84px}
+body.l-bar .fox,body.l-bar .mini,body.l-bar .g-stats,body.l-bar .month,body.l-bar .euro{display:none}
+body.l-bar .g-title{left:8px;top:8px;width:300px;height:68px}
+body.l-bar .g-title .box{clip-path:none;border-radius:8px 0 0 8px}
+body.l-bar .titlewrap{padding:0 0 0 4px}
+body.l-bar .title{font-size:25px;line-height:1.05;white-space:normal}
+body.l-bar .title span{display:block}
+body.l-bar .g-gems{left:308px;top:8px;width:764px;height:68px}
+body.l-bar .g-gems .box{padding:7px 16px 0 10px;border-radius:0 8px 8px 0}
+body.l-bar .gemrow{height:46px}
+body.l-bar .gem{max-width:38px}
+body.l-bar .count{width:auto;font-size:34px;padding-left:14px}
+body.l-bar .next-inline{display:block}
+body.l-bar .bar{height:6px;margin-top:4px}
+body.l-bar .toast{left:0;top:6px;width:1080px;font-size:54px;z-index:5;line-height:72px;background:rgba(7,7,7,.92);border-radius:8px}
+.next-inline{display:none;font-size:22px;font-weight:700;color:var(--amber);padding-left:16px;white-space:nowrap;letter-spacing:1px;line-height:1}
+.next-inline small{display:block;font-size:15px;color:var(--silver);font-weight:600;letter-spacing:1.5px}
+
+/* ================= STORY layout: 1080 wide card for vertical posts ================= */
+body.l-story #stage{width:1080px;height:1240px}
+body.l-story .fox{left:350px;bottom:auto;top:20px;height:660px;
+  -webkit-mask-image:linear-gradient(90deg,#000 68%,transparent 79%);mask-image:linear-gradient(90deg,#000 68%,transparent 79%)}
+body.l-story .mini{display:none}
+body.l-story .g-title{left:30px;top:520px;width:1020px;height:190px}
+body.l-story .g-title .box{flex-direction:column;justify-content:center;clip-path:none;border-radius:14px 14px 0 0}
+body.l-story .titlewrap{padding:0;flex:none}
+body.l-story .title{font-size:66px}
+body.l-story .euro{flex-direction:row;align-items:baseline;gap:12px;width:auto;height:auto;border:0;background:none;padding:6px 0 0}
+body.l-story .euro b{font-size:34px}
+body.l-story .g-gems{left:30px;top:716px;width:1020px;height:330px}
+body.l-story .g-gems .box{padding:22px 40px 0}
+body.l-story .gemrow{height:auto;flex-direction:column;gap:6px}
+body.l-story .gems{flex-wrap:wrap;justify-content:center;gap:14px 34px;width:100%;max-width:780px}
+body.l-story .gem{flex:0 0 100px;max-width:100px}
+body.l-story .count{display:none}
+body.l-story .bar{height:16px;margin-top:22px}
+body.l-story .g-stats{left:30px;top:1052px;width:1020px;height:150px}
+body.l-story .g-stats .box{clip-path:none;border-radius:0 0 14px 14px}
+body.l-story .stat{flex-direction:column;justify-content:center;gap:4px;padding:0;text-align:center}
+body.l-story .stat:first-child{padding:0}
+body.l-story .stat svg{display:none}
+body.l-story .toast{left:0;top:440px;width:1080px;z-index:5}
+</style>
+</head>
+<body>
+<div id="stage">
+  <img class="mini" src="mini_glass.webp" alt="">
+  <img class="fox" src="mini_fox.webp" alt="">
+
+  <div class="glow g-title"><div class="box">
+    <div class="titlewrap">
+      <div class="title"><span class="t1">GREY FOX</span> <span class="t2">MINI SYSTEM</span></div>
+      <div class="month" id="month">OCTOBER</div>
+    </div>
+    <div class="euro"><small>1 MINI =</small><b id="euro">€130</b></div>
+  </div></div>
+
+  <div class="glow g-gems"><div class="box">
+    <div class="gemrow">
+      <div class="gems" id="gems"></div>
+      <div class="count"><b id="cDone">0</b> / <span id="cGoal">12</span></div>
+      <div class="next-inline"><small>NEXT</small><span id="nextShort">1st</span></div>
+    </div>
+    <div class="bar"><i id="bar"></i></div>
+  </div></div>
+
+  <div class="glow g-stats"><div class="box">
+    <div class="stat">
+      <svg viewBox="0 0 50 50" fill="none" stroke="#ffa000" stroke-width="4"><circle cx="23" cy="27" r="19"/><circle cx="23" cy="27" r="9"/><path d="M23 27 44 6M36 6h8v8" stroke-linecap="round"/></svg>
+      <div><small>MONTHLY GOAL:</small><b id="sGoal">12 MINIS</b></div>
+    </div>
+    <div class="stat">
+      <svg viewBox="0 0 50 50" fill="#ffa000"><rect x="6" y="30" width="10" height="16"/><rect x="20" y="18" width="10" height="28"/><rect x="34" y="6" width="10" height="40"/></svg>
+      <div><small>CURRENT:</small><b id="sCur">0 <span>/ 12</span></b></div>
+    </div>
+    <div class="stat">
+      <svg viewBox="0 0 50 50" fill="none" stroke="#ffa000" stroke-width="7"><path d="M8 8 24 25 8 42M26 8 42 25 26 42"/></svg>
+      <div><small>NEXT TARGET:</small><b id="sNext">1st MINI</b></div>
+    </div>
+  </div></div>
+
+  <div class="toast" id="toast">MINI COMPLETE!</div>
+</div>
+
+<script>
+/* Grey Fox Mini System — overlay.
+   Numbers come from mini_config.json (same folder). Edit that file; the overlay refreshes itself.
+   URL options: ?layout=full|bar|story  &income=455  &minis=3.5  &bg=222  &config=other.json */
+(function(){
+  var DEFAULTS = {month:"OCTOBER", income:390, minis:null, miniValue:130, monthlyGoal:12,
+    showEuroReference:true, showCharacter:true, showPhysicalMini:true, animationsEnabled:true};
+  var q = new URLSearchParams(location.search);
+  var layout = (q.get("layout")||"full").toLowerCase();
+  var SIZES = {full:[1600,620], bar:[1080,84], story:[1080,1240]};
+  if(!SIZES[layout]) layout = "full";
+  document.body.classList.add("l-"+layout);
+  if(q.get("bg")) document.documentElement.style.background = "#"+q.get("bg");
+  var REFRESH_SECONDS = 20;
+
+  var stage = document.getElementById("stage");
+  function fit(){ stage.style.transform = "scale("+(window.innerWidth/SIZES[layout][0])+")"; }
+  window.addEventListener("resize", fit); fit();
+
+  function $(id){ return document.getElementById(id); }
+  function ordinal(n){ var s=["th","st","nd","rd"], v=n%100; return n+(s[(v-20)%10]||s[v]||s[0]); }
+  function num(v, d){ v = parseFloat(v); return isFinite(v) ? v : d; }
+
+  var FACE = "M30 2 50 9 58 28V44L50 63 30 70 10 63 2 44V28L10 9Z";
+  var FACETS = "M30 2 18 20 2 28M30 2 42 20 58 28M18 20H42L48 44 30 58 12 44ZM2 44 12 44M58 44 48 44M30 58V70M12 44 10 63M48 44 50 63M18 20 10 9M42 20 50 9";
+  var FOX = "M19 25 24.5 34 30 31.5 35.5 34 41 25 39.5 41 30 51 20.5 41Z";
+  function gemSVG(i){
+    return '<svg viewBox="0 0 60 72"><defs><clipPath id="gc'+i+'"><rect x="-10" y="72" width="80" height="0"/></clipPath></defs>'
+      + '<g opacity=".62"><path d="'+FACE+'" fill="#2a2c2f" stroke="#c9ccd0" stroke-width="2"/>'
+      + '<path d="'+FACETS+'" fill="none" stroke="#8d9196" stroke-width="1"/>'
+      + '<path d="'+FOX+'" fill="#b7babe"/></g>'
+      + '<g class="lit"><g clip-path="url(#gc'+i+')"><path d="'+FACE+'" fill="#ff5a00" stroke="#ffb030" stroke-width="2.5"/>'
+      + '<path d="'+FACETS+'" fill="none" stroke="#ffc864" stroke-width="1.2"/>'
+      + '<path d="'+FOX+'" fill="#fff3d0"/></g></g></svg>';
+  }
+
+  var built = 0, lastDone = null;
+  function render(c){
+    var value = Math.max(1, num(c.miniValue, 130));
+    var goal  = Math.max(1, Math.round(num(c.monthlyGoal, 12)));
+    var minis = (c.minis !== null && c.minis !== undefined && c.minis !== "") ? num(c.minis, 0) : num(c.income, 0) / value;
+    minis = Math.max(0, minis);
+    var done = Math.floor(minis + 1e-9), part = minis - done;
+    var reached = done >= goal;
+
+    document.body.classList.toggle("nofox", c.showCharacter === false);
+    document.body.classList.toggle("nomini", c.showPhysicalMini === false);
+    document.body.classList.toggle("noeuro", c.showEuroReference === false);
+
+    var box = $("gems");
+    if(built !== goal){
+      var h = ""; for(var i=0;i<goal;i++) h += '<div class="gem">'+gemSVG(i)+'</div>';
+      box.innerHTML = h; built = goal;
+    }
+    var anim = c.animationsEnabled !== false;
+    Array.prototype.forEach.call(box.children, function(g, i){
+      var f = i < done ? 1 : (i === done ? part : 0);
+      var r = g.querySelector("clipPath rect");
+      r.setAttribute("y", 72 - 76*f - (f?2:0)); r.setAttribute("height", f ? 76*f + 4 : 0);
+      g.classList.toggle("active", anim && i === done && !reached);
+      if(anim && lastDone !== null && i >= lastDone && i < done){
+        g.classList.remove("done-now"); void g.offsetWidth; g.classList.add("done-now");
+      }
+    });
+    if(anim && lastDone !== null && done > lastDone){
+      var t = $("toast");
+      t.textContent = reached ? "GOAL REACHED!" : "MINI COMPLETE!";
+      t.classList.remove("show"); void t.offsetWidth; t.classList.add("show");
+    }
+    lastDone = done;
+
+    $("month").textContent = String(c.month || "").toUpperCase();
+    $("euro").textContent = "€" + value;
+    $("cDone").textContent = done; $("cGoal").textContent = goal;
+    $("sGoal").textContent = goal + " MINIS";
+    $("sCur").innerHTML = done + " <span>/ " + goal + "</span>";
+    $("sNext").textContent = reached ? "GOAL REACHED!" : ordinal(done+1) + " MINI";
+    $("nextShort").textContent = reached ? "DONE!" : ordinal(done+1);
+    $("bar").style.width = Math.min(100, minis/goal*100) + "%";
+  }
+
+  function apply(c){
+    var cfg = Object.assign({}, DEFAULTS, c || {});
+    if(q.get("income") !== null){ cfg.income = q.get("income"); cfg.minis = null; }
+    if(q.get("minis") !== null) cfg.minis = q.get("minis");
+    render(cfg);
+  }
+  function load(){
+    var url = (q.get("config") || "mini_config.json");
+    fetch(url + (url.indexOf("?")<0 ? "?" : "&") + "t=" + Date.now(), {cache:"no-store"})
+      .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .then(apply)
+      .catch(function(){ if(lastDone === null) apply(null); });  /* keep last good state on errors */
+  }
+  load();
+  setInterval(load, REFRESH_SECONDS*1000);
+})();
+</script>
+</body>
+</html>
